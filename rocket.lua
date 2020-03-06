@@ -2,23 +2,18 @@ local Vec = require "vec"
 
 local Rocket = {}
 
-function Rocket:new()
-    self.pos = Vec()
-    self.dim = Vec(50, 50)
-    self.vel = Vec()
-    self.tilt = 0
-    self.thrust = 0
+function Rocket:new(world)
+    self.body = love.physics.newBody(
+        world, 
+        love.graphics.getWidth() / 2 - 1, 
+        love.graphics.getHeight() / 2, 
+        "dynamic")
+    self.shape = love.physics.newRectangleShape(50, 50)
+    self.fixture = love.physics.newFixture(self.body, self.shape)
 end
 
 function Rocket:draw()
-    local halfWidth, halfHeight = self.dim.x / 2, self.dim.y / 2
-
-    love.graphics.push()
-    love.graphics.translate(self.pos.x + halfWidth, self.pos.y + halfHeight)
-    love.graphics.rotate(self.tilt)
-    love.graphics.translate(-halfWidth, -halfHeight)
-    love.graphics.rectangle("fill", 0, 0, self.dim.x, self.dim.y)
-    love.graphics.pop()
+    love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 end
 
 return setmetatable(Rocket, {
@@ -26,7 +21,7 @@ return setmetatable(Rocket, {
         local o = setmetatable({}, {
             __index = Rocket
         })
-        o:new()
+        o:new(...)
         return o
     end
 })

@@ -1,24 +1,19 @@
 local Rocket = require "rocket"
-local World = require "world"
 local Terrain = require "terrain"
 local Vec = require "vec"
 
 local Playing = {}
 
 function Playing:new()
-    self.rocket = Rocket()
-    self.rocket.pos.x = love.graphics.getWidth() / 2
-    self.rocket.pos.y = love.graphics.getHeight() / 2
-    self.rocket.tilt = 0
-    self.rocket.thrust = 20
+    self.world = love.physics.newWorld(0, 100)
 
-    self.terrain = Terrain({
-        { x = 0, y = love.graphics.getHeight() - 50 },
-        { x = love.graphics.getWidth() / 2, y = love.graphics.getHeight()  - 100 },
-        { x = love.graphics.getWidth(), y = love.graphics.getHeight() - 40}
+    self.rocket = Rocket(self.world)
+
+    self.terrain = Terrain(self.world, {
+        0, love.graphics.getHeight() - 50,
+        love.graphics.getWidth() / 2, love.graphics.getHeight()  - 100,
+        love.graphics.getWidth(), love.graphics.getHeight() - 40
     })
-
-    self.world = World(self.rocket, self.terrain, Vec(0, 50))
 end
 
 function Playing:update(dt)

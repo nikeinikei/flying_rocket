@@ -1,25 +1,16 @@
 local Terrain = {}
 
-local function createDrawablePointsFromPoints(points)
-    local drawable = {}
-
-    for i = 1, #points do
-        local point = points[i]
-        table.insert(drawable, point.x)
-        table.insert(drawable, point.y)
-    end
-
-    return drawable
-end
-
 -- points are of shape {{x = 0, y = 0}, {x = 0, y = 0}, ... }
-function Terrain:new(points)
+function Terrain:new(world, points)
     self.points = points
-    self.drawablePoints = createDrawablePointsFromPoints(points)
+
+    self.body = love.physics.newBody(world, 0, 0, "static")
+    self.shape = love.physics.newChainShape(false, self.points)
+    self.fixture = love.physics.newFixture(self.body, self.shape)
 end
 
 function Terrain:draw()
-    love.graphics.line(self.drawablePoints)
+    love.graphics.line(self.points)
 end
 
 return setmetatable(Terrain, {
