@@ -11,7 +11,7 @@ function Vec:scale(s)
 end
 
 function Vec.createUnitVectorFromAngle()
-    
+    error("missing implementation")
 end
 
 local function vector__add(a, b)
