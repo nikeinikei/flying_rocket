@@ -1,6 +1,7 @@
 local enum = require "enum"
 local json = require "libs.json"
 local Array = require "array"
+local Levels = require "levels"
 
 local LevelBuilder = {}
 
@@ -60,8 +61,14 @@ function LevelBuilder:keypressed(key, code, isrepeat)
         self.mode = Modes.Inspection
     end
     if key == "s" then
-        local encoded = json.encode(self.terrainPoints:items())
-        local fileName = self.name + ".json"
+        local level = {
+            name = self.name,
+            terrainPoints = self.terrainPoints,
+            rocketStartingLocation = self.rocketStartingLocation,
+            rocketLandingLocation = self.rocketLandingLocation
+        }
+        Levels.addLevel(level)
+        Application.popState()
     end
     if key == "escape" then
         love.event.quit()

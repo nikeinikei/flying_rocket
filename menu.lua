@@ -1,6 +1,7 @@
 local Button = require "gui.button"
 local TextInputPrompt = require "gui.textinputprompt"
 local LevelBuilder = require "levelbuilder"
+local Levels = require "levels"
 
 local Menu = {}
 
@@ -11,8 +12,16 @@ local function LevelBuilderButtonCallback(self)
     local x = love.graphics.getWidth() / 2 - width / 2
     local y = love.graphics.getHeight() / 2 - height / 2
     local textInputPrompt = TextInputPrompt(x, y, width, height, "level name:", function(name)
-        Application.popState()
-        Application.pushState(LevelBuilder(name))
+        if #name == 0 then
+            love.window.showMessageBox("Invalid Level Name", "empty string is not allowed.", "error")
+        else
+            if Levels.nameUsed(name) then
+                love.window.showMessageBox("Invalid Level Name", "level name already in use", "error")
+            else
+                Application.popState()
+                Application.pushState(LevelBuilder(name))
+            end
+        end
     end)
 
     Application.pushState(textInputPrompt)
