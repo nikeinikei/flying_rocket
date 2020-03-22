@@ -1,5 +1,4 @@
 local enum = require "enum"
-local physicsConstants = require "physicsconstants"
 local json = require "libs.json"
 local Array = require "array"
 
