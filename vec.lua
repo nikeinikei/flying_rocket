@@ -41,14 +41,16 @@ local function vector__tostring(self)
     return "Vec{x=" .. self.x .. ",y=" .. self.y .. "}" 
 end
 
+local Vec_mt = {
+    __index = Vec, 
+    __add = vector__add,
+    __mul = vector__mul,
+    __tostring = vector__tostring
+}
+
 return setmetatable(Vec, {
     __call = function(_, ...)
-        local o = setmetatable({}, {
-            __index = Vec, 
-            __add = vector__add,
-            __mul = vector__mul,
-            __tostring = vector__tostring
-        })
+        local o = setmetatable({}, Vec_mt)
         o:new(...)
         return o
     end
