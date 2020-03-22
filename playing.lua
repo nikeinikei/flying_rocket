@@ -1,6 +1,7 @@
 local Rocket = require "rocket"
 local Terrain = require "terrain"
 local Vec = require "vec"
+local dbprint = require "debugprint"
 
 local Playing = {}
 
@@ -17,10 +18,12 @@ function Playing:new()
 end
 
 function Playing:update(dt)
+    self.rocket:update(dt)
     self.world:update(dt)
 end
 
 function Playing:draw()
+    dbprint.reset()
     self.rocket:draw()
     self.terrain:draw()
 end
