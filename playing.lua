@@ -5,16 +5,13 @@ local dbprint = require "debugprint"
 
 local Playing = {}
 
-function Playing:new()
+function Playing:new(level)
+    self.level = level
     self.world = love.physics.newWorld(0, 100)
 
-    self.rocket = Rocket(self.world)
+    self.rocket = Rocket(self.world, x, y)
 
-    self.terrain = Terrain(self.world, {
-        0, love.graphics.getHeight() - 50,
-        love.graphics.getWidth() / 2, love.graphics.getHeight()  - 100,
-        love.graphics.getWidth(), love.graphics.getHeight() - 40
-    })
+    self.terrain = Terrain(self.world, level.terrainPoints)
 end
 
 function Playing:update(dt)

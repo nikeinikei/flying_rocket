@@ -2,6 +2,7 @@ local Button = require "gui.button"
 local TextInputPrompt = require "gui.textinputprompt"
 local LevelBuilder = require "levelbuilder"
 local Levels = require "levels"
+local LevelPicker = require "levelpicker"
 
 local Menu = {}
 
@@ -30,7 +31,9 @@ end
 local buttonSchemes = {
     { 
         name = "Play", 
-        callback = function(self) end
+        callback = function(self)
+            Application.pushState(LevelPicker())
+        end
     },
     {
         name = "LevelBuilder", 
