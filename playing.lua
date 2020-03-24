@@ -46,6 +46,18 @@ function Playing:new(level)
         rocketLandingLocation.h
     )
 
+    local windowWidth, windowHeight = love.graphics.getWidth(), love.graphics.getHeight()
+
+    self.border = {}
+    self.border.body = love.physics.newBody(self.world, 0, 0)
+    self.border.shape = love.physics.newChainShape(true, 
+        0, 0,
+        windowHeight, 0,
+        windowWidth, windowHeight,
+        0, windowHeight
+    )
+    self.border.fixture = love.physics.newFixture(self.border.body, self.border.shape)
+
     self.terrain = Terrain(self.world, level.terrainPoints:items())
 end
 
