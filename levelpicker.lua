@@ -1,5 +1,5 @@
 local Levels = require "levels"
-local f = require "functional"
+local f = require "util.functional"
 local Button = require "gui.button"
 local Playing = require "playing"
 

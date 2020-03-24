@@ -1,5 +1,3 @@
-require "asserts"
-require "application"
 require "globals"
 
 local Playing = require "playing"

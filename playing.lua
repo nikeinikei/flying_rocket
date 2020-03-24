@@ -1,7 +1,6 @@
 local Rocket = require "rocket"
 local Terrain = require "terrain"
-local Vec = require "vec"
-local dbprint = require "debugprint"
+local dbprint = require "util.debugprint"
 local Controls = require "controls"
 local Clock = require "util.clock"
 

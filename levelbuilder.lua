@@ -1,6 +1,6 @@
-local enum = require "enum"
+local enum = require "util.enum"
 local json = require "libs.json"
-local Array = require "array"
+local Array = require "util.array"
 local Levels = require "levels"
 
 local LevelBuilder = {}

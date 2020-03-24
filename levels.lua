@@ -1,6 +1,5 @@
 local json = require "libs.json"
-local f = require "functional"
-local Array = require "array"
+local Array = require "util.array"
 
 local Levels = {}
 

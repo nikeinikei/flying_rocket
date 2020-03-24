@@ -1,4 +1,4 @@
-local Stack = require "stack"
+local Stack = require "util.stack"
 
 local LOVE_CALLBACKS = {
     "directorydropped",

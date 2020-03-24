@@ -1,5 +1,4 @@
-local Vec = require "vec"
-local dbg = require "debugprint"
+local dbg = require "util.debugprint"
 
 local Rocket = {}
 
