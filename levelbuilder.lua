@@ -28,7 +28,7 @@ function LevelBuilder:new(name)
         h = 20
     }
 
-    self.mode = Modes.TerrainBuilding
+    self.mode = Modes.Inspection
 end
 
 function LevelBuilder:mousepressed(mouseX, mouseY, button, istouch, presses)

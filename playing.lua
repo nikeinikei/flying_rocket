@@ -68,7 +68,7 @@ function Playing:update(dt)
     else
         self.rocket:setThrust(0)
     end
-    
+
     local rotation = 0
     if love.keyboard.isDown(Controls.game.rotateLeft) then
         rotation = -1
