@@ -2,27 +2,83 @@ local Rocket = require "rocket"
 local Terrain = require "terrain"
 local Vec = require "vec"
 local dbprint = require "debugprint"
+local Controls = require "controls"
 
 local Playing = {}
+
+local function newStaticRectangle(world, x, y, w, h)
+    local body = love.physics.newBody(world, x, y, "static")
+    local shape = love.physics.newRectangleShape(w, h)
+    local fixture = love.physics.newFixture(body, shape)
+
+    return {
+        body = body,
+        shape = shape,
+        fixture = fixture
+    }
+end
 
 function Playing:new(level)
     self.level = level
     self.world = love.physics.newWorld(0, 100)
 
-    self.rocket = Rocket(self.world, x, y)
+    local rocketStartingLocation = level.rocketStartingLocation
+    local rocketLandingLocation = level.rocketLandingLocation
 
-    self.terrain = Terrain(self.world, level.terrainPoints)
+    local rocketX = rocketStartingLocation.x + rocketStartingLocation.w / 2
+    local rocketY = rocketStartingLocation.y - Rocket.height / 2
+
+    self.rocket = Rocket(self.world, rocketX, rocketY)
+
+    self.rocketStartingLocationObject = newStaticRectangle(
+        self.world, 
+        rocketStartingLocation.x + rocketStartingLocation.w / 2,
+        rocketStartingLocation.y + rocketStartingLocation.h / 2,
+        rocketStartingLocation.w,
+        rocketStartingLocation.h
+    )
+
+    self.rocketLandingLocationObject = newStaticRectangle(
+        self.world, 
+        rocketLandingLocation.x + rocketLandingLocation.w / 2,
+        rocketLandingLocation.y + rocketLandingLocation.h / 2,
+        rocketLandingLocation.w,
+        rocketLandingLocation.h
+    )
+
+    self.terrain = Terrain(self.world, level.terrainPoints:items())
 end
 
 function Playing:update(dt)
+    if love.keyboard.isDown(Controls.game.applyThrust) then 
+        self.rocket:setThrust(1)
+    else
+        self.rocket:setThrust(0)
+    end
+    
+    local rotation = 0
+    if love.keyboard.isDown(Controls.game.rotateLeft) then
+        rotation = -1
+    end
+    if love.keyboard.isDown(Controls.game.rotateRight) then
+        rotation = rotation + 1
+    end
+    self.rocket:setRotation(rotation)
+
     self.rocket:update(dt)
     self.world:update(dt)
+end
+
+local function drawObject(o)
+    love.graphics.polygon("fill", o.body:getWorldPoints(o.shape:getPoints()))
 end
 
 function Playing:draw()
     dbprint.reset()
     self.rocket:draw()
     self.terrain:draw()
+    drawObject(self.rocketLandingLocationObject)
+    drawObject(self.rocketStartingLocationObject)
 end
 
 function Playing:keypressed(key)

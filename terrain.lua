@@ -1,6 +1,5 @@
 local Terrain = {}
 
--- points are of shape {{x = 0, y = 0}, {x = 0, y = 0}, ... }
 function Terrain:new(world, points)
     self.points = points
 

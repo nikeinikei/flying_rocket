@@ -1,5 +1,6 @@
 local json = require "libs.json"
 local f = require "functional"
+local Array = require "array"
 
 local Levels = {}
 
@@ -9,6 +10,9 @@ local levels
 local function init()
     if love.filesystem.getInfo(fileName) then
         levels = json.decode(love.filesystem.read(fileName))
+        for i = 1, #levels do
+            setmetatable(levels[i].terrainPoints, getmetatable(Array()))
+        end
     else
         levels = {}
     end

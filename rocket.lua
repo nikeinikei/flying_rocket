@@ -3,18 +3,22 @@ local dbg = require "debugprint"
 
 local Rocket = {}
 
-local rotationSpeed = 2 * math.pi * 0
-local maxThrust = 300   --found out experimentally, how would you find out with equations?
+Rocket.width = 50
+Rocket.height = 50
 
-function Rocket:new(world)
+local rotationSpeed = 2 * math.pi / 20
+local maxThrust = 400
+
+function Rocket:new(world, x, y)
     self.body = love.physics.newBody(
         world, 
-        love.graphics.getWidth() / 2 - 10, 
-        love.graphics.getHeight() / 2, 
+        x, 
+        y, 
         "dynamic")
     self.body:setMass(1)
-    self.shape = love.physics.newRectangleShape(50, 50)
+    self.shape = love.physics.newRectangleShape(Rocket.width, Rocket.height)
     self.fixture = love.physics.newFixture(self.body, self.shape)
+    self.rotation = 0
 
     self.thrust = 0.9
 
@@ -25,9 +29,13 @@ function Rocket:setThrust(thrust)
     self.thrust = thrust
 end
 
+function Rocket:setRotation(rotation)
+    self.rotation = rotation
+end
+
 function Rocket:update(dt)
     local angle = self.body:getAngle()
-    angle = angle + rotationSpeed * dt
+    angle = angle + rotationSpeed * dt * self.rotation
     self.body:setAngle(angle)
 
     local effectiveThrust = self.thrust * maxThrust
