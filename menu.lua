@@ -78,6 +78,12 @@ function Menu:mousepressed(...)
     end
 end
 
+function Menu:keypressed(key)
+    if key == "escape" then
+        love.event.quit()
+    end
+end
+
 function Menu:update(dt)
     for i = 1, #self.buttons do
         self.buttons[i]:update(dt)
