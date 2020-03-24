@@ -3,6 +3,7 @@ local Terrain = require "terrain"
 local Vec = require "vec"
 local dbprint = require "debugprint"
 local Controls = require "controls"
+local Clock = require "util.clock"
 
 local Playing = {}
 
@@ -59,6 +60,7 @@ function Playing:new(level)
     self.border.fixture = love.physics.newFixture(self.border.body, self.border.shape)
 
     self.terrain = Terrain(self.world, level.terrainPoints:items())
+    self.clock = Clock()
 end
 
 function Playing:update(dt)
@@ -91,6 +93,7 @@ function Playing:draw()
     self.terrain:draw()
     drawObject(self.rocketLandingLocationObject)
     drawObject(self.rocketStartingLocationObject)
+    love.graphics.print("elapsed time: " .. tostring(self.clock:getElapsed()), love.graphics.getWidth() - 200, 0)
 end
 
 function Playing:keypressed(key)
