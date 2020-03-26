@@ -41,7 +41,9 @@ local buttonSchemes = {
     },
     { 
         name = "Options", 
-        callback = function(self) end
+        callback = function(self)
+            love.window.showMessageBox("Not implemented", "Options are currently not available")
+        end
     },
     { 
         name = "Exit", 
