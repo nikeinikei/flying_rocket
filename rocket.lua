@@ -4,6 +4,7 @@ local Rocket = {}
 
 Rocket.width = 50
 Rocket.height = 50
+Rocket.userData = "Rocket"
 
 local rotationSpeed = 2 * math.pi / 20
 local maxThrust = 400
@@ -17,11 +18,20 @@ function Rocket:new(world, x, y)
     self.body:setMass(1)
     self.shape = love.physics.newRectangleShape(Rocket.width, Rocket.height)
     self.fixture = love.physics.newFixture(self.body, self.shape)
+    self.fixture:setUserData(Rocket.userData)
     self.rotation = 0
 
     self.thrust = 0.9
 
     self.debug = {}
+end
+
+function Rocket:getBody()
+    return self.body
+end
+
+function Rocket:getTilt()
+    return self.body:getAngle()
 end
 
 function Rocket:setThrust(thrust)
@@ -52,6 +62,9 @@ function Rocket:draw()
     dbg.print("angle = " .. tostring(self.body:getAngle()))
     dbg.print("thrust.x = " .. tostring(self.debug.x))
     dbg.print("thrust.y = " .. tostring(self.debug.y))
+    local x, y = self.body:getLinearVelocity()
+    dbg.print("vel.x = " .. x)
+    dbg.print("vel.y = " .. y)
 end
 
 return setmetatable(Rocket, {

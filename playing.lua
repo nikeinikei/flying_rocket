@@ -3,24 +3,128 @@ local Terrain = require "terrain"
 local dbprint = require "util.debugprint"
 local Controls = require "controls"
 local Clock = require "util.clock"
+local Paused = require "paused"
+local Lost = require "lost"
+local Won = require "won"
 
 local Playing = {}
 
-local function newStaticRectangle(world, x, y, w, h)
-    local body = love.physics.newBody(world, x, y, "static")
-    local shape = love.physics.newRectangleShape(w, h)
-    local fixture = love.physics.newFixture(body, shape)
+local borderUserdata = "Border"
+local rocketStartingLocationUserData = "RocketStartingLocation"
+local rocketLandingLocationUserData = "RocketLandingLocation"
+
+local
+    newStaticRectangle, 
+    matchFixtures, 
+    isSafeLanding,
+    Playing_world_beginContact, 
+    Playing_world_endContact, 
+    Playing_world_postSolve, 
+    Playing_world_preSolve,
+    Playing_lose,
+    Playing_win,
+    drawObject
+
+function newStaticRectangle(world, x, y, w, h)
+    local body      = love.physics.newBody(world, x, y, "static")
+    local shape     = love.physics.newRectangleShape(w, h)
+    local fixture   = love.physics.newFixture(body, shape)
 
     return {
-        body = body,
-        shape = shape,
+        body    = body,
+        shape   = shape,
         fixture = fixture
     }
+end
+
+function matchFixtures(fixtureA, fixtureB, userDataA, userDataB)
+    local a, b = fixtureA:getUserData(), fixtureB:getUserData()
+    if a == userDataA and b == userDataB then
+        return fixtureA, fixtureB
+    end
+    if a == userDataB and b == userDataA then
+        return fixtureB, fixtureA
+    end
+    return nil
+end
+
+function isSafeLanding(rocket)
+    if math.abs(rocket:getTilt()) >= math.pi / 16 then
+        return false
+    end
+
+    local body = rocket:getBody()
+    local dx, dy = body:getLinearVelocity()
+    if math.abs(dx) >= 20 or math.abs(dy) >= 40 then
+        return false
+    end
+
+    return true
+end
+
+function Playing_world_beginContact(self, a, b, contact)
+    local rocket, border = matchFixtures(a, b, Rocket.userData, borderUserdata)
+    if rocket then
+        Playing_lose(self)
+    end
+
+    local rocket, terrain = matchFixtures(a, b, Rocket.userData, Terrain.userData)
+    if rocket then
+        Playing_lose(self)
+    end
+
+    local rocket, rocketStartingLocation = matchFixtures(a, b, Rocket.userData, rocketStartingLocationUserData)
+    if rocket then
+        if not isSafeLanding(self.rocket) then
+            Playing_lose(self)
+        end
+    end
+
+    local rocket, rocketLandingLocation = matchFixtures(a, b, Rocket.userData, rocketLandingLocationUserData)
+    print("rocket, rocketLandingLocation")
+    if rocket then
+        if isSafeLanding(self.rocket) then
+            Playing_win(self)
+        else
+            Playing_lose(self)
+        end
+    end
+end
+
+function Playing_world_endContact(self, a, b, contact)
+    if self.debug then
+        -- print("endContact", a, b, contact)
+    end
+end
+
+function Playing_world_preSolve(self, a, b, contact)
+    if self.debug then
+        -- print("preSolve", a, b, contact)
+    end
+end
+
+function Playing_world_postSolve(self, a, b, contact, ...)
+    if self.debug then
+        local impulses = { ... }
+        print("postSolve", a, b, contact, ...)
+        Application.pushState(Paused(self))
+    end
+end
+
+function Playing_win(self)
+    Application.popState()
+    Application.pushState(Won())
 end
 
 function Playing:new(level)
     self.level = level
     self.world = love.physics.newWorld(0, 100)
+    self.debug = false
+    local beginContact  = function(...) Playing_world_beginContact  (self, ...) end
+    local endContact    = function(...) Playing_world_endContact    (self, ...) end
+    local preSolve      = function(...) Playing_world_preSolve      (self, ...) end
+    local postSolve     = function(...) Playing_world_postSolve     (self, ...) end
+    self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     local rocketStartingLocation = level.rocketStartingLocation
     local rocketLandingLocation = level.rocketLandingLocation
@@ -37,6 +141,7 @@ function Playing:new(level)
         rocketStartingLocation.w,
         rocketStartingLocation.h
     )
+    self.rocketStartingLocationObject.fixture:setUserData(rocketStartingLocationUserData)
 
     self.rocketLandingLocationObject = newStaticRectangle(
         self.world, 
@@ -45,6 +150,7 @@ function Playing:new(level)
         rocketLandingLocation.w,
         rocketLandingLocation.h
     )
+    self.rocketLandingLocationObject.fixture:setUserData(rocketLandingLocationUserData)
 
     local windowWidth, windowHeight = love.graphics.getWidth(), love.graphics.getHeight()
 
@@ -52,14 +158,20 @@ function Playing:new(level)
     self.border.body = love.physics.newBody(self.world, 0, 0)
     self.border.shape = love.physics.newChainShape(true, 
         0, 0,
-        windowHeight, 0,
+        windowWidth, 0,
         windowWidth, windowHeight,
         0, windowHeight
     )
     self.border.fixture = love.physics.newFixture(self.border.body, self.border.shape)
+    self.border.fixture:setUserData(borderUserdata)
 
     self.terrain = Terrain(self.world, level.terrainPoints:items())
     self.clock = Clock()
+end
+
+function Playing_lose(self)
+    Application.popState()
+    Application.pushState(Lost())
 end
 
 function Playing:update(dt)
@@ -80,9 +192,13 @@ function Playing:update(dt)
 
     self.rocket:update(dt)
     self.world:update(dt)
+
+    if math.abs(self.rocket:getTilt()) > math.pi / 2 then
+        Playing_lose(self)
+    end
 end
 
-local function drawObject(o)
+function drawObject(o)
     love.graphics.polygon("fill", o.body:getWorldPoints(o.shape:getPoints()))
 end
 
@@ -98,6 +214,10 @@ end
 function Playing:keypressed(key)
     if key == "escape" then
         love.event.quit()
+    end
+    if key == "d" then
+        print("debug = true")
+        self.debug = true
     end
 end
 
