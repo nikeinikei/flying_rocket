@@ -1,3 +1,0 @@
---test file
---used testing framework: busted
---http://olivinelabs.com/busted/
