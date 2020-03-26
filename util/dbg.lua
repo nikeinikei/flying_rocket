@@ -14,14 +14,18 @@ debug.printShallowSequence = function(t)
     print(debug.shallowSequenceToString(t))
 end
 
-debug.printShallowTable = function(t)
+debug.shallowTableToString = function(t)
     local c = {}
 
     for k, v in pairs(t) do
         table.insert(c, tostring(k) .. " = " .. tostring(v))
     end
 
-    print("{" .. table.concat(c, ", ") .. "}")
+    return "{" .. table.concat(c, ", ") .. "}"
+end
+
+debug.printShallowTable = function(t)
+    print(debug.shallowTableToString(t))
 end
 
 return debug
