@@ -17,13 +17,23 @@ local
     newStaticRectangle, 
     matchFixtures, 
     isSafeLanding,
+    drawObject,
     Playing_world_beginContact, 
     Playing_world_endContact, 
     Playing_world_postSolve, 
     Playing_world_preSolve,
     Playing_lose,
     Playing_win,
-    drawObject
+    Playing_pause,
+    Playing_onunpaused
+
+function Playing_pause(self)
+    local onUnpaused = function()
+        self.clock:resume()
+    end
+    Application.pushState(Paused(self, onUnpaused))
+    self.clock:pause()
+end
 
 function newStaticRectangle(world, x, y, w, h)
     local body      = love.physics.newBody(world, x, y, "static")
@@ -81,7 +91,6 @@ function Playing_world_beginContact(self, a, b, contact)
     end
 
     local rocket, rocketLandingLocation = matchFixtures(a, b, Rocket.userData, rocketLandingLocationUserData)
-    print("rocket, rocketLandingLocation")
     if rocket then
         if isSafeLanding(self.rocket) then
             Playing_win(self)
@@ -92,23 +101,12 @@ function Playing_world_beginContact(self, a, b, contact)
 end
 
 function Playing_world_endContact(self, a, b, contact)
-    if self.debug then
-        -- print("endContact", a, b, contact)
-    end
 end
 
 function Playing_world_preSolve(self, a, b, contact)
-    if self.debug then
-        -- print("preSolve", a, b, contact)
-    end
 end
 
 function Playing_world_postSolve(self, a, b, contact, ...)
-    if self.debug then
-        local impulses = { ... }
-        print("postSolve", a, b, contact, ...)
-        Application.pushState(Paused(self))
-    end
 end
 
 function Playing_win(self)
@@ -204,6 +202,7 @@ end
 
 function Playing:draw()
     dbprint.reset()
+    love.graphics.setColor(1, 1, 1, 1)
     self.rocket:draw()
     self.terrain:draw()
     drawObject(self.rocketLandingLocationObject)
@@ -218,6 +217,9 @@ function Playing:keypressed(key)
     if key == "d" then
         print("debug = true")
         self.debug = true
+    end
+    if key == "p" then
+        Playing_pause(self)
     end
 end
 

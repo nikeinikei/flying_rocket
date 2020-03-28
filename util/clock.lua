@@ -2,16 +2,30 @@ local Clock = {}
 
 function Clock:new()
     self.startTime = love.timer.getTime()
+    self.pauseTime = nil
+end
+
+function Clock:pause()
+    self.pauseTime = love.timer.getTime()
+end
+
+function Clock:resume()
+    local elapsed = self:getElapsed()
+    self.startTime = love.timer.getTime() - elapsed
+    self.pauseTime = nil
 end
 
 function Clock:getElapsed()
-    return love.timer.getTime() - self.startTime
+    if self.pauseTime then
+        return self.pauseTime - self.startTime
+    else
+        return love.timer.getTime() - self.startTime
+    end
 end
 
 function Clock:restart()
-    local newTime = love.timer.getTime()
-    local elapsed = newTime - self.startTime
-    self.startTime = newTime
+    local elapsed = self:getElapsed()
+    self.startTime = love.timer.getTime()
     return elapsed
 end
 

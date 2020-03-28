@@ -1,12 +1,20 @@
 local Paused = {}
 
-function Paused:new(playing)
+function Paused:new(playing, onUnpaused)
     self.playing = playing
+    self.onUnpaused = onUnpaused
+end
+
+local function Paused_resume(self)
+    Application.popState()
+    if self.onUnpaused then
+        self.onUnpaused()
+    end
 end
 
 function Paused:keypressed(key)
     if key == "escape" then 
-        Application.popState()
+        Paused_resume(self)
     end
 end
 
