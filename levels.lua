@@ -40,5 +40,6 @@ Levels.getLevels = function()
 end
 
 init()
+save()
 
 return Levels
