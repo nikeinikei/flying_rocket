@@ -12,19 +12,24 @@ local Modes = enum {
     "Inspection"
 }
 
+local locationNotSetErrorMessage = [[
+Rocket starting location or landing location were not set.
+These are mandatory for the level to be saved.
+]]
+
 function LevelBuilder:new(name)
     self.level = {
         name = name,
         terrainPoints = Array(),
         rocketStartingLocation = {
-            x = -1000, 
-            y = -1000,
+            x = nil, 
+            y = nil,
             w = 200,
             h = 20
         },
         rocketLandingLocation = {
-            x = -1000, 
-            y = -1000,
+            x = nil, 
+            y = nil,
             w = 200,
             h = 20
         }
@@ -63,8 +68,12 @@ function LevelBuilder:keypressed(key, code, isrepeat)
         self.mode = Modes.Inspection
     end
     if key == "s" then
-        Levels.addLevel(self.level)
-        Application.popState()
+        if self.level.rocketStartingLocation.x and self.level.rocketStartingLocation.y and self.level.rocketLandingLocation.x and self.level.rocketLandingLocation.y then
+            Levels.addLevel(self.level)
+            Application.popState()
+        else
+            love.window.showMessageBox("Unable to save", locationNotSetErrorMessage, "error")
+        end
     end
     if key == "escape" then
         love.event.quit()
@@ -90,14 +99,18 @@ function LevelBuilder:draw()
     if self.mode == Modes.RocketStartingLocation then
         love.graphics.rectangle("fill", mouseX, mouseY, rect.w, rect.h)
     else
-        love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h)
+        if rect.x and rect.y then
+            love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h)
+        end
     end
 
     local rect = self.level.rocketLandingLocation
     if self.mode == Modes.RocketLandingLocation then
         love.graphics.rectangle("fill", mouseX, mouseY, rect.w, rect.h)
     else
-        love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h)
+        if rect.x and rect.y then
+            love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h)
+        end
     end
 
     love.graphics.print("mode = " .. self.mode)
