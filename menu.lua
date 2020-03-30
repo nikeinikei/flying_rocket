@@ -51,12 +51,14 @@ local buttonSchemes = {
     },
 }
 
+local windowHeight = love.graphics.getHeight()
+
 local numberOfButtons = #buttonSchemes
 local buttonHeight = 70
 local buttonWidth = 400
 
-local startY = 200
-local buttonPadding = 150
+local startY = 150
+local buttonPadding = (windowHeight * 0.70) / #buttonSchemes
 
 function Menu:new()
     local x = love.graphics.getWidth() / 2 - buttonWidth / 2
