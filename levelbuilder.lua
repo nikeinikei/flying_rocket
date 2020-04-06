@@ -2,6 +2,7 @@ local enum = require "util.enum"
 local json = require "libs.json"
 local Array = require "util.array"
 local Levels = require "levels"
+local Button = require "gui.button"
 
 local LevelBuilder = {}
 
@@ -16,6 +17,25 @@ local locationNotSetErrorMessage = [[
 Rocket starting location or landing location were not set.
 These are mandatory for the level to be saved.
 ]]
+
+local buttonSchemes = {
+    {
+        name = "Inspection",
+        mode = Modes.Inspection
+    },
+    {
+        name = "Starting location",
+        mode = Modes.RocketStartingLocation
+    },
+    {
+        name = "Landing location",
+        mode = Modes.RocketLandingLocation
+    },
+    {
+        name = "Terrain",
+        mode = Modes.TerrainBuilding
+    }
+}
 
 function LevelBuilder:new(name)
     self.level = {
@@ -35,23 +55,60 @@ function LevelBuilder:new(name)
         }
     }
 
-    self.mode = Modes.Inspection
+    do
+        local startX = 10
+        local buttonHeight = 30
+        local buttonWidth = 200
+        local buttonPadding = 20
+        local distance = buttonWidth + buttonPadding
+
+        self.mode = Modes.Inspection
+        self.buttons = Array()
+        self.newMode = false
+        for i = 1, #buttonSchemes do
+            local scheme = buttonSchemes[i]
+            local x = startX + (i - 1) * distance
+            local y = 0
+            local w = buttonWidth
+            local h = buttonHeight
+            local text = scheme.name
+            local callback = function()
+                if self.mode ~= scheme.mode then
+                    self.mode = scheme.mode
+                    self.newMode= true
+                end
+            end
+            self.buttons:push(Button(x, y, w, h, text, callback))
+        end
+    end
+end
+
+function LevelBuilder:update(dt)
+    for button in self.buttons:iter() do
+        button:update(dt)
+    end
 end
 
 function LevelBuilder:mousepressed(mouseX, mouseY, button, istouch, presses)
-    if self.mode == Modes.TerrainBuilding and button == 1 then
-        self.level.terrainPoints:push(mouseX, mouseY)
+    for button in self.buttons:iter() do
+        button:mousepressed(mouseX, mouseY, button, istouch, presses)
     end
-    if self.mode == Modes.RocketStartingLocation and button == 1 then
-        self.level.rocketStartingLocation.x = mouseX
-        self.level.rocketStartingLocation.y = mouseY
-        self.mode = Modes.Inspection
+    if self.newMode == false then
+        if self.mode == Modes.TerrainBuilding and button == 1 then
+            self.level.terrainPoints:push(mouseX, mouseY)
+        end
+        if self.mode == Modes.RocketStartingLocation and button == 1 then
+            self.level.rocketStartingLocation.x = mouseX
+            self.level.rocketStartingLocation.y = mouseY
+            self.mode = Modes.Inspection
+        end
+        if self.mode == Modes.RocketLandingLocation and button == 1 then
+            self.level.rocketLandingLocation.x = mouseX
+            self.level.rocketLandingLocation.y = mouseY
+            self.mode = Modes.Inspection
+        end
     end
-    if self.mode == Modes.RocketLandingLocation and button == 1 then
-        self.level.rocketLandingLocation.x = mouseX
-        self.level.rocketLandingLocation.y = mouseY
-        self.mode = Modes.Inspection
-    end
+    self.newMode = false
 end
 
 function LevelBuilder:keypressed(key, code, isrepeat)
@@ -113,14 +170,18 @@ function LevelBuilder:draw()
         end
     end
 
-    love.graphics.print("mode = " .. self.mode)
+    for button in self.buttons:iter() do
+        button:draw()
+    end
 end
+
+local LevelBuilder__mt = {
+    __index = LevelBuilder
+}
 
 return setmetatable(LevelBuilder, {
     __call = function(_, ...)
-        local o = setmetatable({}, {
-            __index = LevelBuilder
-        })
+        local o = setmetatable({}, LevelBuilder__mt)
         o:new(...)
         return o
     end
