@@ -25,6 +25,13 @@ function Array:new(size, generatorOrDefault)
     end
 end
 
+function Array:clear()
+    for i = self._size, 1, -1 do
+        self._items[i] = nil
+    end
+    self._size = 0
+end
+
 function Array:push(e, ...)
     self._size = self._size + 1
     self._items[self._size] = e
