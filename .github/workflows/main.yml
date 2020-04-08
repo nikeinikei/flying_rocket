@@ -12,22 +12,25 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build-hello_world:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-        
-    - name: LÖVE Build
-      uses: nhartland/love-build@v1-beta
+    - uses: nhartland/love-build@master
+      id: love-build
       with:
-        # Name of the application to be built
-        app_name: flying_rocket
-        # Version of LÖVE to be used in building the application
-        love_version: 11.3
-        # Flag activating loverocks support
-        enable_loverocks: false
+        app_name: 'flying_rocket'
+        love_version: '11.3'
+    # Upload the resulting artifacts
+    - uses: actions/upload-artifact@v1
+      with:
+        name: hw_macos-build
+        path: ${{ steps.love-build.outputs.macos-filename }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: hw_win32-build
+        path: ${{ steps.love-build.outputs.win32-filename }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: hw_love-build
+        path: ${{ steps.love-build.outputs.love-filename }}
