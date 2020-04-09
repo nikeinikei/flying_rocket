@@ -2,15 +2,19 @@ local Levels = require "levels"
 local f = require "util.functional"
 local Button = require "gui.button"
 local Playing = require "playing"
+local Array = require "util.array"
 
 local LevelPicker = {}
 
-function LevelPicker:new()
-    self.levels = Levels.getLevels()
+local 
+    LevelPicker__createButtons
+
+function LevelPicker__createButtons(self)
+    self.buttons:clear()
     local names = f.map(self.levels, function(level)
         return level.name
     end)
-    self.buttons = {}
+    self.buttons = Array()
     local x = 200
     local w = 400
     local h = 70
@@ -18,7 +22,7 @@ function LevelPicker:new()
     local padding = 150
     for i = 1, #names do
         local y = startY + (i - 1) * padding
-        self.buttons[i] = Button(
+        self.buttons:push(Button(
             x,
             y,
             w,
@@ -27,12 +31,29 @@ function LevelPicker:new()
             function() 
                 Application.popState()
                 Application.pushState(Playing(self.levels[i]))
-            end
+            end)
+        )
+        self.buttons:push(Button(
+            x + w + 10,
+            y,
+            300,
+            h,
+            "Delete",
+            function()
+                Levels.removeLevel(i)
+                LevelPicker__createButtons(self)
+            end)
         )
     end
     if #self.levels == 0 then
         self.noLevelsText = love.graphics.newText(love.graphics.newFont(40), "No Levels available")
     end
+end
+
+function LevelPicker:new()
+    self.levels = Levels.getLevels()
+    self.buttons = Array()
+    LevelPicker__createButtons(self)
 end
 
 function LevelPicker:keypressed(key)
@@ -42,20 +63,20 @@ function LevelPicker:keypressed(key)
 end
 
 function LevelPicker:mousepressed(...)
-    for i = 1, #self.buttons do
-        self.buttons[i]:mousepressed(...)
+    for button in self.buttons:iter() do
+        button:mousepressed(...)
     end
 end
 
 function LevelPicker:update(dt)
-    for i = 1, #self.buttons do 
-        self.buttons[i]:update(dt)
+    for button in self.buttons:iter() do 
+        button:update(dt)
     end
 end
 
 function LevelPicker:draw()
-    for i = 1, #self.buttons do
-        self.buttons[i]:draw()
+    for button in self.buttons:iter() do
+        button:draw()
     end
     if self.noLevelsText then
         love.graphics.draw(self.noLevelsText, 200, 200)

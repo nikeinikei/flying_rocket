@@ -59,12 +59,6 @@ end
 
 function Rocket:draw()
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
-    dbg.print("angle = " .. tostring(self.body:getAngle()))
-    dbg.print("thrust.x = " .. tostring(self.debug.x))
-    dbg.print("thrust.y = " .. tostring(self.debug.y))
-    local x, y = self.body:getLinearVelocity()
-    dbg.print("vel.x = " .. x)
-    dbg.print("vel.y = " .. y)
 end
 
 return setmetatable(Rocket, {

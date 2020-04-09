@@ -26,6 +26,11 @@ Levels.addLevel = function(level)
     save()
 end
 
+Levels.removeLevel = function(levelIndex)
+    table.remove(levels, levelIndex)
+    save()
+end
+
 Levels.nameUsed = function(name)
     for i = 1, #levels do
         if levels[i].name == name then

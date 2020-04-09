@@ -22,6 +22,9 @@ function Button:mousepressed()
         if self.callback then
             self.callback()
         end
+        return true
+    else
+        return false
     end
 end
 

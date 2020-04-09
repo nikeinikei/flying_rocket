@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-flying_rocket:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: nhartland/love-build@master
+      id: love-build
+      with:
+        app_name: 'flying_rocket'
+        love_version: '11.3'
+    # Upload the resulting artifacts
+    - uses: actions/upload-artifact@v1
+      with:
+        name: hw_macos-build
+        path: ${{ steps.love-build.outputs.macos-filename }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: hw_win32-build
+        path: ${{ steps.love-build.outputs.win32-filename }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: hw_love-build
+        path: ${{ steps.love-build.outputs.love-filename }}
