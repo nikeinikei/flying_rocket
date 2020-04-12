@@ -1,4 +1,5 @@
-local Button = require "gui.button"
+local Gui = require "gui"
+local Button = Gui.Button
 local TextInputPrompt = require "gui.textinputprompt"
 local LevelBuilder = require "levelbuilder"
 local Levels = require "levels"
@@ -65,7 +66,8 @@ function Menu:new()
 
     self.buttons = {}
     for i = 1, numberOfButtons do
-        self.buttons[i] = Button(
+        self.buttons[i] = __TS__New(
+            Button,
             x, 
             startY + (i - 1) * buttonPadding, 
             buttonWidth, 

@@ -3,6 +3,7 @@
     "lib": ["esnext"],
     "rootDir": "src",
     "outDir": "game",
+    "strict": true,
     "types": [
       "lua-types/jit",
       "love-typescript-definitions"

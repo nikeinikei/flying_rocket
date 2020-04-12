@@ -31,6 +31,18 @@ local states = Stack()
 local usedCallbacks = {}
 
 
+local function resetCallbacks()
+    
+end
+
+local function makeActive()
+
+end
+
+local function makeInactive()
+
+end
+
 ---the global application table
 ---this will handle all the löve specific callbacks
 ---for each state

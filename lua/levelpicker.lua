@@ -1,6 +1,7 @@
 local Levels = require "levels"
 local f = require "util.functional"
-local Button = require "gui.button"
+local Gui = require "gui"
+local Button = Gui.Button
 local Playing = require "playing"
 local Array = require "util.array"
 
@@ -22,7 +23,8 @@ function LevelPicker__createButtons(self)
     local padding = 150
     for i = 1, #names do
         local y = startY + (i - 1) * padding
-        self.buttons:push(Button(
+        self.buttons:push(__TS__New(
+            Button,
             x,
             y,
             w,
@@ -33,7 +35,8 @@ function LevelPicker__createButtons(self)
                 Application.pushState(Playing(self.levels[i]))
             end)
         )
-        self.buttons:push(Button(
+        self.buttons:push(__TS__New(
+            Button,
             x + w + 10,
             y,
             300,

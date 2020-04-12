@@ -2,7 +2,8 @@ local enum = require "util.enum"
 local json = require "libs.json"
 local Array = require "util.array"
 local Levels = require "levels"
-local Button = require "gui.button"
+local Gui = require "gui"
+local Button = Gui.Button
 
 local LevelBuilder = {}
 
@@ -78,7 +79,7 @@ function LevelBuilder:new(name)
                     self.newMode= true
                 end
             end
-            self.buttons:push(Button(x, y, w, h, text, callback))
+            self.buttons:push(__TS__New(Button, x, y, w, h, text, callback))
         end
     end
 end
