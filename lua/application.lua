@@ -39,12 +39,14 @@ local function resetCallbacks()
     usedCallbacks = {}
 end
 
+local emptyTable = {}
+
 local function makeActive(state)
     if state.enter then
         state:enter()
     end
 
-    local objects = state.getObjects and state:getObjects() or {}
+    local objects = (state.getObjects and state:getObjects()) or emptyTable
     local objectsLen = #objects
 
     for _, loveCallback in ipairs(LOVE_CALLBACKS) do
