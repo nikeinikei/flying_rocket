@@ -32,15 +32,61 @@ local usedCallbacks = {}
 
 
 local function resetCallbacks()
-    
+    --reset all callbacks that are currently in use
+    for _, callback in ipairs(usedCallbacks) do
+        love[callback] = nil
+    end
+    usedCallbacks = {}
 end
 
-local function makeActive()
+local function makeActive(state)
+    if state.enter then
+        state:enter()
+    end
 
+    local objects = state.getObjects and state:getObjects() or {}
+    local objectsLen = #objects
+
+    for _, loveCallback in ipairs(LOVE_CALLBACKS) do
+        local objectsThatUseCallback = {}
+        for i = 1, objectsLen do
+            if objects[i][loveCallback] then
+                table.insert(objectsThatUseCallback, objects[i])
+            end
+        end
+        local objectsThatUseCallbackLen = #objectsThatUseCallback
+        local hasObjectsThatUseCallback = objectsThatUseCallbackLen > 0 
+
+        if state[loveCallback] or hasObjectsThatUseCallback then
+            --we don't know the arguments for each function so just forward them
+            if state[loveCallback] and not hasObjectsThatUseCallback then
+                love[loveCallback] = function(...)
+                    state[loveCallback](state, ...)
+                end
+            elseif not state[loveCallback] and hasObjectsThatUseCallback then
+                love[loveCallback] = function(...)
+                    for i = 1, objectsThatUseCallbackLen do
+                        objectsThatUseCallback[i][loveCallback](objectsThatUseCallback[i], ...)
+                    end
+                end
+            else
+                love[loveCallback] = function(...)
+                    state[loveCallback](state, ...)
+                    for i = 1, objectsThatUseCallbackLen do
+                        objectsThatUseCallback[i][loveCallback](objectsThatUseCallback[i], ...)
+                    end
+                end
+            end
+
+            table.insert(usedCallbacks, loveCallback)
+        end
+    end
 end
 
-local function makeInactive()
-
+local function makeInactive(state)
+    if state.leave ~= nil then
+        state:leave()
+    end
 end
 
 ---the global application table
@@ -51,60 +97,27 @@ Application = {
     pushState = function(state)
         assertTable(state)
 
-        if state.enter ~= nil then
-            state:enter()
-        end
-
         local top = states:peek()
-        if top ~= nil and top.leave ~= nil then
-            top:leave()
+        if top ~= nil then
+            makeInactive(state)
         end
 
-        --reset all callbacks that are currently in use
-        for _, callback in ipairs(usedCallbacks) do
-            love[callback] = nil
-        end
-        usedCallbacks = {}
+        resetCallbacks()
 
-        --set the new callbacks
-        for _, loveCallback in ipairs(LOVE_CALLBACKS) do
-            if state[loveCallback] then
-                --we don't know the arguments for each function so just forward them
-                love[loveCallback] = function(...)
-                    state[loveCallback](state, ...)
-                end
-                table.insert(usedCallbacks, loveCallback)
-            end
-        end
+        makeActive(state)
 
         --push onto the stack
         states:push(state)
     end,
     popState = function()
-        for _, callback in ipairs(usedCallbacks) do
-            love[callback] = nil
-        end
-        usedCallbacks = {}
+        resetCallbacks()
 
-        local s = states:pop()
-        if s.leave ~= nil then
-            s:leave()
-        end
+        local state = states:pop()
+        makeInactive(state)
 
         local top = states:peek()
         if top ~= nil then
-            if top.enter ~= nil then
-                top:enter()
-            end
-
-            for _, loveCallback in ipairs(LOVE_CALLBACKS) do
-                if top[loveCallback] then
-                    love[loveCallback] = function(...)
-                        top[loveCallback](top, ...)
-                    end
-                    table.insert(usedCallbacks, loveCallback)
-                end
-            end
+            makeActive(top)
         else
             love.event.quit()
         end
