@@ -1,6 +1,6 @@
 local Gui = require "gui"
 local Button = Gui.Button
-local TextInputPrompt = require "gui.textinputprompt"
+local TextInput = Gui.TextInput
 local LevelBuilder = require "levelbuilder"
 local Levels = require "levels"
 local LevelPicker = require "levelpicker"
@@ -13,7 +13,7 @@ local function LevelBuilderButtonCallback(self)
     local height = 400
     local x = love.graphics.getWidth() / 2 - width / 2
     local y = love.graphics.getHeight() / 2 - height / 2
-    local textInputPrompt = TextInputPrompt(x, y, width, height, "level name:", function(name)
+    local textInputPrompt = __TS__New(TextInput, x, y, width, height, "level name:", function(name)
         if #name == 0 then
             love.window.showMessageBox("Invalid Level Name", "empty string is not allowed.", "error")
         else

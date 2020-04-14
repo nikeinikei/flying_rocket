@@ -36,7 +36,9 @@ local function resetCallbacks()
     for _, callback in ipairs(usedCallbacks) do
         love[callback] = nil
     end
-    usedCallbacks = {}
+    for key in pairs(usedCallbacks) do
+        usedCallbacks[key] = nil
+    end
 end
 
 local emptyTable = {}
@@ -58,7 +60,7 @@ local function makeActive(state)
         end
         local objectsThatUseCallbackLen = #objectsThatUseCallback
         local hasObjectsThatUseCallback = objectsThatUseCallbackLen > 0 
-
+ 
         if state[loveCallback] or hasObjectsThatUseCallback then
             --we don't know the arguments for each function so just forward them
             if state[loveCallback] and not hasObjectsThatUseCallback then
