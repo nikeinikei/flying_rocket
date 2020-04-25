@@ -1,28 +1,38 @@
 import { KeyConstant } from "love.keyboard";
-import { setFullscreen } from "love.window";
 
 import { Color } from "./Color4";
 
-const utf8: any = require("utf8");
+const utf8: {
+    offset(this:void, text: any, offset: any): any
+} = require("utf8");
+
+const WeakCollectionConstructor: (this:void) => WeakCollection = require("weakcollection");
 
 class Element {
+    private static elements: WeakCollection = WeakCollectionConstructor();
+
     public x: number;
     public y: number;
     public w: number;
     public h: number;
     public hovered: boolean;
+    public focused: boolean;
 
     constructor(x: number, y: number, w: number, h: number) {
+        Element.elements.add(this);
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.hovered = false;
+        this.focused = false;
     }
 
     textinput(_text: string) {}
 
-    mousepressed(_x: number, _y: number, _button: number, _istouch: boolean, _presses: number) {}
+    mousepressed(x: number, y: number, button: number, _istouch: boolean, _presses: number) {
+        
+    }
 
     keypressed(_key: KeyConstant, _code: number, _isrepeat: boolean) {}
 
@@ -57,13 +67,15 @@ export class Button extends Element {
         this.callback = callback;
     }
 
-    mousepressed(_x: number, _y: number, _button: number, _istouch: boolean, _presses: number) {
+    mousepressed(x: number, y: number, button: number, istouch: boolean, presses: number) {
+        super.mousepressed(x, y, button, istouch, presses);
         if (this.hovered && this.callback) {
             this.callback();
         }
     }
 
     draw() {
+        super.draw();
         if (this.hovered) {
             love.graphics.setColor(this.baseColor.unpacked());
         } else {
@@ -106,7 +118,7 @@ export class TextInput extends Element {
         let promptTextWidth = this.promptText.getWidth();
         this.promptTextPosition = {
             x: x + (w - promptTextWidth) / 2,
-            y: y + (TextInput.promptPaddingPercentage * h),
+            y: y + TextInput.promptPaddingPercentage * h,
         };
 
         this.inputText = love.graphics.newText(font, "") as Text;
@@ -127,12 +139,13 @@ export class TextInput extends Element {
         this.inputTextPosition.x = this.x + (this.w - width) / 2;
     }
 
-    keypressed(key: KeyConstant, _code: number, _isrepeat: boolean) {
+    keypressed(key: KeyConstant, code: number, isrepeat: boolean) {
+        super.keypressed(key, code, isrepeat);
         if (key == "backspace") {
             let offset: number | null = utf8.offset(this.inputTextScrape, -1);
 
             if (offset) {
-                this.inputTextScrape = string.sub(this.inputTextScrape, 1, offset);
+                this.inputTextScrape = string.sub(this.inputTextScrape, 1, offset - 1);
                 this.inputText.set(this.inputTextScrape);
                 this.recalculatePosition();
             }
@@ -143,12 +156,14 @@ export class TextInput extends Element {
     }
 
     textinput(text: string) {
+        super.textinput(text);
         this.inputTextScrape = this.inputTextScrape + text;
         this.inputText.set(this.inputTextScrape);
         this.recalculatePosition();
     }
 
     draw() {
+        super.draw();
         love.graphics.setColor(160 / 255, 32 / 255, 240 / 255, 1);
         love.graphics.rectangle("fill", this.x, this.y, this.w, this.h);
         love.graphics.setColor(1, 1, 1, 1);
