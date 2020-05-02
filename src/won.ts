@@ -8,7 +8,7 @@ export class Won {
         this.text = love.graphics.newText(love.graphics.newFont(40), "Congratulations, you won!") as Text;
         this.textPosition = {
             x: (love.graphics.getWidth() - this.text.getWidth()) / 2,
-            y: (love.graphics.getHeight() - this.text.getHeight()) / 2
+            y: (love.graphics.getHeight() - this.text.getHeight()) / 2,
         };
     }
 

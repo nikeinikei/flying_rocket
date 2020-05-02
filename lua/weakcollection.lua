@@ -1,7 +1,6 @@
 local WeakCollection = {}
 
 function WeakCollection:new()
-    print("WeackCollection:new")
     self.items = setmetatable({}, {
         __mode = "v"
     })

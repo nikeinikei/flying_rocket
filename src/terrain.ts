@@ -1,5 +1,5 @@
 export class Terrain {
-    public static userData: string = "Terrain"
+    public static userData: string = "Terrain";
 
     private points: number[];
 

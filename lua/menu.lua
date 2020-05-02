@@ -1,7 +1,7 @@
 local Gui = require "gui"
 local Button = Gui.Button
 local TextInput = Gui.TextInput
-local LevelBuilder = require "levelbuilder"
+local LevelBuilder = require("levelbuilder").LevelBuilder
 local Levels = require "levels"
 local LevelPicker = require "levelpicker"
 
@@ -21,7 +21,7 @@ local function LevelBuilderButtonCallback(self)
                 love.window.showMessageBox("Invalid Level Name", "level name already in use", "error")
             else
                 Application.popState()
-                Application.pushState(LevelBuilder(name))
+                Application.pushState(__TS__New(LevelBuilder, name))
             end
         end
     end)

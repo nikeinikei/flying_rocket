@@ -164,7 +164,7 @@ function Playing:new(level)
     self.border.fixture = love.physics.newFixture(self.border.body, self.border.shape)
     self.border.fixture:setUserData(borderUserdata)
 
-    self.terrain = __TS__New(Terrain, self.world, level.terrainPoints:items())
+    self.terrain = __TS__New(Terrain, self.world, level.terrainPoints)
     self.clock = Clock()
 end
 

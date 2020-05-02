@@ -3,10 +3,10 @@ import { KeyConstant } from "love.keyboard";
 import { Color } from "./Color4";
 
 const utf8: {
-    offset(this:void, text: any, offset: any): any
+    offset(this: void, text: any, offset: any): any;
 } = require("utf8");
 
-const WeakCollectionConstructor: (this:void) => WeakCollection = require("weakcollection");
+const WeakCollectionConstructor: (this: void) => WeakCollection = require("weakcollection");
 
 class Element {
     private static elements: WeakCollection = WeakCollectionConstructor();
@@ -30,9 +30,7 @@ class Element {
 
     textinput(_text: string) {}
 
-    mousepressed(x: number, y: number, button: number, _istouch: boolean, _presses: number) {
-        
-    }
+    mousepressed(x: number, y: number, button: number, _istouch: boolean, _presses: number) {}
 
     keypressed(_key: KeyConstant, _code: number, _isrepeat: boolean) {}
 
