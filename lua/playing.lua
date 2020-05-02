@@ -1,5 +1,6 @@
 local Rocket = require "rocket"
-local Terrain = require "terrain"
+local TerrainMod = require "terrain"
+local Terrain = TerrainMod.Terrain
 local dbprint = require "util.debugprint"
 local Controls = require "controls"
 local Clock = require "util.clock"
@@ -163,7 +164,7 @@ function Playing:new(level)
     self.border.fixture = love.physics.newFixture(self.border.body, self.border.shape)
     self.border.fixture:setUserData(borderUserdata)
 
-    self.terrain = Terrain(self.world, level.terrainPoints:items())
+    self.terrain = __TS__New(Terrain, self.world, level.terrainPoints:items())
     self.clock = Clock()
 end
 
