@@ -4,8 +4,8 @@ local dbprint = require "util.debugprint"
 local Controls = require "controls"
 local Clock = require "util.clock"
 local Paused = require "paused"
-local Lost = require "lost"
-local Won = require "won"
+local LostModule = require "lost"
+local WonModule = require "won"
 
 local Playing = {}
 
@@ -111,7 +111,7 @@ end
 
 function Playing_win(self)
     Application.popState()
-    Application.pushState(Won())
+    Application.pushState(__TS__New(WonModule.Won))
 end
 
 function Playing:new(level)
@@ -169,7 +169,7 @@ end
 
 function Playing_lose(self)
     Application.popState()
-    Application.pushState(Lost())
+    Application.pushState(__TS__New(LostModule.Lost))
 end
 
 function Playing:update(dt)
