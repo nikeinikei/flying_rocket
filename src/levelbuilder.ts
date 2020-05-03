@@ -53,7 +53,7 @@ export class LevelBuilder {
             name: name,
             terrainPoints: [],
             rocketLandingLocation: undefined,
-            rocketStartingLocation: undefined
+            rocketStartingLocation: undefined,
         };
         this.mode = Mode.Inspection;
         this.newMode = false;
@@ -125,8 +125,8 @@ export class LevelBuilder {
                                 x: mouseX,
                                 y: mouseY,
                                 w: rocketLocationWidth,
-                                h: rocketLocationHeight
-                            }
+                                h: rocketLocationHeight,
+                            };
                         }
                         this.mode = Mode.Inspection;
                     }
@@ -141,8 +141,8 @@ export class LevelBuilder {
                                 x: mouseX,
                                 y: mouseY,
                                 w: rocketLocationWidth,
-                                h: rocketLocationHeight
-                            }
+                                h: rocketLocationHeight,
+                            };
                         }
                         this.mode = Mode.Inspection;
                     }
@@ -186,7 +186,7 @@ export class LevelBuilder {
         }
 
         for (const button of this.buttons) {
-            button.draw()
+            button.draw();
         }
     }
 }

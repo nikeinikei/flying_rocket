@@ -1,7 +1,7 @@
+import { Menu } from "./menu";
+
 require("globals");
 
-let Menu = require("menu");
-
 love.load = () => {
-    Application.pushState(Menu());
+    Application.pushState(new Menu());
 };
