@@ -9,8 +9,14 @@ class PreLevelBuilderGameState {
     private textInput: TextInput;
 
     constructor() {
+        const textInputWidth = 1200;
+        const textInputHeight = 600;
+        const x = love.graphics.getWidth() / 2 - textInputWidth / 2;
+        const y = love.graphics.getHeight() / 2 - textInputHeight / 2;
+
         this.textInput = new TextInput(
-            20, 20, 600, 400,
+            x, y, 
+            textInputWidth, textInputHeight,
             "level name",
             (name) => {
                 if (name.length === 0) {   
