@@ -2,8 +2,10 @@ import { KeyConstant } from "love.keyboard";
 
 import { Button, TextInput } from "./gui";
 import { LevelBuilder } from "./levelbuilder";
-const Levels: Levels = require("levels");
-const LevelPicker = require("levelpicker");
+import { LevelModule } from "./types/levels";
+import { LevelPicker } from "./levelpicker";
+
+const Levels: LevelModule = require("levels");
 
 class PreLevelBuilderGameState {
     private textInput: TextInput;
@@ -14,23 +16,18 @@ class PreLevelBuilderGameState {
         const x = love.graphics.getWidth() / 2 - textInputWidth / 2;
         const y = love.graphics.getHeight() / 2 - textInputHeight / 2;
 
-        this.textInput = new TextInput(
-            x, y, 
-            textInputWidth, textInputHeight,
-            "level name",
-            (name) => {
-                if (name.length === 0) {   
-                    love.window.showMessageBox("Invalid Level Name", "empty string is not allowed.", "error")
+        this.textInput = new TextInput(x, y, textInputWidth, textInputHeight, "level name", name => {
+            if (name.length === 0) {
+                love.window.showMessageBox("Invalid Level Name", "empty string is not allowed.", "error");
+            } else {
+                if (Levels.nameUsed(name)) {
+                    love.window.showMessageBox("Invalid Level Name", "level name already in use", "error");
                 } else {
-                    if (Levels.nameUsed(name)) {
-                        love.window.showMessageBox("Invalid Level Name", "level name already in use", "error")
-                    } else {
-                        Application.popState();
-                        Application.pushState(new LevelBuilder(name));
-                    }
+                    Application.popState();
+                    Application.pushState(new LevelBuilder(name));
                 }
             }
-        )
+        });
     }
 
     getObjects() {
@@ -42,24 +39,24 @@ const buttonSchemes = [
     {
         name: "Play",
         callback: () => {
-            Application.pushState(LevelPicker());
+            Application.pushState(new LevelPicker());
         },
     },
     {
         name: "LevelBuilder",
         callback: () => {
-            Application.pushState(new PreLevelBuilderGameState())
+            Application.pushState(new PreLevelBuilderGameState());
         },
     },
     {
         name: "Options",
         callback: () => {
-            love.window.showMessageBox("Not implemented", "Options are currently not available")
+            love.window.showMessageBox("Not implemented", "Options are currently not available");
         },
     },
     {
         name: "Exit",
-        callback: love.event.quit
+        callback: love.event.quit,
     },
 ];
 

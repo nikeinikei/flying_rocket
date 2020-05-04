@@ -1,5 +1,6 @@
 import { Button } from "./gui";
-const Levels: Levels = require("levels");
+import { LevelModule } from "./types/levels";
+const Levels: LevelModule = require("levels");
 
 export interface Level {
     name: string;
