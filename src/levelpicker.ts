@@ -13,7 +13,7 @@ export class LevelPicker {
 
     constructor() {
         this.buttons = [];
-        let levelsNotAvailableText = love.graphics.newText(love.graphics.newFont(50), "no levels available") as Text;
+        let levelsNotAvailableText = love.graphics.newText(love.graphics.newFont(50), "no levels available");
         this.levelsNotAvailableTextWrapped = new WrappedDrawable(levelsNotAvailableText);
         this.createButtons();
     }

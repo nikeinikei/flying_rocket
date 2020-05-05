@@ -57,7 +57,7 @@ export class Button extends Element {
     constructor(x: number, y: number, w: number, h: number, text: string, callback: ((this: void) => void) | null) {
         super(x, y, w, h);
         let font = love.graphics.newFont(h / 1.5);
-        this.text = love.graphics.newText(font, text) as Text;
+        this.text = love.graphics.newText(font, text);
         this.textX = x + (w - this.text.getWidth()) / 2;
         this.textY = y + (h - this.text.getHeight()) / 2;
         this.baseColor = new Color(1, 0, 1, 1);
@@ -112,14 +112,14 @@ export class TextInput extends Element {
         let fontSize = TextInput.promptHeightPercentage * h;
         let font = love.graphics.newFont(fontSize);
 
-        this.promptText = love.graphics.newText(font, prompt) as Text;
+        this.promptText = love.graphics.newText(font, prompt);
         let promptTextWidth = this.promptText.getWidth();
         this.promptTextPosition = {
             x: x + (w - promptTextWidth) / 2,
             y: y + TextInput.promptPaddingPercentage * h,
         };
 
-        this.inputText = love.graphics.newText(font, "") as Text;
+        this.inputText = love.graphics.newText(font, "");
         this.inputTextPosition = {
             x: x + w / 2,
             y:

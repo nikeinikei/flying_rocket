@@ -5,7 +5,7 @@ export class Lost {
     private textPosition: Position;
 
     constructor() {
-        this.text = love.graphics.newText(love.graphics.newFont(40), "You lost") as Text;
+        this.text = love.graphics.newText(love.graphics.newFont(40), "You lost");
         this.textPosition = {
             x: (love.graphics.getWidth() - this.text.getWidth()) / 2,
             y: (love.graphics.getHeight() - this.text.getHeight()) / 2,
