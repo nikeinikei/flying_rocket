@@ -1,5 +1,4 @@
 local json = require "libs.json"
-local Array = require "util.array"
 
 local Levels = {}
 
