@@ -1,5 +1,7 @@
 import { Button } from "./gui";
 import { LevelModule } from "./types/levels";
+import { Camera } from "./camera";
+import { GameState } from "./types/gamestate";
 const Levels: LevelModule = require("levels");
 
 export interface Level {
@@ -44,11 +46,12 @@ const buttonSchemes = [
 const rocketLocationWidth = 200;
 const rocketLocationHeight = 20;
 
-export class LevelBuilder {
+export class LevelBuilder implements GameState {
     private level: Level;
     private buttons: Button[];
     private mode: Mode;
     private newMode: boolean;
+    private camera: Camera;
 
     constructor(name: string) {
         this.level = {
@@ -99,6 +102,11 @@ export class LevelBuilder {
             };
             this.buttons.push(new Button(x, y, w, h, text, callback));
         }
+        this.camera = new Camera();
+    }
+
+    getObjects() {
+        return [this.camera];
     }
 
     update(dt: number) {
@@ -111,22 +119,23 @@ export class LevelBuilder {
         for (const b of this.buttons) {
             b.mousepressed(mouseX, mouseY, button, istouch, presses);
         }
+        const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(mouseX, mouseY);
         if (this.newMode == false) {
             switch (this.mode) {
                 case Mode.TerrainBuilding:
                     if (button == 1) {
-                        this.level.terrainPoints.push(mouseX, mouseY);
+                        this.level.terrainPoints.push(worldX, worldY);
                     }
                     break;
                 case Mode.RocketStartingLocation:
                     if (button == 1) {
                         if (this.level.rocketStartingLocation) {
-                            this.level.rocketStartingLocation.x = mouseX;
-                            this.level.rocketStartingLocation.y = mouseY;
+                            this.level.rocketStartingLocation.x = worldX;
+                            this.level.rocketStartingLocation.y = worldY;
                         } else {
                             this.level.rocketStartingLocation = {
-                                x: mouseX,
-                                y: mouseY,
+                                x: worldX,
+                                y: worldY,
                                 w: rocketLocationWidth,
                                 h: rocketLocationHeight,
                             };
@@ -137,12 +146,12 @@ export class LevelBuilder {
                 case Mode.RocketLandingLocation:
                     if (button == 1) {
                         if (this.level.rocketLandingLocation) {
-                            this.level.rocketLandingLocation.x = mouseX;
-                            this.level.rocketLandingLocation.y = mouseY;
+                            this.level.rocketLandingLocation.x = worldX;
+                            this.level.rocketLandingLocation.y = worldY;
                         } else {
                             this.level.rocketLandingLocation = {
-                                x: mouseX,
-                                y: mouseY,
+                                x: worldX,
+                                y: worldY,
                                 w: rocketLocationWidth,
                                 h: rocketLocationHeight,
                             };
@@ -156,10 +165,12 @@ export class LevelBuilder {
     }
 
     draw() {
-        const [mouseX, mouseY] = love.mouse.getPosition();
+        this.camera.apply();
+        
+        const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(...love.mouse.getPosition());
         if (this.level.terrainPoints.length >= 2) {
             if (this.mode == Mode.TerrainBuilding) {
-                this.level.terrainPoints.push(mouseX, mouseY);
+                this.level.terrainPoints.push(worldX, worldY);
             }
 
             love.graphics.line(this.level.terrainPoints as any);
@@ -172,7 +183,7 @@ export class LevelBuilder {
 
         let rect = this.level.rocketStartingLocation;
         if (this.mode == Mode.RocketStartingLocation) {
-            love.graphics.rectangle("fill", mouseX, mouseY, rocketLocationWidth, rocketLocationHeight);
+            love.graphics.rectangle("fill", worldX, worldY, rocketLocationWidth, rocketLocationHeight);
         } else {
             if (rect) {
                 love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h);
@@ -181,13 +192,14 @@ export class LevelBuilder {
 
         rect = this.level.rocketLandingLocation;
         if (this.mode == Mode.RocketLandingLocation) {
-            love.graphics.rectangle("fill", mouseX, mouseY, rocketLocationWidth, rocketLocationHeight);
+            love.graphics.rectangle("fill", worldX, worldY, rocketLocationWidth, rocketLocationHeight);
         } else {
             if (rect) {
                 love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h);
             }
         }
 
+        love.graphics.origin();
         for (const button of this.buttons) {
             button.draw();
         }

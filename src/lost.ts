@@ -2,7 +2,7 @@ import { KeyConstant } from "love.keyboard";
 
 export class Lost {
     private text: Text;
-    private textPosition: Position;
+    private textPosition: Vector;
 
     constructor() {
         this.text = love.graphics.newText(love.graphics.newFont(40), "You lost");

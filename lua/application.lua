@@ -1,5 +1,11 @@
 local Stack = require "util.stack"
 
+--[[
+    Upon pushing a state the getObjects method gets called,
+    and first for each object the lovecallback, if it exists, will get hooked up
+    before the lovecallback of the state gets called, if it exists.
+]]
+
 local LOVE_CALLBACKS = {
     "directorydropped",
     "draw",
@@ -78,6 +84,17 @@ local function makeActive(state)
                     state[loveCallback](state, ...)
                     for i = 1, objectsThatUseCallbackLen do
                         objectsThatUseCallback[i][loveCallback](objectsThatUseCallback[i], ...)
+                    end
+                end
+            end
+
+            if loveCallback == "draw" then
+                local camera = (state.getCamera and state:getCamera()) or nil
+                if camera then
+                    local oldLoveCallback = love[loveCallback]
+                    local wrapped = function()
+                        camera:apply()
+                        oldLoveCallback()
                     end
                 end
             end
