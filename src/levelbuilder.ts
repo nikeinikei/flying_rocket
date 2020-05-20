@@ -3,6 +3,7 @@ import { LevelModule } from "./types/levels";
 const Levels: LevelModule = require("levels");
 
 export interface Level {
+    dataVersion: string;
     name: string;
     terrainPoints: number[];
     rocketStartingLocation: Rectangle | undefined;
@@ -51,6 +52,7 @@ export class LevelBuilder {
 
     constructor(name: string) {
         this.level = {
+            dataVersion: "0.0.1",
             name: name,
             terrainPoints: [],
             rocketLandingLocation: undefined,

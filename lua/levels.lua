@@ -1,4 +1,6 @@
 local json = require "libs.json"
+local DataFixer = require "datafixer"
+local dbg = require "util.dbg"
 
 local Levels = {}
 
@@ -8,6 +10,14 @@ local levels
 local function init()
     if love.filesystem.getInfo(fileName) then
         levels = json.decode(love.filesystem.read(fileName))
+        dbg.printShallowSequence(levels)
+        if #levels > 0 then 
+            for i = #levels, 1, -1 do
+                if DataFixer.fixData(levels[i]) == false then
+                    table.remove(levels, i)
+                end
+            end
+        end
     else
         levels = {}
     end

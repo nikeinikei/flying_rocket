@@ -42,6 +42,7 @@ end
 
 function love.conf(t)
     t.version = "11.3"
+    t.identity = "flying_rocket"
 
     t.window.width = windowWidth
     t.window.height = windowHeight
