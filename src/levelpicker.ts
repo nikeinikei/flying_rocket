@@ -40,13 +40,13 @@ export class LevelPicker {
             for (let i = 0; i < levels.length; i++) {
                 const level = levels[i];
                 const y = 50 + i * 50;
-                const height = 30;
+                const height = 70;
                 this.buttons.push(
-                    new Button(50, y, 200, 30, levels[i].name, () => {
+                    new Button(50, y, 400, height, levels[i].name, () => {
                         Application.popState();
                         Application.pushState(new Playing(level));
                     }),
-                    new Button(300, y, 70, height, "Delete", () => {
+                    new Button(500, y, 150, height, "Delete", () => {
                         Levels.removeLevel(i);
                         this.createButtons();
                     })
