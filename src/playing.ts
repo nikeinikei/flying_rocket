@@ -152,47 +152,39 @@ export class Playing {
     }
 
     private beginContact(a: Fixture, b: Fixture, contact: Contact) {
-        {
-            let [rocket, border] = this.matchFixtures(a, b, Rocket.userData, borderUserData);
-            if (rocket) {
+        let rocket, border, terrain, rocketStartingLocation, rocketLandingLocation;
+        [rocket, border] = this.matchFixtures(a, b, Rocket.userData, borderUserData);
+        if (rocket) {
+            this.lose();
+        }
+
+        [rocket, terrain] = this.matchFixtures(a, b, Rocket.userData, Terrain.userData);
+        if (rocket) {
+            this.lose();
+        }
+        [rocket, rocketStartingLocation] = this.matchFixtures(
+            a,
+            b,
+            Rocket.userData,
+            rocketStartingLocationUserData
+        );
+        if (rocket) {
+            if (!this.isSafeLanding(this.rocket)) {
                 this.lose();
             }
         }
 
-        {
-            let [rocket, terrain] = this.matchFixtures(a, b, Rocket.userData, Terrain.userData);
-            if (rocket) {
+        [rocket, rocketLandingLocation] = this.matchFixtures(
+            a,
+            b,
+            Rocket.userData,
+            rocketLandingLocationUserdata
+        );
+        if (rocket) {
+            if (this.isSafeLanding(this.rocket)) {
+                this.win();
+            } else {
                 this.lose();
-            }
-        }
-
-        {
-            let [rocket, rocketStartingLocation] = this.matchFixtures(
-                a,
-                b,
-                Rocket.userData,
-                rocketStartingLocationUserData
-            );
-            if (rocket) {
-                if (!this.isSafeLanding(this.rocket)) {
-                    this.lose();
-                }
-            }
-        }
-
-        {
-            let [rocket, rocketLandingLocation] = this.matchFixtures(
-                a,
-                b,
-                Rocket.userData,
-                rocketLandingLocationUserdata
-            );
-            if (rocket) {
-                if (this.isSafeLanding(this.rocket)) {
-                    this.win();
-                } else {
-                    this.lose();
-                }
             }
         }
     }
