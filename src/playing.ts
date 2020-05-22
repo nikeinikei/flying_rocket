@@ -3,12 +3,12 @@ import { World } from "love.physics";
 
 import { Controls } from "./controls";
 import { Level } from "./levelbuilder";
+import { Lost } from "./lost";
 import { Paused } from "./paused";
 import { Rocket } from "./rocket";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { Won } from "./won";
-import { Lost } from "./lost";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
@@ -33,12 +33,7 @@ export class Playing {
     constructor(level: Level) {
         this.level = level;
         this.world = love.physics.newWorld(0, 100);
-        this.world.setCallbacks(
-            (a, b, c) => this.beginContact(a, b, c),
-            (a, b, c) => this.endContact(a, b, c),
-            (a, b, c) => this.preSolve(a, b, c),
-            (a, b, c) => this.postSolve(a, b, c)
-        );
+        this.world.setCallbacks((a, b, c) => this.beginContact(a, b, c));
 
         let rocketStartingLocation = level.rocketStartingLocation as Rectangle;
         let rocketLandingLocation = level.rocketLandingLocation as Rectangle;
@@ -100,13 +95,7 @@ export class Playing {
         this.clock.pause();
     }
 
-    private newStaticRectangle(
-        world: World,
-        x: number,
-        y: number,
-        w: number,
-        h: number
-    ): PhysicsObject<PolygonShape> {
+    private newStaticRectangle(world: World, x: number, y: number, w: number, h: number): PhysicsObject<PolygonShape> {
         let body = love.physics.newBody(world, x, y, "static");
         let shape = love.physics.newRectangleShape(w, h);
         let fixture = love.physics.newFixture(body, shape);
@@ -162,24 +151,14 @@ export class Playing {
         if (rocket) {
             this.lose();
         }
-        [rocket, rocketStartingLocation] = this.matchFixtures(
-            a,
-            b,
-            Rocket.userData,
-            rocketStartingLocationUserData
-        );
+        [rocket, rocketStartingLocation] = this.matchFixtures(a, b, Rocket.userData, rocketStartingLocationUserData);
         if (rocket) {
             if (!this.isSafeLanding(this.rocket)) {
                 this.lose();
             }
         }
 
-        [rocket, rocketLandingLocation] = this.matchFixtures(
-            a,
-            b,
-            Rocket.userData,
-            rocketLandingLocationUserdata
-        );
+        [rocket, rocketLandingLocation] = this.matchFixtures(a, b, Rocket.userData, rocketLandingLocationUserdata);
         if (rocket) {
             if (this.isSafeLanding(this.rocket)) {
                 this.win();
@@ -188,12 +167,6 @@ export class Playing {
             }
         }
     }
-
-    private endContact(a: Fixture, b: Fixture, contact: Contact) {}
-
-    private preSolve(a: Fixture, b: Fixture, contact: Contact) {}
-
-    private postSolve(a: Fixture, b: Fixture, contact: Contact) {}
 
     private win() {
         Application.popState();
