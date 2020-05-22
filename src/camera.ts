@@ -26,8 +26,8 @@ export class Camera {
         this.tx = 0;
         this.ty = 0;
         this.cameraSpeed = {
-            x: 100,
-            y: 100,
+            x: 300,
+            y: 300,
         };
         this.cameraControlKeycodes = {
             up: "down",
@@ -35,6 +35,11 @@ export class Camera {
             down: "up",
             left: "left",
         };
+    }
+
+    /** @tupleReturn */
+    getTranslation(): [number, number] {
+        return [-this.tx, -this.ty];
     }
 
     update(dt: number) {

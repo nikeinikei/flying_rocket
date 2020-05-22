@@ -2,6 +2,7 @@ import { Camera } from "./camera";
 import { Button } from "./gui";
 import { GameState } from "./types/gamestate";
 import { LevelModule } from "./types/levels";
+import { GridRenderer } from "./gridrenderer";
 const Levels: LevelModule = require("levels");
 
 export interface Level {
@@ -52,6 +53,7 @@ export class LevelBuilder implements GameState {
     private mode: Mode;
     private newMode: boolean;
     private camera: Camera;
+    private gridRenderer: GridRenderer;
 
     constructor(name: string) {
         this.level = {
@@ -103,6 +105,7 @@ export class LevelBuilder implements GameState {
             this.buttons.push(new Button(x, y, w, h, text, callback));
         }
         this.camera = new Camera();
+        this.gridRenderer = new GridRenderer(200, this.camera);
     }
 
     getObjects() {
@@ -166,6 +169,7 @@ export class LevelBuilder implements GameState {
 
     draw() {
         this.camera.apply();
+        this.gridRenderer.draw();
 
         const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(...love.mouse.getPosition());
         if (this.level.terrainPoints.length >= 2) {
