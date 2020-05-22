@@ -1,7 +1,7 @@
-import { Button } from "./gui";
-import { LevelModule } from "./types/levels";
 import { Camera } from "./camera";
+import { Button } from "./gui";
 import { GameState } from "./types/gamestate";
+import { LevelModule } from "./types/levels";
 const Levels: LevelModule = require("levels");
 
 export interface Level {
@@ -166,7 +166,7 @@ export class LevelBuilder implements GameState {
 
     draw() {
         this.camera.apply();
-        
+
         const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(...love.mouse.getPosition());
         if (this.level.terrainPoints.length >= 2) {
             if (this.mode == Mode.TerrainBuilding) {

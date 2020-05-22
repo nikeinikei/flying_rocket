@@ -19,7 +19,18 @@ export class WrappedDrawable {
 
     draw() {
         if (this.visible) {
-            love.graphics.draw(this.drawable, this.x, this.y, this.r, this.sx, this.sy, this.ox, this.oy, this.kx, this.ky);
+            love.graphics.draw(
+                this.drawable,
+                this.x,
+                this.y,
+                this.r,
+                this.sx,
+                this.sy,
+                this.ox,
+                this.oy,
+                this.kx,
+                this.ky
+            );
         }
     }
 }

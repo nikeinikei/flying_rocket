@@ -2,8 +2,8 @@ import { KeyConstant } from "love.keyboard";
 
 import { Button, TextInput } from "./gui";
 import { LevelBuilder } from "./levelbuilder";
-import { LevelModule } from "./types/levels";
 import { LevelPicker } from "./levelpicker";
+import { LevelModule } from "./types/levels";
 
 const Levels: LevelModule = require("levels");
 

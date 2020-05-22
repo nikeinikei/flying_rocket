@@ -20,20 +20,20 @@ export class Camera {
 
     protected cameraSpeed: Vector;
 
-    protected cameraControlKeycodes: CameraControlKeycodes
+    protected cameraControlKeycodes: CameraControlKeycodes;
 
     constructor() {
         this.tx = 0;
         this.ty = 0;
         this.cameraSpeed = {
             x: 100,
-            y: 100
+            y: 100,
         };
         this.cameraControlKeycodes = {
             up: "down",
             right: "right",
             down: "up",
-            left: "left"
+            left: "left",
         };
     }
 
@@ -58,16 +58,13 @@ export class Camera {
         this.tx -= x * dx;
         this.ty -= y * dy;
     }
-    
+
     apply() {
         love.graphics.translate(this.tx, this.ty);
     }
 
     /** @tupleReturn */
     convertScreencoordinatesToWorldCoordinates(x: number, y: number): [number, number] {
-        return [
-            x - this.tx,
-            y - this.ty
-        ];
+        return [x - this.tx, y - this.ty];
     }
 }
