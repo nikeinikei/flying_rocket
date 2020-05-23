@@ -1,6 +1,5 @@
 import { LevelBuilderCamera } from "./levelbuildercamera";
 import { Button } from "./gui";
-import { GameState } from "./types/gamestate";
 import { LevelModule } from "./types/levels";
 import { GridRenderer } from "./gridrenderer";
 import { KeyConstant } from "love.keyboard";

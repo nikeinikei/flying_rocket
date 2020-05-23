@@ -1,5 +1,8 @@
 import { Level } from "../levelbuilder";
 
+/**
+ * implementation in pure lua
+ */
 export interface LevelModule {
     addLevel(this: void, level: Level): void;
     removeLevel(this: void, index: number): void;
