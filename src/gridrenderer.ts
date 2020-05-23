@@ -17,7 +17,7 @@ export class GridRenderer {
         const [windowWidth, windowHeight] = love.graphics.getDimensions();
 
         const lastX = tx + windowWidth;
-        const firstX = (math.floor(tx / this.length) + 1) * this.length;
+        const firstX = math.floor(tx / this.length) * this.length;
         let currentX = firstX;
         while (currentX <= lastX) {
             const useThickerLine = currentX == 0;
