@@ -105,7 +105,7 @@ export class LevelBuilder implements GameState {
             this.buttons.push(new Button(x, y, w, h, text, callback));
         }
         this.camera = new Camera();
-        this.gridRenderer = new GridRenderer(200, this.camera);
+        this.gridRenderer = new GridRenderer(250, this.camera);
     }
 
     getObjects() {

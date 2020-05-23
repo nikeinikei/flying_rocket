@@ -39,7 +39,7 @@ export class LevelPicker {
             this.levelsNotAvailableTextWrapped.visible = false;
             for (let i = 0; i < levels.length; i++) {
                 const level = levels[i];
-                const y = 50 + i * 50;
+                const y = 50 + i * 100;
                 const height = 70;
                 this.buttons.push(
                     new Button(50, y, 400, height, levels[i].name, () => {

@@ -1,5 +1,8 @@
 import { Camera } from "./camera";
 
+const highlightedLineWidth = 5;
+const normalLineWidth = 1;
+
 export class GridRenderer {
     private length: number;
     private camera: Camera;
@@ -17,16 +20,33 @@ export class GridRenderer {
         const firstX = (math.floor(tx / this.length) + 1) * this.length;
         let currentX = firstX;
         while (currentX <= lastX) {
+            const useThickerLine = currentX == 0;
+            if (useThickerLine) {
+                love.graphics.setLineWidth(highlightedLineWidth);
+            } else {
+                love.graphics.setLineWidth(normalLineWidth);
+            }
+
             love.graphics.line(currentX, ty, currentX, ty + windowHeight)
             currentX += this.length;
         }
 
-        const lastY = ty + windowHeight;
-        const firstY = (math.floor(ty / this.length) + 1) * this.length;
+        const diff = windowHeight % this.length;
+        const highestY = ty + windowHeight;
+        const offset = (highestY - diff) % this.length;
+        const firstY = offset == 0 ? highestY : highestY - offset;
+        const lastY = ty;
         let currentY = firstY;
-        while (currentY <= lastY) {
+        while (currentY >= lastY) {
+            const useThickerLine = currentY == windowHeight;
+            if (useThickerLine) {
+                love.graphics.setLineWidth(highlightedLineWidth);
+            } else {
+                love.graphics.setLineWidth(normalLineWidth);
+            }
+
             love.graphics.line(tx, currentY, tx + windowWidth, currentY);
-            currentY += this.length;
+            currentY -= this.length;
         }
     }
 }
