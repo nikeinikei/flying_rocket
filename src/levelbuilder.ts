@@ -1,8 +1,9 @@
-import { Camera } from "./camera";
+import { LevelBuilderCamera } from "./levelbuildercamera";
 import { Button } from "./gui";
 import { GameState } from "./types/gamestate";
 import { LevelModule } from "./types/levels";
 import { GridRenderer } from "./gridrenderer";
+import { KeyConstant } from "love.keyboard";
 const Levels: LevelModule = require("levels");
 
 export interface Level {
@@ -39,7 +40,7 @@ const buttonSchemes = [
         mode: Mode.RocketLandingLocation,
     },
     {
-        name: "Terrain",
+        name: "Add Terrain",
         mode: Mode.TerrainBuilding,
     },
 ];
@@ -52,7 +53,7 @@ export class LevelBuilder implements GameState {
     private buttons: Button[];
     private mode: Mode;
     private newMode: boolean;
-    private camera: Camera;
+    private camera: LevelBuilderCamera;
     private gridRenderer: GridRenderer;
 
     constructor(name: string) {
@@ -108,7 +109,7 @@ export class LevelBuilder implements GameState {
             };
             this.buttons.push(new Button(x, y, w, h, text, callback));
         }
-        this.camera = new Camera();
+        this.camera = new LevelBuilderCamera();
         this.gridRenderer = new GridRenderer(250, this.camera);
     }
 
@@ -131,7 +132,6 @@ export class LevelBuilder implements GameState {
             switch (this.mode) {
                 case Mode.TerrainBuilding:
                     if (button == 1) {
-                        print("adding points");
                         this.level.terrainPoints[this.level.terrainPoints.length - 1].push(worldX, worldY);
                     }
                     break;
@@ -170,6 +170,14 @@ export class LevelBuilder implements GameState {
             }
         }
         this.newMode = false;
+    }
+
+    keypressed(key: KeyConstant) {
+        if (key == "escape") {
+            if (this.mode == Mode.TerrainBuilding) {
+                this.mode = Mode.Inspection
+            }
+        }
     }
 
     draw() {

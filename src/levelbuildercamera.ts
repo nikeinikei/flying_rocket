@@ -7,7 +7,7 @@ interface CameraControlKeycodes {
     left: KeyConstant;
 }
 
-export class Camera {
+export class LevelBuilderCamera {
     /**
      * translation in x direction
      */

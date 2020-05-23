@@ -1,4 +1,4 @@
-import { Camera } from "../camera";
+import { LevelBuilderCamera } from "../levelbuildercamera";
 
 interface GameState {
     getObjects?: () => unknown[];

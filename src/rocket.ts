@@ -2,6 +2,7 @@ const rotationSpeed = (2 * math.pi) / 20;
 const maxThrust = 400;
 
 export class Rocket {
+
     public static width: number = 50;
     public static height: number = 50;
     public static userData = "Rocket";
@@ -36,6 +37,11 @@ export class Rocket {
 
     setRotation(rotation: number) {
         this.rotation = rotation;
+    }
+
+    /** @tupleReturn */
+    getPosition(): [number, number] {
+        return this.body.getPosition();
     }
 
     update(dt: number) {

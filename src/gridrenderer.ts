@@ -1,13 +1,13 @@
-import { Camera } from "./camera";
+import { LevelBuilderCamera } from "./levelbuildercamera";
 
 const highlightedLineWidth = 5;
 const normalLineWidth = 1;
 
 export class GridRenderer {
     private length: number;
-    private camera: Camera;
+    private camera: LevelBuilderCamera;
 
-    constructor(length: number, camera: Camera) {
+    constructor(length: number, camera: LevelBuilderCamera) {
         this.length = length;
         this.camera = camera;
     }

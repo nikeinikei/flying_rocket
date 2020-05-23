@@ -9,6 +9,7 @@ import { Rocket } from "./rocket";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { Won } from "./won";
+import { PlayingCamera } from "./playingCamera";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
@@ -24,6 +25,7 @@ export class Playing {
     private rocketStartingLocationObject: PhysicsObject<PolygonShape>;
     private rocketLandingLocationObject: PhysicsObject<PolygonShape>;
     private borderObject: PhysicsObject<ChainShape>;
+    private camera: PlayingCamera;
 
     constructor(level: Level) {
         this.level = level;
@@ -79,6 +81,7 @@ export class Playing {
         };
 
         this.terrain = new Terrain(this.world, level.terrainPoints);
+        this.camera = new PlayingCamera(this.rocket);
         this.clock = new Clock();
     }
 
@@ -195,6 +198,8 @@ export class Playing {
         if (math.abs(this.rocket.getTilt()) >= math.pi / 2) {
             this.lose();
         }
+
+        this.camera.update(dt);
     }
 
     private drawObject(o: PhysicsObject<PolygonShape>) {
@@ -202,11 +207,14 @@ export class Playing {
     }
 
     draw() {
+        this.camera.apply();
         love.graphics.setColor(1, 1, 1, 1);
         this.rocket.draw();
         this.terrain.draw();
         this.drawObject(this.rocketStartingLocationObject);
         this.drawObject(this.rocketLandingLocationObject);
+
+        love.graphics.origin();
         love.graphics.print("elapsed time " + tostring(this.clock.getElapsed()), love.graphics.getWidth() - 200, 0);
     }
 
