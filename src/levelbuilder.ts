@@ -8,7 +8,7 @@ const Levels: LevelModule = require("levels");
 export interface Level {
     dataVersion: string;
     name: string;
-    terrainPoints: number[];
+    terrainPoints: number[][];
     rocketStartingLocation: Rectangle | undefined;
     rocketLandingLocation: Rectangle | undefined;
 }
@@ -57,7 +57,7 @@ export class LevelBuilder implements GameState {
 
     constructor(name: string) {
         this.level = {
-            dataVersion: "0.0.1",
+            dataVersion: "0.0.2",
             name: name,
             terrainPoints: [],
             rocketLandingLocation: undefined,
@@ -83,6 +83,10 @@ export class LevelBuilder implements GameState {
                     if (this.mode != scheme.mode) {
                         this.mode = scheme.mode;
                         this.newMode = true;
+
+                        if (this.mode == Mode.TerrainBuilding) {
+                            this.level.terrainPoints.push([]);
+                        }
                     }
                 };
                 this.buttons.push(new Button(x, y, w, h, text, callback));
@@ -127,7 +131,8 @@ export class LevelBuilder implements GameState {
             switch (this.mode) {
                 case Mode.TerrainBuilding:
                     if (button == 1) {
-                        this.level.terrainPoints.push(worldX, worldY);
+                        print("adding points");
+                        this.level.terrainPoints[this.level.terrainPoints.length - 1].push(worldX, worldY);
                     }
                     break;
                 case Mode.RocketStartingLocation:
@@ -172,16 +177,22 @@ export class LevelBuilder implements GameState {
         this.gridRenderer.draw();
 
         const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(...love.mouse.getPosition());
-        if (this.level.terrainPoints.length >= 2) {
-            if (this.mode == Mode.TerrainBuilding) {
-                this.level.terrainPoints.push(worldX, worldY);
-            }
+        for (let i = 0; i < this.level.terrainPoints.length; i++) {
+            const points = this.level.terrainPoints[i];
+            const isLast = i == this.level.terrainPoints.length - 1;
+            if (points.length >= 2) {
+                const terrainPreview = this.mode == Mode.TerrainBuilding && isLast;
 
-            love.graphics.line(this.level.terrainPoints as any);
-
-            if (this.mode == Mode.TerrainBuilding) {
-                this.level.terrainPoints.pop();
-                this.level.terrainPoints.pop();
+                if (terrainPreview) {
+                    points.push(worldX, worldY);
+                }
+                
+                love.graphics.line(points as any);
+                
+                if (terrainPreview) {
+                    points.pop();
+                    points.pop();
+                }
             }
         }
 

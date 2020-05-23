@@ -14,11 +14,6 @@ const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
 
-interface PhysicsObject<S> {
-    body: Body;
-    shape: S;
-    fixture: Fixture;
-}
 
 export class Playing {
     private level: Level;
