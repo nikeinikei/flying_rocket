@@ -1,8 +1,9 @@
-import { LevelBuilderCamera } from "./levelbuildercamera";
-import { Button } from "./gui";
-import { LevelModule } from "./types/levels";
-import { GridRenderer } from "./gridrenderer";
 import { KeyConstant } from "love.keyboard";
+
+import { GridRenderer } from "./gridrenderer";
+import { Button } from "./gui";
+import { LevelBuilderCamera } from "./levelbuildercamera";
+import { LevelModule } from "./types/levels";
 const Levels: LevelModule = require("levels");
 
 export interface Level {
@@ -174,7 +175,7 @@ export class LevelBuilder implements GameState {
     keypressed(key: KeyConstant) {
         if (key == "escape") {
             if (this.mode == Mode.TerrainBuilding) {
-                this.mode = Mode.Inspection
+                this.mode = Mode.Inspection;
             }
         }
     }
@@ -193,9 +194,11 @@ export class LevelBuilder implements GameState {
                 if (terrainPreview) {
                     points.push(worldX, worldY);
                 }
-                
+
+                love.graphics.setColor(1, 0, 0, 1);
+                love.graphics.setLineWidth(5);
                 love.graphics.line(points as any);
-                
+
                 if (terrainPreview) {
                     points.pop();
                     points.pop();

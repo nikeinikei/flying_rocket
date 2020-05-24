@@ -11,7 +11,7 @@ export class PlayingCamera {
 
         this.tx = 0;
         this.ty = 0;
-    } 
+    }
 
     update(dt: number) {
         let [rocketX, rocketY] = this.rocket.getPosition();

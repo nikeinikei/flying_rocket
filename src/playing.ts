@@ -5,16 +5,15 @@ import { Controls } from "./controls";
 import { Level } from "./levelbuilder";
 import { Lost } from "./lost";
 import { Paused } from "./paused";
+import { PlayingCamera } from "./playingCamera";
 import { Rocket } from "./rocket";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { Won } from "./won";
-import { PlayingCamera } from "./playingCamera";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
-
 
 export class Playing {
     private level: Level;

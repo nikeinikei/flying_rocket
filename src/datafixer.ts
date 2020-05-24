@@ -1,7 +1,7 @@
 let fixers = new Table<string, (this: void, data: any) => boolean>();
 fixers.set("0.0.1->0.0.2", data => {
     data.dataVersion = "0.0.2";
-    let points = data.terrainPoints
+    let points = data.terrainPoints;
     let newTerrainPoints = [points];
     data.terrainPoints = newTerrainPoints;
 

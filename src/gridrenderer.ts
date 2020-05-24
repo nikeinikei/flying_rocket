@@ -27,7 +27,7 @@ export class GridRenderer {
                 love.graphics.setLineWidth(normalLineWidth);
             }
 
-            love.graphics.line(currentX, ty, currentX, ty + windowHeight)
+            love.graphics.line(currentX, ty, currentX, ty + windowHeight);
             currentX += this.length;
         }
 

@@ -26,6 +26,7 @@ export class Terrain {
 
     draw() {
         for (const ps of this.points) {
+            love.graphics.setLineWidth(5);
             love.graphics.line(ps as any);
         }
     }

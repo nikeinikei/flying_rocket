@@ -2,7 +2,6 @@ const rotationSpeed = (2 * math.pi) / 20;
 const maxThrust = 400;
 
 export class Rocket {
-
     public static width: number = 50;
     public static height: number = 50;
     public static userData = "Rocket";
