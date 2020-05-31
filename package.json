@@ -11,6 +11,7 @@
     "build:copy": "copyfiles res/* game",
     "build:copyLua": "copyfiles -u 1 lua/**/*.lua game",
     "build:watch": "tstl -w -p tsconfig.json",
+    "build:release": "yarn build && powershell .\\createGameExecutable.ps1",
     "lint:eslint": "eslint -c .eslintrc src/**",
     "lint:prettier": "cross-var prettier \"$npm_package_prettierGlob\" --check",
     "fix:prettier": "cross-var prettier \"$npm_package_prettierGlob\" --check --write"
