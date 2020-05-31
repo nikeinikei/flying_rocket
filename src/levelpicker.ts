@@ -24,7 +24,7 @@ export class LevelPicker {
 
     keypressed(key: KeyConstant) {
         if (key == "escape") {
-            love.event.quit();
+            Application.popState();
         }
     }
 

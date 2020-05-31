@@ -219,7 +219,7 @@ export class Playing {
 
     keypressed(key: KeyConstant) {
         if (key == "escape") {
-            love.event.quit();
+            Application.popState();
         }
         if (key == "p") {
             this.pause();
