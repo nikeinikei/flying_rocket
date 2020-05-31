@@ -23,7 +23,6 @@ export class Playing {
     private terrain: Terrain;
     private rocketStartingLocationObject: PhysicsObject<PolygonShape>;
     private rocketLandingLocationObject: PhysicsObject<PolygonShape>;
-    private borderObject: PhysicsObject<ChainShape>;
     private camera: PlayingCamera;
 
     constructor(level: Level) {
@@ -58,26 +57,6 @@ export class Playing {
         this.rocketLandingLocationObject.fixture.setUserData(rocketLandingLocationUserdata);
 
         let [windowWidth, windowHeight] = love.graphics.getDimensions();
-
-        let borderBody = love.physics.newBody(this.world, 0, 0);
-        let borderShape = love.physics.newChainShape(
-            true,
-            0,
-            0,
-            windowWidth,
-            0,
-            windowWidth,
-            windowHeight,
-            0,
-            windowHeight
-        );
-        let borderFixture = love.physics.newFixture(borderBody, borderShape);
-        borderFixture.setUserData(borderUserData);
-        this.borderObject = {
-            body: borderBody,
-            shape: borderShape,
-            fixture: borderFixture,
-        };
 
         this.terrain = new Terrain(this.world, level.terrainPoints);
         this.camera = new PlayingCamera(this.rocket);
