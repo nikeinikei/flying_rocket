@@ -194,6 +194,7 @@ export class Playing {
 
         love.graphics.origin();
         love.graphics.print("elapsed time " + tostring(this.clock.getElapsed()), love.graphics.getWidth() - 200, 0);
+        love.graphics.print(tostring(love.timer.getFPS()));
     }
 
     keypressed(key: KeyConstant) {
