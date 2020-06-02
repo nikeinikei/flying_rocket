@@ -140,7 +140,7 @@ Application = {
         if top ~= nil then
             makeActive(top)
         else
-            love.event.quit()
+            love.event.quit(0)
         end
     end
 }

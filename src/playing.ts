@@ -9,7 +9,7 @@ import { PlayingCamera } from "./playingCamera";
 import { Rocket } from "./rocket";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
-import { Won } from "./won";
+import { Won, GameEndMetrics } from "./won";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
@@ -145,8 +145,11 @@ export class Playing {
     }
 
     private win() {
+        const metrics: GameEndMetrics = {
+            timeTaken: this.clock.getElapsed()
+        }
         Application.popState();
-        Application.pushState(new Won());
+        Application.pushState(new Won(metrics));
     }
 
     private lose() {

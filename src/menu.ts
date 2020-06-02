@@ -91,7 +91,7 @@ export class Menu {
 
     keypressed(key: KeyConstant) {
         if (key == "escape") {
-            love.event.quit();
+            love.event.quit(0);
         }
     }
 }
