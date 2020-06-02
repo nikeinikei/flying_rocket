@@ -17,12 +17,39 @@ export class LevelPicker {
     }
 
     getObjects() {
-        return [...this.buttons, this.levelsNotAvailableTextWrapped];
+        return [this.levelsNotAvailableTextWrapped];
     }
 
-    keypressed(key: KeyConstant) {
+    textinput(text: string) {
+        for (const button of this.buttons) {
+            button.textinput(text);
+        }
+    }
+
+    mousepressed(x: number, y: number, mouseButton: number, istouch: boolean, presses: number) {
+        for (const button of this.buttons) {
+            button.mousepressed(x, y, mouseButton, istouch, presses);
+        }
+    }
+
+    keypressed(key: KeyConstant, code: number, isrepeat: boolean) {
+        for (const button of this.buttons) {
+            button.keypressed(key, code, isrepeat);
+        }
         if (key == "escape") {
             Application.popState();
+        }
+    }
+
+    update(dt: number) {
+        for (const button of this.buttons) {
+            button.update(dt);
+        }
+    }
+
+    draw() {
+        for (const button of this.buttons) {
+            button.draw();
         }
     }
 
