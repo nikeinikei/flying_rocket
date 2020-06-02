@@ -3,9 +3,7 @@ import { KeyConstant } from "love.keyboard";
 import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
 import { LevelBuilderCamera } from "./levelbuildercamera";
-import { LevelModule } from "./types/levels";
-
-const Levels: LevelModule = require("levels");
+import { Levels } from "./levels";
 
 export interface Level {
     dataVersion: string;

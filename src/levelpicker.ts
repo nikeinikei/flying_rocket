@@ -2,10 +2,8 @@ import { KeyConstant } from "love.keyboard";
 
 import { Button } from "./gui";
 import { Playing } from "./playing";
-import { LevelModule } from "./types/levels";
 import { WrappedDrawable } from "./wrappeddrawable";
-
-const Levels: LevelModule = require("levels");
+import { Levels } from "./levels";
 
 export class LevelPicker {
     private buttons: Button[];

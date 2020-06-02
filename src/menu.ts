@@ -3,9 +3,7 @@ import { KeyConstant } from "love.keyboard";
 import { Button, TextInput } from "./gui";
 import { LevelBuilder } from "./levelbuilder";
 import { LevelPicker } from "./levelpicker";
-import { LevelModule } from "./types/levels";
-
-const Levels: LevelModule = require("levels");
+import { Levels } from "./levels";
 
 class PreLevelBuilderGameState {
     private textInput: TextInput;
