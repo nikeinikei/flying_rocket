@@ -1,6 +1,6 @@
 interface RxiJsonLibrary {
-    decode(this:void, input: string): any;
-    encode(this:void, obj: any): string;
+    decode(this: void, input: string): any;
+    encode(this: void, obj: any): string;
 }
 
 const rxiJsonLibrary: RxiJsonLibrary = require("libs.json");

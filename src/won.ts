@@ -21,7 +21,7 @@ export class Won {
         this.timeTakenText = love.graphics.newText(love.graphics.newFont(40), tostring(this.metrics.timeTaken));
         this.timeTakenTextPosition = {
             x: (love.graphics.getWidth() - this.timeTakenText.getWidth()) / 2,
-            y: (this.textPosition.y + 40)
+            y: this.textPosition.y + 40,
         };
     }
 

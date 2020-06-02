@@ -11,7 +11,7 @@ function parseArgs(args: string[]) {
     }
 }
 
-love.load = (args) => {
+love.load = args => {
     parseArgs(args);
 
     Application.pushState(new Menu());

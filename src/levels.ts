@@ -1,6 +1,6 @@
-import { Level } from "./levelbuilder";
 import { fixData } from "./datafixer";
 import { json } from "./json";
+import { Level } from "./levelbuilder";
 
 const fileName = "levels.json";
 let levels: Level[];
@@ -10,7 +10,7 @@ function init() {
         const [contents, _size] = love.filesystem.read(fileName);
         if (contents) {
             levels = json.decode(contents);
-            levels = levels.filter((level) => fixData(level));
+            levels = levels.filter(level => fixData(level));
         } else {
             levels = [];
         }

@@ -1,9 +1,9 @@
 import { KeyConstant } from "love.keyboard";
 
 import { Button } from "./gui";
+import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { WrappedDrawable } from "./wrappeddrawable";
-import { Levels } from "./levels";
 
 export class LevelPicker {
     private buttons: Button[];

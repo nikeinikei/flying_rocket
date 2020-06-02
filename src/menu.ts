@@ -1,5 +1,6 @@
 import { KeyConstant } from "love.keyboard";
 
+import { CampaignLevelPicker } from "./campaignLevelPicker";
 import { Button, TextInput } from "./gui";
 import { LevelBuilder } from "./levelbuilder";
 import { LevelPicker } from "./levelpicker";
@@ -33,11 +34,35 @@ class PreLevelBuilderGameState {
     }
 }
 
+class GameModeChooserGameState {
+    private campaignButton: Button;
+    private customGameButton: Button;
+
+    constructor() {
+        this.campaignButton = new Button(50, 50, 400, 100, "Campaign", () => {
+            Application.pushState(new CampaignLevelPicker());
+        });
+        this.customGameButton = new Button(50, 200, 400, 100, "Custom", () => {
+            Application.pushState(new LevelPicker());
+        });
+    }
+
+    getObjects() {
+        return [this.campaignButton, this.customGameButton];
+    }
+
+    keypressed(key: KeyConstant) {
+        if (key == "escape") {
+            Application.popState();
+        }
+    }
+}
+
 const buttonSchemes = [
     {
         name: "Play",
         callback: () => {
-            Application.pushState(new LevelPicker());
+            Application.pushState(new GameModeChooserGameState());
         },
     },
     {
