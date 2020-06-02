@@ -3,7 +3,7 @@
   "license": "MIT",
   "prettierGlob": "**/*.{js,ts,ym,md}",
   "scripts": {
-    "start": "love game --console",
+    "start": "love game --console --dev",
     "build": "yarn build:tstl && yarn build:copy && yarn build:copyLua",
     "lint": "yarn lint:prettier && yarn lint:eslint",
     "docs": "./node_modules/love-typescript-definitions/docs/index.html",
