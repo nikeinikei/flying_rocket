@@ -1818,10 +1818,10 @@ loose-envify@^1.0.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-love-typescript-definitions@^0.20.1:
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/love-typescript-definitions/-/love-typescript-definitions-0.20.1.tgz#34d72c93d66ca396bf99958401626321543f4591"
-  integrity sha512-h4Of8UZ0bx5Y+KqqTauvucRNo0BXgWe32qCV4gcFjrujI906JMVW0gaQqgPwGz2fnHwtw54qRVACDKD4RypS4A==
+love-typescript-definitions@^0.20.2:
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/love-typescript-definitions/-/love-typescript-definitions-0.20.2.tgz#a07810c844b7406aca4f53d9e112a5d677c12740"
+  integrity sha512-LbxGjKhf1Wfl2UXxvz8Ty+tfdc7/zsOZR9adfWGk01paji3jL4yBM2lHo+t05EIYrJeEXSSofPVZiNs/xh5K0g==
 
 lru-cache@^4.0.1:
   version "4.1.5"

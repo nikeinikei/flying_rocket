@@ -26,7 +26,7 @@ function init() {
 }
 
 function save() {
-    love.filesystem.write(fileName, json.encode(levels) as any);
+    love.filesystem.write(fileName, json.encode(levels));
 }
 
 init();
