@@ -28,11 +28,17 @@ class PreLevelBuilderGameState {
                     if (this.toggle && this.toggle.isOn()) {
                         const index = tonumber(name);
                         if (!index) {
-                            love.window.showMessageBox("Invalid level name", "when creating a campaign level the name must be the index of the campaign", "error");
+                            love.window.showMessageBox(
+                                "Invalid level name",
+                                "when creating a campaign level the name must be the index of the campaign",
+                                "error"
+                            );
                         } else {
-                            Application.pushState(new LevelBuilder(name, {
-                                index
-                            }));
+                            Application.pushState(
+                                new LevelBuilder(name, {
+                                    index,
+                                })
+                            );
                         }
                     } else {
                         Application.pushState(new LevelBuilder(name));

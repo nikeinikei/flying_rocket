@@ -1,10 +1,10 @@
 import { KeyConstant } from "love.keyboard";
 
+import { CampaignLevels } from "./campaignLevels";
 import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
 import { LevelBuilderCamera } from "./levelbuildercamera";
 import { Levels } from "./levels";
-import { CampaignLevels } from "./campaignLevels";
 
 export interface Level {
     dataVersion: string;

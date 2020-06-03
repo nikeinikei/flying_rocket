@@ -1,12 +1,12 @@
-import { Level } from "./levelbuilder";
 import { json } from "./json";
+import { Level } from "./levelbuilder";
 
 interface Lfs {
     /** @returnTuple */
-    attributes(this:void, path: string): [any, string | undefined];
-    currentdir(this:void): string;
+    attributes(this: void, path: string): [any, string | undefined];
+    currentdir(this: void): string;
     /** @returnTuple */
-    chdir(this:void, path: string): [boolean, undefined | string];
+    chdir(this: void, path: string): [boolean, undefined | string];
 }
 
 const fileName = "campaignLevels.json";
@@ -27,7 +27,7 @@ function init() {
 
 function save() {
     const jsonified = json.encode(levels);
-    
+
     const lfs: Lfs = require("lfs");
 
     const writeLevelsToFile = () => {
@@ -37,7 +37,7 @@ function save() {
         } else {
             error("file doesn't exist");
         }
-    }
+    };
 
     lfs.chdir("res");
 

@@ -5,10 +5,11 @@ This is a small game where you have to maneuver a rocket from one location to an
 # Development
 
 Mandatory dependencies:
-* NodeJS (https://nodejs.org/en/)
-* Yarn (https://yarnpkg.com/)
-* love2d (https://love2d.org/)
-* LuaFileSystem (http://keplerproject.github.io/luafilesystem/index.html)
+
+-   NodeJS (https://nodejs.org/en/)
+-   Yarn (https://yarnpkg.com/)
+-   love2d (https://love2d.org/)
+-   LuaFileSystem (http://keplerproject.github.io/luafilesystem/index.html)
 
 Recommended way of installing LFS is using hererocks (https://github.com/mpeterv/hererocks). Guide for Windows:
 

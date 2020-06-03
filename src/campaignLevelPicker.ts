@@ -1,6 +1,7 @@
-import { Button } from "./gui";
 import { KeyConstant } from "love.keyboard";
+
 import { CampaignLevels } from "./campaignLevels";
+import { Button } from "./gui";
 import { Level } from "./levelbuilder";
 import { Playing } from "./playing";
 
