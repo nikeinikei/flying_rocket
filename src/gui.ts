@@ -17,6 +17,7 @@ class Element {
     public h: number;
     public hovered: boolean;
     public focused: boolean;
+    public disabled: boolean;
 
     constructor(x: number, y: number, w: number, h: number) {
         Element.elements.add(this);
@@ -26,6 +27,7 @@ class Element {
         this.h = h;
         this.hovered = false;
         this.focused = false;
+        this.disabled = false;
     }
 
     textinput(_text: string) {}
@@ -52,6 +54,7 @@ export class Button extends Element {
     private textY: number;
     public baseColor: Color;
     public hoveredColor: Color;
+    public disabledColor: Color;
     public callback: ((this: void) => void) | null;
 
     constructor(x: number, y: number, w: number, h: number, text: string, callback: ((this: void) => void) | null) {
@@ -62,6 +65,7 @@ export class Button extends Element {
         this.textY = y + (h - this.text.getHeight()) / 2;
         this.baseColor = new Color(1, 0, 1, 1);
         this.hoveredColor = new Color(0.933, 0.51, 0.933, 1);
+        this.disabledColor = new Color(0.4, 0.4, 0.4, 1);
         this.callback = callback;
     }
 
@@ -73,15 +77,19 @@ export class Button extends Element {
     }
 
     draw() {
-        super.draw();
-        if (this.hovered) {
-            love.graphics.setColor(this.baseColor.unpacked());
+        if (this.disabled) {
+            love.graphics.setColor(this.disabledColor.unpacked());
         } else {
-            love.graphics.setColor(this.hoveredColor.unpacked());
+            if (this.hovered) {
+                love.graphics.setColor(this.baseColor.unpacked());
+            } else {
+                love.graphics.setColor(this.hoveredColor.unpacked());
+            }
         }
         love.graphics.rectangle("fill", this.x, this.y, this.w, this.h);
         love.graphics.setColor(1, 1, 1, 1);
         love.graphics.draw(this.text, this.textX, this.textY);
+        super.draw();
     }
 }
 
@@ -161,12 +169,12 @@ export class TextInput extends Element {
     }
 
     draw() {
-        super.draw();
         love.graphics.setColor(160 / 255, 32 / 255, 240 / 255, 1);
         love.graphics.rectangle("fill", this.x, this.y, this.w, this.h);
         love.graphics.setColor(1, 1, 1, 1);
         love.graphics.draw(this.promptText, this.promptTextPosition.x, this.promptTextPosition.y);
         love.graphics.draw(this.inputText, this.inputTextPosition.x, this.inputTextPosition.y);
+        super.draw();
     }
 }
 
@@ -195,6 +203,7 @@ export class Toggle extends Element {
             love.graphics.setColor(this.toggleOffColor.unpacked());
         }
         love.graphics.rectangle("fill", this.x, this.y, this.w, this.h);
+        super.draw();
     }
 
     isOn() {
