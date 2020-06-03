@@ -1,10 +1,16 @@
 import { Button } from "./gui";
 import { KeyConstant } from "love.keyboard";
+import { CampaignLevels } from "./campaignLevels";
+import { Level } from "./levelbuilder";
+import { Playing } from "./playing";
 
 export class CampaignLevelPicker {
     private buttons: Button[];
+    private campaignLevels: Table<string, Level>;
 
     constructor() {
+        this.campaignLevels = CampaignLevels.getLevels();
+
         this.buttons = [];
         const rows = 4;
         const cols = 4;
@@ -25,11 +31,19 @@ export class CampaignLevelPicker {
 
                 const currentCount = count;
 
-                this.buttons.push(
-                    new Button(x, y, width, height, tostring(count), () => {
-                        love.window.showMessageBox("Not Implemented yet", "The campaign doesn't have levels yet", "error");
-                    })
-                );
+                let level = this.campaignLevels.get(tostring(currentCount));
+                const button = new Button(x, y, width, height, tostring(count), () => {
+                    if (level) {
+                        Application.pushState(new Playing(level));
+                    } else {
+                        error("this shouldn't happen");
+                    }
+                });
+                if (!level) {
+                    button.disabled = true;
+                }
+
+                this.buttons.push(button);
 
                 count++;
             }
