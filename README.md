@@ -18,7 +18,7 @@ Open cmd, then type these commands:
 python -m pip install hererocks
 #go into the folder where you wanna have lua installed then proceed:
 hererocks --luajit 2.1.0-beta3 -rlatest luajit
-.\\luajit\\bin\\activate.bat
+.\luajit\bin\activate.bat
 luarocks install luafilesystem
 ```
 
