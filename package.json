@@ -4,6 +4,7 @@
   "prettierGlob": "**/*.{js,ts,ym,md}",
   "scripts": {
     "start": "love game --console --dev",
+    "start:release": "love game --console",
     "build": "yarn build:tstl && yarn build:copy && yarn build:copyLua",
     "lint": "yarn lint:prettier && yarn lint:eslint",
     "docs": "./node_modules/love-typescript-definitions/docs/index.html",

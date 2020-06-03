@@ -169,3 +169,35 @@ export class TextInput extends Element {
         love.graphics.draw(this.inputText, this.inputTextPosition.x, this.inputTextPosition.y);
     }
 }
+
+export class Toggle extends Element {
+    private on: boolean;
+    private toggleOffColor: Color;
+    private toggleOnColor: Color;
+
+    constructor(x: number, y: number, w: number, h: number) {
+        super(x, y, w, h);
+        this.on = false;
+        this.toggleOffColor = new Color(1, 0, 0, 1);
+        this.toggleOnColor = new Color(0, 1, 0, 1);
+    }
+
+    mousepressed(x: number, y: number, button: number, istouch: boolean, presses: number) {
+        if (this.hovered) {
+            this.on = this.on == false;
+        }
+    }
+
+    draw() {
+        if (this.on) {
+            love.graphics.setColor(this.toggleOnColor.unpacked());
+        } else {
+            love.graphics.setColor(this.toggleOffColor.unpacked());
+        }
+        love.graphics.rectangle("fill", this.x, this.y, this.w, this.h);
+    }
+
+    isOn() {
+        return this.on;
+    }
+}

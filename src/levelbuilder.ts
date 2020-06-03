@@ -4,6 +4,7 @@ import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
 import { LevelBuilderCamera } from "./levelbuildercamera";
 import { Levels } from "./levels";
+import { CampaignLevels } from "./campaignLevels";
 
 export interface Level {
     dataVersion: string;
@@ -11,6 +12,10 @@ export interface Level {
     terrainPoints: number[][];
     rocketStartingLocation: Rectangle | undefined;
     rocketLandingLocation: Rectangle | undefined;
+}
+
+export interface CampaignLevelInfo {
+    index: number;
 }
 
 enum Mode {
@@ -54,8 +59,11 @@ export class LevelBuilder implements GameState {
     private newMode: boolean;
     private camera: LevelBuilderCamera;
     private gridRenderer: GridRenderer;
+    private campignLevelInfo: CampaignLevelInfo | undefined;
 
-    constructor(name: string) {
+    constructor(name: string, campaignLevelInfo?: CampaignLevelInfo) {
+        this.campignLevelInfo = campaignLevelInfo;
+
         this.level = {
             dataVersion: "0.0.2",
             name: name,
@@ -102,7 +110,11 @@ export class LevelBuilder implements GameState {
                 if (!this.level.rocketLandingLocation || !this.level.rocketStartingLocation) {
                     love.window.showMessageBox("unable to save", locationNotSetErrorMessage, "error");
                 } else {
-                    Levels.addLevel(this.level);
+                    if (campaignLevelInfo) {
+                        CampaignLevels.addLevel(this.level);
+                    } else {
+                        Levels.addLevel(this.level);
+                    }
                     Application.popState();
                 }
             };

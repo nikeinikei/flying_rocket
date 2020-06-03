@@ -1,13 +1,15 @@
 import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevelPicker } from "./campaignLevelPicker";
-import { Button, TextInput } from "./gui";
+import { Button, TextInput, Toggle } from "./gui";
 import { LevelBuilder } from "./levelbuilder";
 import { LevelPicker } from "./levelpicker";
 import { Levels } from "./levels";
+import { Settings } from "./settings";
 
 class PreLevelBuilderGameState {
     private textInput: TextInput;
+    private toggle: Toggle | null;
 
     constructor() {
         const textInputWidth = 1200;
@@ -23,14 +25,41 @@ class PreLevelBuilderGameState {
                     love.window.showMessageBox("Invalid Level Name", "level name already in use", "error");
                 } else {
                     Application.popState();
-                    Application.pushState(new LevelBuilder(name));
+                    if (this.toggle && this.toggle.isOn()) {
+                        const index = tonumber(name);
+                        if (!index) {
+                            love.window.showMessageBox("Invalid level name", "when creating a campaign level the name must be the index of the campaign", "error");
+                        } else {
+                            Application.pushState(new LevelBuilder(name, {
+                                index
+                            }));
+                        }
+                    } else {
+                        Application.pushState(new LevelBuilder(name));
+                    }
                 }
             }
         });
+
+        if (Settings.isDevelopment()) {
+            this.toggle = new Toggle(10, 10, 40, 40);
+        } else {
+            this.toggle = null;
+        }
     }
 
     getObjects() {
-        return [this.textInput];
+        let objects: unknown[] = [this.textInput];
+        if (this.toggle) {
+            objects.push(this.toggle);
+        }
+        return objects;
+    }
+
+    keypressed(key: KeyConstant) {
+        if (key == "escape") {
+            Application.popState();
+        }
     }
 }
 
