@@ -14,13 +14,9 @@ fixers.set("0.0.1->0.0.2", data => {
     return true;
 });
 
-interface LevelData {
-    dataVersion: string;
-}
-
 let versionHistory = ["0.0.1", "0.0.2"];
 
-export function fixData(this: void, data: LevelData): boolean {
+export function fixData(this: void, data: any): boolean {
     if (data.dataVersion == undefined) {
         const fixer = fixers.get("->0.0.1");
         if (fixer) {
@@ -33,6 +29,11 @@ export function fixData(this: void, data: LevelData): boolean {
         } else {
             return false;
         }
+    }
+
+    //fix corrupted data before fix was implemented
+    if (data.dataVersion == "0.0.2") {
+        data.terrainPoints = (data.terrainPoints as number[][]).filter(terrain => terrain.length >= 4);
     }
 
     let currentVersion = versionHistory[versionHistory.length - 1];

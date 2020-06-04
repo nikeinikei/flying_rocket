@@ -60,6 +60,7 @@ export class LevelBuilder implements GameState {
     private camera: LevelBuilderCamera;
     private gridRenderer: GridRenderer;
     private campignLevelInfo: CampaignLevelInfo | undefined;
+    private currentTerrain: number[] | null = null;
 
     constructor(nameOrLevel: string | Level, campaignLevelInfo?: CampaignLevelInfo) {
         this.campignLevelInfo = campaignLevelInfo;
@@ -93,14 +94,7 @@ export class LevelBuilder implements GameState {
                 let h = buttonHeight;
                 let text = scheme.name;
                 let callback = () => {
-                    if (this.mode != scheme.mode) {
-                        this.mode = scheme.mode;
-                        this.newMode = true;
-
-                        if (this.mode == Mode.TerrainBuilding) {
-                            this.level.terrainPoints.push([]);
-                        }
-                    }
+                    this.setNewMode(scheme.mode);
                 };
                 this.buttons.push(new Button(x, y, w, h, text, callback));
             }
@@ -115,6 +109,8 @@ export class LevelBuilder implements GameState {
                 if (!this.level.rocketLandingLocation || !this.level.rocketStartingLocation) {
                     love.window.showMessageBox("unable to save", locationNotSetErrorMessage, "error");
                 } else {
+                    this.setNewMode(Mode.Inspection);
+
                     if (campaignLevelInfo) {
                         CampaignLevels.addLevel(this.level);
                     } else {
@@ -129,6 +125,21 @@ export class LevelBuilder implements GameState {
         this.gridRenderer = new GridRenderer(250, this.camera);
     }
 
+    private setNewMode(newMode: Mode) {
+        if (this.mode != newMode) {
+            if (this.mode == Mode.TerrainBuilding) {
+                this.postTerrainBuilding();
+            }
+
+            this.mode = newMode;
+            this.newMode = true;
+
+            if (this.mode == Mode.TerrainBuilding) {
+                this.currentTerrain = [];
+            }
+        }
+    }
+
     getObjects() {
         return [this.camera];
     }
@@ -137,6 +148,15 @@ export class LevelBuilder implements GameState {
         for (const button of this.buttons) {
             button.update(dt);
         }
+    }
+
+    private postTerrainBuilding() {
+        if (this.currentTerrain) {
+            if (this.currentTerrain.length >= 4) {
+                this.level.terrainPoints.push(this.currentTerrain);
+            }
+        }
+        this.currentTerrain = null;
     }
 
     mousepressed(mouseX: number, mouseY: number, button: number, istouch: boolean, presses: number) {
@@ -148,7 +168,11 @@ export class LevelBuilder implements GameState {
             switch (this.mode) {
                 case Mode.TerrainBuilding:
                     if (button == 1) {
-                        this.level.terrainPoints[this.level.terrainPoints.length - 1].push(worldX, worldY);
+                        if (!this.currentTerrain) {
+                            error("this shouldn't happen");
+                        } else {
+                            this.currentTerrain.push(worldX, worldY);
+                        }
                     }
                     break;
                 case Mode.RocketStartingLocation:
@@ -190,9 +214,7 @@ export class LevelBuilder implements GameState {
 
     keypressed(key: KeyConstant) {
         if (key == "escape") {
-            if (this.mode == Mode.TerrainBuilding) {
-                this.mode = Mode.Inspection;
-            }
+            this.setNewMode(Mode.Inspection);
         }
     }
 
@@ -201,25 +223,21 @@ export class LevelBuilder implements GameState {
         this.gridRenderer.draw();
 
         const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(...love.mouse.getPosition());
-        for (let i = 0; i < this.level.terrainPoints.length; i++) {
-            const points = this.level.terrainPoints[i];
-            const isLast = i == this.level.terrainPoints.length - 1;
-            if (points.length >= 2) {
-                const terrainPreview = this.mode == Mode.TerrainBuilding && isLast;
 
-                if (terrainPreview) {
-                    points.push(worldX, worldY);
-                }
+        love.graphics.setColor(1, 0, 0, 1);
+        love.graphics.setLineWidth(5);
+        if (this.currentTerrain) {
+            if (this.currentTerrain.length >= 2) {
+                this.currentTerrain.push(worldX, worldY);
 
-                love.graphics.setColor(1, 0, 0, 1);
-                love.graphics.setLineWidth(5);
-                love.graphics.line(points as any);
+                love.graphics.line(this.currentTerrain as any);
 
-                if (terrainPreview) {
-                    points.pop();
-                    points.pop();
-                }
+                this.currentTerrain.pop();
+                this.currentTerrain.pop();
             }
+        }
+        for (let i = 0; i < this.level.terrainPoints.length; i++) {
+            love.graphics.line(this.level.terrainPoints[i] as any);
         }
 
         love.graphics.setColor(1, 1, 1, 1);
