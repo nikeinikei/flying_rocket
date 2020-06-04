@@ -241,7 +241,11 @@ export class LevelBuilder implements GameState {
             button.draw();
         }
         if (this.campignLevelInfo) {
-            love.graphics.print("campaign level " + tostring(this.campignLevelInfo.index), 0, love.graphics.getHeight() - 15);
+            love.graphics.print(
+                "campaign level " + tostring(this.campignLevelInfo.index),
+                0,
+                love.graphics.getHeight() - 15
+            );
         }
     }
 }

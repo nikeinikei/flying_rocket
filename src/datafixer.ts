@@ -1,4 +1,11 @@
 let fixers = new Table<string, (this: void, data: any) => boolean>();
+fixers.set("->0.0.1", data => {
+    print("hello");
+    data.dataVersion = "0.0.1";
+    data.terrainPoints = data.terrainPoints._items;
+
+    return true;
+});
 fixers.set("0.0.1->0.0.2", data => {
     data.dataVersion = "0.0.2";
     let points = data.terrainPoints;
@@ -15,6 +22,20 @@ interface LevelData {
 let versionHistory = ["0.0.1", "0.0.2"];
 
 export function fixData(this: void, data: LevelData): boolean {
+    if (data.dataVersion == undefined) {
+        const fixer = fixers.get("->0.0.1");
+        if (fixer) {
+            const success = fixer(data);
+            if (!success) {
+                return false;
+            } else {
+                print("[data fixer] successful transformation, no undefined->0.0.1");
+            }
+        } else {
+            return false;
+        }
+    }
+
     let currentVersion = versionHistory[versionHistory.length - 1];
     if (data.dataVersion != currentVersion) {
         let oldDataVersionIndex = versionHistory.indexOf(data.dataVersion);
@@ -29,7 +50,7 @@ export function fixData(this: void, data: LevelData): boolean {
                 if (!fixer(data)) {
                     return false;
                 } else {
-                    print("successful transformation, " + fixerKey);
+                    print("[data fixer] successful transformation, " + fixerKey);
                 }
             }
         }

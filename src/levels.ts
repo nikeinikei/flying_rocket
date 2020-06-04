@@ -33,7 +33,7 @@ export namespace Levels {
     }
 
     export function removeLevel(level: Level) {
-        levels = levels.filter((l) => l != level);
+        levels = levels.filter(l => l != level);
         save();
     }
 

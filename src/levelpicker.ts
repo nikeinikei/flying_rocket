@@ -88,7 +88,11 @@ export class LevelPicker {
                     }),
                     new Button(700, y, 400, height, "Export", () => {
                         const fileName = Levels.exportLevel(level);
-                        love.window.showMessageBox("Export successful", "successfully exported with file name " + fileName, "info");
+                        love.window.showMessageBox(
+                            "Export successful",
+                            "successfully exported with file name " + fileName,
+                            "info"
+                        );
                     })
                 );
             }
