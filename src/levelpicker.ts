@@ -88,9 +88,12 @@ export class LevelPicker {
                     }),
                     new Button(700, y, 400, height, "Export", () => {
                         const fileName = Levels.exportLevel(level);
+
+                        const fullPath = love.filesystem.getAppdataDirectory() + "/" + "LOVE" + "/"  + (love.filesystem.getIdentity as any)() + "/" + fileName
+
                         love.window.showMessageBox(
                             "Export successful",
-                            "successfully exported with file name " + fileName,
+                            "successfully exported to " + fullPath,
                             "info"
                         );
                     })
