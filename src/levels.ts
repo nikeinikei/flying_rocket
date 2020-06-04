@@ -32,8 +32,8 @@ export namespace Levels {
         save();
     }
 
-    export function removeLevel(index: number) {
-        table.remove(levels, index);
+    export function removeLevel(level: Level) {
+        levels = levels.filter((l) => l != level);
         save();
     }
 
@@ -48,5 +48,37 @@ export namespace Levels {
 
     export function getLevels(): Level[] {
         return levels;
+    }
+
+    export function exportLevel(level: Level): string {
+        const jsonified = json.encode(level);
+        const levelName = level.name;
+
+        let fileName = levelName + ".json";
+        let counter = 1;
+        while (love.filesystem.getInfo(fileName)) {
+            fileName = levelName + "(" + counter + ").json";
+
+            counter++;
+        }
+
+        love.filesystem.write(fileName, jsonified);
+        return fileName;
+    }
+
+    export function importLevelFromFile(file: File): boolean {
+        const [contents, _size] = file.read();
+        if (!contents) {
+            return false;
+        }
+
+        const level = json.decode(contents);
+        if (!fixData(level)) {
+            return false;
+        }
+
+        table.insert(levels, level);
+
+        return true;
     }
 }

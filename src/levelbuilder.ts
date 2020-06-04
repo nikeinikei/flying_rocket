@@ -217,6 +217,7 @@ export class LevelBuilder implements GameState {
             }
         }
 
+        love.graphics.setColor(1, 1, 1, 1);
         let rect = this.level.rocketStartingLocation;
         if (this.mode == Mode.RocketStartingLocation) {
             love.graphics.rectangle("fill", worldX, worldY, rocketLocationWidth, rocketLocationHeight);
@@ -238,6 +239,9 @@ export class LevelBuilder implements GameState {
         love.graphics.origin();
         for (const button of this.buttons) {
             button.draw();
+        }
+        if (this.campignLevelInfo) {
+            love.graphics.print("campaign level " + tostring(this.campignLevelInfo.index), 0, love.graphics.getHeight() - 15);
         }
     }
 }
