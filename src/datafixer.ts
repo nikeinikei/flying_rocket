@@ -1,6 +1,5 @@
 let fixers = new Table<string, (this: void, data: any) => boolean>();
 fixers.set("->0.0.1", data => {
-    print("hello");
     data.dataVersion = "0.0.1";
     data.terrainPoints = data.terrainPoints._items;
 

@@ -13,6 +13,8 @@ Mandatory dependencies:
 
 Recommended way of installing LFS is using hererocks (https://github.com/mpeterv/hererocks). Guide for Windows:
 
+Python (https://www.python.org/) needs to be installed.
+
 Open cmd, then type these commands:
 
 ```bash
