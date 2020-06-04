@@ -15,6 +15,8 @@ export class LevelPicker {
         this.buttons = [];
         let levelsNotAvailableText = love.graphics.newText(love.graphics.newFont(50), "no levels available");
         this.levelsNotAvailableTextWrapped = new WrappedDrawable(levelsNotAvailableText);
+        this.levelsNotAvailableTextWrapped.x = 20;
+        this.levelsNotAvailableTextWrapped.y = 150;
         this.importButton = new Button(50, 20, 400, 70, "Import Level", () => {
             love.window.showMessageBox("Import level", "to import a level just drop it into this window!", "info");
         });
