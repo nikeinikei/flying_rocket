@@ -1,10 +1,10 @@
 import { KeyConstant } from "love.keyboard";
 
 import { Button } from "./gui";
+import { LevelBuilder } from "./levelbuilder";
 import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { WrappedDrawable } from "./wrappeddrawable";
-import { LevelBuilder } from "./levelbuilder";
 
 export class LevelPicker {
     private importButton: Button;
@@ -94,13 +94,16 @@ export class LevelPicker {
                     new Button(700, y, 400, height, "Export", () => {
                         const fileName = Levels.exportLevel(level);
 
-                        const fullPath = love.filesystem.getAppdataDirectory() + "/" + "LOVE" + "/"  + (love.filesystem.getIdentity as any)() + "/" + fileName
+                        const fullPath =
+                            love.filesystem.getAppdataDirectory() +
+                            "/" +
+                            "LOVE" +
+                            "/" +
+                            (love.filesystem.getIdentity as any)() +
+                            "/" +
+                            fileName;
 
-                        love.window.showMessageBox(
-                            "Export successful",
-                            "successfully exported to " + fullPath,
-                            "info"
-                        );
+                        love.window.showMessageBox("Export successful", "successfully exported to " + fullPath, "info");
                     }),
                     new Button(1200, y, 200, height, "Edit", () => {
                         Application.pushState(new LevelBuilder(level));
