@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 4,["8"] = 4,["9"] = 5,["10"] = 5,["11"] = 6,["12"] = 6,["13"] = 7,["14"] = 7,["15"] = 21,["16"] = 21,["17"] = 21,["18"] = 21,["19"] = 21,["20"] = 21,["21"] = 21,["22"] = 21,["23"] = 21,["24"] = 28,["25"] = 33,["26"] = 52,["27"] = 53,["28"] = 55,["29"] = 55,["30"] = 55,["31"] = 64,["32"] = 65,["33"] = 67,["34"] = 74,["35"] = 75,["36"] = 76,["38"] = 78,["39"] = 79,["40"] = 80,["41"] = 81,["42"] = 82,["44"] = 83,["45"] = 83,["46"] = 84,["47"] = 85,["48"] = 86,["49"] = 87,["50"] = 88,["51"] = 89,["52"] = 90,["53"] = 90,["54"] = 91,["55"] = 92,["56"] = 93,["57"] = 95,["58"] = 96,["61"] = 90,["62"] = 100,["63"] = 100,["64"] = 100,["65"] = 100,["66"] = 83,["71"] = 104,["72"] = 105,["73"] = 106,["74"] = 107,["75"] = 108,["76"] = 109,["77"] = 109,["78"] = 110,["79"] = 111,["81"] = 113,["82"] = 114,["84"] = 116,["86"] = 118,["88"] = 109,["89"] = 121,["90"] = 121,["91"] = 121,["92"] = 121,["94"] = 123,["95"] = 124,["96"] = 64,["97"] = 127,["98"] = 128,["99"] = 127,["100"] = 131,["101"] = 132,["102"] = 133,["104"] = 131,["105"] = 137,["106"] = 138,["107"] = 139,["109"] = 141,["110"] = 142,["111"] = 143,["112"] = 144,["114"] = 149,["116"] = 165,["122"] = 145,["123"] = 146,["129"] = 150,["130"] = 151,["131"] = 152,["132"] = 153,["134"] = 155,["136"] = 162,["142"] = 166,["143"] = 167,["144"] = 168,["145"] = 169,["147"] = 171,["149"] = 178,["155"] = 183,["156"] = 137,["157"] = 186,["158"] = 187,["159"] = 188,["160"] = 189,["163"] = 186,["164"] = 194,["165"] = 195,["166"] = 196,["167"] = 198,["168"] = 198,["169"] = 198,["171"] = 199,["172"] = 199,["173"] = 200,["174"] = 201,["175"] = 202,["176"] = 203,["177"] = 205,["178"] = 206,["180"] = 209,["181"] = 210,["182"] = 211,["183"] = 213,["184"] = 214,["185"] = 215,["188"] = 199,["191"] = 220,["192"] = 221,["193"] = 222,["194"] = 223,["196"] = 225,["197"] = 226,["200"] = 230,["201"] = 231,["202"] = 232,["204"] = 234,["205"] = 235,["208"] = 239,["209"] = 240,["210"] = 241,["212"] = 243,["213"] = 244,["214"] = 245,["215"] = 245,["216"] = 244,["217"] = 244,["218"] = 244,["219"] = 244,["221"] = 194});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 4,["8"] = 4,["9"] = 5,["10"] = 5,["11"] = 6,["12"] = 6,["13"] = 7,["14"] = 7,["15"] = 21,["16"] = 21,["17"] = 21,["18"] = 21,["19"] = 21,["20"] = 21,["21"] = 21,["22"] = 21,["23"] = 21,["24"] = 28,["25"] = 33,["26"] = 52,["27"] = 53,["28"] = 55,["29"] = 55,["30"] = 55,["31"] = 64,["32"] = 65,["33"] = 67,["34"] = 68,["36"] = 76,["37"] = 77,["39"] = 79,["40"] = 80,["41"] = 81,["43"] = 83,["44"] = 84,["45"] = 85,["46"] = 86,["47"] = 87,["49"] = 88,["50"] = 88,["51"] = 89,["52"] = 90,["53"] = 91,["54"] = 92,["55"] = 93,["56"] = 94,["57"] = 95,["58"] = 95,["59"] = 96,["60"] = 97,["61"] = 98,["62"] = 100,["63"] = 101,["66"] = 95,["67"] = 105,["68"] = 105,["69"] = 105,["70"] = 105,["71"] = 88,["76"] = 109,["77"] = 110,["78"] = 111,["79"] = 112,["80"] = 113,["81"] = 114,["82"] = 114,["83"] = 115,["84"] = 116,["86"] = 118,["87"] = 119,["89"] = 121,["91"] = 123,["93"] = 114,["94"] = 126,["95"] = 126,["96"] = 126,["97"] = 126,["99"] = 128,["100"] = 129,["101"] = 64,["102"] = 132,["103"] = 133,["104"] = 132,["105"] = 136,["106"] = 137,["107"] = 138,["109"] = 136,["110"] = 142,["111"] = 143,["112"] = 144,["114"] = 146,["115"] = 147,["116"] = 148,["117"] = 149,["119"] = 154,["121"] = 170,["127"] = 150,["128"] = 151,["134"] = 155,["135"] = 156,["136"] = 157,["137"] = 158,["139"] = 160,["141"] = 167,["147"] = 171,["148"] = 172,["149"] = 173,["150"] = 174,["152"] = 176,["154"] = 183,["160"] = 188,["161"] = 142,["162"] = 191,["163"] = 192,["164"] = 193,["165"] = 194,["168"] = 191,["169"] = 199,["170"] = 200,["171"] = 201,["172"] = 203,["173"] = 203,["174"] = 203,["176"] = 204,["177"] = 204,["178"] = 205,["179"] = 206,["180"] = 207,["181"] = 208,["182"] = 210,["183"] = 211,["185"] = 214,["186"] = 215,["187"] = 216,["188"] = 218,["189"] = 219,["190"] = 220,["193"] = 204,["196"] = 225,["197"] = 226,["198"] = 227,["199"] = 228,["201"] = 230,["202"] = 231,["205"] = 235,["206"] = 236,["207"] = 237,["209"] = 239,["210"] = 240,["213"] = 244,["214"] = 245,["215"] = 246,["217"] = 248,["218"] = 249,["219"] = 250,["220"] = 250,["221"] = 249,["222"] = 249,["223"] = 249,["224"] = 249,["226"] = 199});
 local ____exports = {}
 local ____campaignLevels = require("campaignLevels")
 local CampaignLevels = ____campaignLevels.CampaignLevels
@@ -28,9 +28,14 @@ local rocketLocationHeight = 20
 ____exports.LevelBuilder = __TS__Class()
 local LevelBuilder = ____exports.LevelBuilder
 LevelBuilder.name = "LevelBuilder"
-function LevelBuilder.prototype.____constructor(self, name, campaignLevelInfo)
+function LevelBuilder.prototype.____constructor(self, nameOrLevel, campaignLevelInfo)
     self.campignLevelInfo = campaignLevelInfo
-    self.level = {dataVersion = "0.0.2", name = name, terrainPoints = {}, rocketLandingLocation = nil, rocketStartingLocation = nil}
+    if type(nameOrLevel) == "string" then
+        self.level = {dataVersion = "0.0.2", name = nameOrLevel, terrainPoints = {}, rocketLandingLocation = nil, rocketStartingLocation = nil}
+    else
+        local level = nameOrLevel
+        self.level = level
+    end
     self.mode = Mode.Inspection
     self.newMode = false
     self.buttons = {}
@@ -108,23 +113,23 @@ function LevelBuilder.prototype.mousepressed(self, mouseX, mouseY, button, istou
     end
     local worldX, worldY = self.camera:convertScreencoordinatesToWorldCoordinates(mouseX, mouseY)
     if self.newMode == false then
-        local ____switch20 = self.mode
-        if ____switch20 == Mode.TerrainBuilding then
-            goto ____switch20_case_0
-        elseif ____switch20 == Mode.RocketStartingLocation then
-            goto ____switch20_case_1
-        elseif ____switch20 == Mode.RocketLandingLocation then
-            goto ____switch20_case_2
+        local ____switch22 = self.mode
+        if ____switch22 == Mode.TerrainBuilding then
+            goto ____switch22_case_0
+        elseif ____switch22 == Mode.RocketStartingLocation then
+            goto ____switch22_case_1
+        elseif ____switch22 == Mode.RocketLandingLocation then
+            goto ____switch22_case_2
         end
-        goto ____switch20_end
-        ::____switch20_case_0::
+        goto ____switch22_end
+        ::____switch22_case_0::
         do
             if button == 1 then
                 __TS__ArrayPush(self.level.terrainPoints[#self.level.terrainPoints], worldX, worldY)
             end
-            goto ____switch20_end
+            goto ____switch22_end
         end
-        ::____switch20_case_1::
+        ::____switch22_case_1::
         do
             if button == 1 then
                 if self.level.rocketStartingLocation then
@@ -135,9 +140,9 @@ function LevelBuilder.prototype.mousepressed(self, mouseX, mouseY, button, istou
                 end
                 self.mode = Mode.Inspection
             end
-            goto ____switch20_end
+            goto ____switch22_end
         end
-        ::____switch20_case_2::
+        ::____switch22_case_2::
         do
             if button == 1 then
                 if self.level.rocketLandingLocation then
@@ -148,9 +153,9 @@ function LevelBuilder.prototype.mousepressed(self, mouseX, mouseY, button, istou
                 end
                 self.mode = Mode.Inspection
             end
-            goto ____switch20_end
+            goto ____switch22_end
         end
-        ::____switch20_end::
+        ::____switch22_end::
     end
     self.newMode = false
 end

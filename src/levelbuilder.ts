@@ -61,16 +61,21 @@ export class LevelBuilder implements GameState {
     private gridRenderer: GridRenderer;
     private campignLevelInfo: CampaignLevelInfo | undefined;
 
-    constructor(name: string, campaignLevelInfo?: CampaignLevelInfo) {
+    constructor(nameOrLevel: string | Level, campaignLevelInfo?: CampaignLevelInfo) {
         this.campignLevelInfo = campaignLevelInfo;
 
-        this.level = {
-            dataVersion: "0.0.2",
-            name: name,
-            terrainPoints: [],
-            rocketLandingLocation: undefined,
-            rocketStartingLocation: undefined,
-        };
+        if (type(nameOrLevel) == "string") {
+            this.level = {
+                dataVersion: "0.0.2",
+                name: nameOrLevel as string,
+                terrainPoints: [],
+                rocketLandingLocation: undefined,
+                rocketStartingLocation: undefined,
+            };
+        } else {
+            const level = nameOrLevel as Level;
+            this.level = level;
+        }
         this.mode = Mode.Inspection;
         this.newMode = false;
         this.buttons = [];

@@ -4,6 +4,7 @@ import { Button } from "./gui";
 import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { WrappedDrawable } from "./wrappeddrawable";
+import { LevelBuilder } from "./levelbuilder";
 
 export class LevelPicker {
     private importButton: Button;
@@ -63,6 +64,10 @@ export class LevelPicker {
         }
     }
 
+    enter() {
+        this.createButtons();
+    }
+
     private createButtons() {
         this.buttons.length = 0;
 
@@ -96,6 +101,9 @@ export class LevelPicker {
                             "successfully exported to " + fullPath,
                             "info"
                         );
+                    }),
+                    new Button(1200, y, 200, height, "Edit", () => {
+                        Application.pushState(new LevelBuilder(level));
                     })
                 );
             }
