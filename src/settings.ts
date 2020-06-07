@@ -2,7 +2,7 @@ export namespace Settings {
     let development = false;
 
     export function setDevelopment(val: boolean) {
-        development = true;
+        development = val;
     }
 
     export function isDevelopment(): boolean {
