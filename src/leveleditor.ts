@@ -52,31 +52,19 @@ const buttonSchemes = [
 const rocketLocationWidth = 200;
 const rocketLocationHeight = 20;
 
-export class LevelBuilder implements GameState {
+export class LevelEditor implements GameState {
     private level: Level;
     private buttons: Button[];
     private mode: Mode;
     private newMode: boolean;
     private camera: LevelBuilderCamera;
     private gridRenderer: GridRenderer;
-    private campignLevelInfo: CampaignLevelInfo | undefined;
     private currentTerrain: number[] | null = null;
+    private callback: (this:void, level: Level | undefined) => void;
 
-    constructor(nameOrLevel: string | Level, campaignLevelInfo?: CampaignLevelInfo) {
-        this.campignLevelInfo = campaignLevelInfo;
-
-        if (type(nameOrLevel) == "string") {
-            this.level = {
-                dataVersion: "0.0.2",
-                name: nameOrLevel as string,
-                terrainPoints: [],
-                rocketLandingLocation: undefined,
-                rocketStartingLocation: undefined,
-            };
-        } else {
-            const level = nameOrLevel as Level;
-            this.level = level;
-        }
+    constructor(level: Level, callback: (this:void, level: Level | undefined) => void) {
+        this.callback = callback;
+        this.level = level;
         this.mode = Mode.Inspection;
         this.newMode = false;
         this.buttons = [];
@@ -111,12 +99,8 @@ export class LevelBuilder implements GameState {
                 } else {
                     this.setNewMode(Mode.Inspection);
 
-                    if (campaignLevelInfo) {
-                        CampaignLevels.addLevel(this.level);
-                    } else {
-                        Levels.addLevel(this.level);
-                    }
                     Application.popState();
+                    this.callback(this.level);
                 }
             };
             this.buttons.push(new Button(x, y, w, h, text, callback));
@@ -214,7 +198,12 @@ export class LevelBuilder implements GameState {
 
     keypressed(key: KeyConstant) {
         if (key == "escape") {
-            this.setNewMode(Mode.Inspection);
+            if (this.mode == Mode.Inspection) {
+                this.callback(undefined);
+                Application.popState();
+            } else {
+                this.setNewMode(Mode.Inspection);
+            }
         }
     }
 
@@ -262,13 +251,6 @@ export class LevelBuilder implements GameState {
         love.graphics.origin();
         for (const button of this.buttons) {
             button.draw();
-        }
-        if (this.campignLevelInfo) {
-            love.graphics.print(
-                "campaign level " + tostring(this.campignLevelInfo.index),
-                0,
-                love.graphics.getHeight() - 15
-            );
         }
     }
 }

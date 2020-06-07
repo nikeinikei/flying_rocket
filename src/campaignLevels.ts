@@ -1,5 +1,5 @@
 import { json } from "./json";
-import { Level } from "./levelbuilder";
+import { Level } from "./leveleditor";
 
 interface Lfs {
     /** @returnTuple */

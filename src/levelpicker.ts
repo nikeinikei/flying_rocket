@@ -1,7 +1,7 @@
 import { KeyConstant } from "love.keyboard";
 
 import { Button } from "./gui";
-import { LevelBuilder } from "./levelbuilder";
+import { LevelEditor } from "./leveleditor";
 import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { WrappedDrawable } from "./wrappeddrawable";
@@ -108,7 +108,9 @@ export class LevelPicker {
                         love.window.showMessageBox("Export successful", "successfully exported to " + fullPath, "info");
                     }),
                     new Button(1200, y, 200, height, "Edit", () => {
-                        Application.pushState(new LevelBuilder(level));
+                        Application.pushState(new LevelEditor(level, _ => {
+                            Levels.save();
+                        }));
                     })
                 );
             }

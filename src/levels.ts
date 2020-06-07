@@ -1,6 +1,6 @@
 import { fixData } from "./datafixer";
 import { json } from "./json";
-import { Level } from "./levelbuilder";
+import { Level } from "./leveleditor";
 
 const fileName = "levels.json";
 let levels: Level[];
@@ -19,14 +19,11 @@ function init() {
     }
 }
 
-function save() {
-    love.filesystem.write(fileName, json.encode(levels));
-}
-
-init();
-save();
-
 export namespace Levels {
+    export function save() {
+        love.filesystem.write(fileName, json.encode(levels));
+    }
+
     export function addLevel(level: Level) {
         levels.push(level);
         save();
@@ -82,3 +79,6 @@ export namespace Levels {
         return true;
     }
 }
+
+init();
+Levels.save();

@@ -2,10 +2,11 @@ import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevelPicker } from "./campaignLevelPicker";
 import { Button, TextInput, Toggle } from "./gui";
-import { LevelBuilder } from "./levelbuilder";
+import { LevelEditor, Level } from "./leveleditor";
 import { LevelPicker } from "./levelpicker";
 import { Levels } from "./levels";
 import { Settings } from "./settings";
+import { CampaignLevels } from "./campaignLevels";
 
 class PreLevelBuilderGameState {
     private textInput: TextInput;
@@ -34,14 +35,36 @@ class PreLevelBuilderGameState {
                                 "error"
                             );
                         } else {
+                            const level: Level = {
+                                dataVersion: "0.0.2",
+                                name,
+                                rocketLandingLocation: undefined,
+                                rocketStartingLocation: undefined,
+                                terrainPoints: []
+                            };
+                            
                             Application.pushState(
-                                new LevelBuilder(name, {
-                                    index,
+                                new LevelEditor(level, level => {
+                                    if (level) {
+                                        CampaignLevels.addLevel(level);
+                                    }
                                 })
                             );
                         }
                     } else {
-                        Application.pushState(new LevelBuilder(name));
+                        const level: Level = {
+                            dataVersion: "0.0.2",
+                            name,
+                            rocketLandingLocation: undefined,
+                            rocketStartingLocation: undefined,
+                            terrainPoints: []
+                        };
+
+                        Application.pushState(new LevelEditor(level, level => {
+                            if (level) {
+                                Levels.addLevel(level);
+                            }
+                        }));
                     }
                 }
             }
