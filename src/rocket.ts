@@ -1,9 +1,13 @@
+import { WrappedDrawable } from "./wrappeddrawable";
+
 const rotationSpeed = (2 * math.pi) / 20;
-const maxThrust = 400;
+const maxThrust = 600;
+
+const rocketImage = love.graphics.newImage("res/rocket.png");
 
 export class Rocket {
     public static width: number = 50;
-    public static height: number = 50;
+    public static height: number = 80;
     public static userData = "Rocket";
 
     private body: Body;
@@ -11,15 +15,23 @@ export class Rocket {
     private fixture: Fixture;
     private rotation: number;
     private thrust: number;
+    private rocketDrawable: WrappedDrawable;
 
     constructor(world: World, x: number, y: number) {
         this.body = love.physics.newBody(world, x, y, "dynamic");
         this.body.setMass(1);
-        this.shape = love.physics.newRectangleShape(Rocket.width, Rocket.height);
+        this.shape = this.createGraphicsCoordinatesRectangleShape(Rocket.width, Rocket.height);
         this.fixture = love.physics.newFixture(this.body, this.shape);
         this.fixture.setUserData(Rocket.userData);
         this.rotation = 0;
         this.thrust = 0.9;
+        this.rocketDrawable = new WrappedDrawable(rocketImage);
+        const [imageWidth, imageHeight] = rocketImage.getDimensions();
+        [this.rocketDrawable.sx, this.rocketDrawable.sy] = [Rocket.width / imageWidth, Rocket.height / imageHeight];
+    }
+
+    private createGraphicsCoordinatesRectangleShape(width: number, height: number): PolygonShape {
+        return love.physics.newPolygonShape(0, 0, width, 0, width, height, 0, height);
     }
 
     getBody() {
@@ -55,6 +67,8 @@ export class Rocket {
     }
 
     draw() {
-        love.graphics.polygon("fill", ...this.body.getWorldPoints(...this.shape.getPoints()));
+        [this.rocketDrawable.x, this.rocketDrawable.y] = this.body.getPosition();
+        this.rocketDrawable.r = this.body.getAngle();
+        this.rocketDrawable.draw();
     }
 }

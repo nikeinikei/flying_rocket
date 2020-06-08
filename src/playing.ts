@@ -33,8 +33,8 @@ export class Playing {
         let rocketStartingLocation = level.rocketStartingLocation as Rectangle;
         let rocketLandingLocation = level.rocketLandingLocation as Rectangle;
 
-        let rocketX = rocketStartingLocation.x + rocketStartingLocation.w / 2;
-        let rocketY = rocketStartingLocation.y - Rocket.height / 2;
+        let rocketX = rocketStartingLocation.x + (rocketStartingLocation.w - Rocket.width) / 2;
+        let rocketY = rocketStartingLocation.y - Rocket.height;
 
         this.rocket = new Rocket(this.world, rocketX, rocketY);
 

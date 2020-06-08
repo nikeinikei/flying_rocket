@@ -32,8 +32,8 @@ function Playing.prototype.____constructor(self, level)
     )
     local rocketStartingLocation = level.rocketStartingLocation
     local rocketLandingLocation = level.rocketLandingLocation
-    local rocketX = rocketStartingLocation.x + (rocketStartingLocation.w / 2)
-    local rocketY = rocketStartingLocation.y - (Rocket.height / 2)
+    local rocketX = rocketStartingLocation.x + ((rocketStartingLocation.w - Rocket.width) / 2)
+    local rocketY = rocketStartingLocation.y - Rocket.height
     self.rocket = __TS__New(Rocket, self.world, rocketX, rocketY)
     self.rocketStartingLocationObject = self:newStaticRectangle(self.world, rocketStartingLocation.x + (rocketStartingLocation.w / 2), rocketStartingLocation.y + (rocketStartingLocation.h / 2), rocketStartingLocation.w, rocketStartingLocation.h)
     self.rocketStartingLocationObject.fixture:setUserData(rocketStartingLocationUserData)
