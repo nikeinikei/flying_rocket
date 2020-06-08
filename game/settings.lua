@@ -7,7 +7,7 @@ local Settings = ____exports.Settings
 do
     local development = false
     function Settings.setDevelopment(val)
-        development = true
+        development = val
     end
     function Settings.isDevelopment()
         return development
