@@ -11,7 +11,7 @@ export class CampaignLevelPicker {
 
     constructor() {
         this.campaignLevels = CampaignLevels.getLevels();
-
+        this.buttons = [];
         this.buttons = [];
         const rows = 4;
         const cols = 4;
@@ -32,8 +32,10 @@ export class CampaignLevelPicker {
 
                 const currentCount = count;
 
-                let level = this.campaignLevels.get(tostring(currentCount));
+                const countAsString = tostring(currentCount);
+                let level = this.campaignLevels.get(countAsString);
                 const button = new Button(x, y, width, height, tostring(count), () => {
+                    const level = this.campaignLevels.get(countAsString);
                     if (level) {
                         Application.pushState(new Playing(level));
                     } else {
@@ -58,6 +60,19 @@ export class CampaignLevelPicker {
     keypressed(key: KeyConstant) {
         if (key == "escape") {
             Application.popState();
+        }
+    }
+
+    filedropped(file: File) {
+        const number = CampaignLevels.importLevelFromFile(file);
+        if (!number) {
+            love.window.showMessageBox(
+                "Error while importing",
+                "something went wrong while importing this campaign level",
+                "error"
+            );
+        } else {
+            this.buttons[number - 1].disabled = false;
         }
     }
 }

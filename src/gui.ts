@@ -71,7 +71,7 @@ export class Button extends Element {
 
     mousepressed(x: number, y: number, button: number, istouch: boolean, presses: number) {
         super.mousepressed(x, y, button, istouch, presses);
-        if (!this.disabled &&  this.hovered && this.callback) {
+        if (!this.disabled && this.hovered && this.callback) {
             this.callback();
         }
     }

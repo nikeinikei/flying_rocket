@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 4,["8"] = 4,["9"] = 6,["10"] = 6,["11"] = 8,["12"] = 8,["13"] = 8,["15"] = 13,["16"] = 15,["17"] = 16,["18"] = 17,["19"] = 19,["20"] = 20,["21"] = 22,["22"] = 23,["23"] = 25,["24"] = 27,["26"] = 28,["27"] = 28,["29"] = 29,["30"] = 29,["31"] = 30,["32"] = 31,["33"] = 33,["34"] = 35,["35"] = 36,["36"] = 36,["37"] = 36,["38"] = 36,["39"] = 36,["40"] = 36,["41"] = 36,["42"] = 36,["43"] = 37,["44"] = 38,["45"] = 38,["46"] = 38,["48"] = 40,["50"] = 36,["51"] = 36,["52"] = 43,["53"] = 44,["55"] = 47,["56"] = 49,["57"] = 29,["60"] = 28,["63"] = 12,["64"] = 54,["65"] = 55,["66"] = 54,["67"] = 58,["68"] = 59,["69"] = 60,["71"] = 58});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 4,["8"] = 4,["9"] = 6,["10"] = 6,["11"] = 8,["12"] = 8,["13"] = 8,["15"] = 13,["16"] = 14,["17"] = 15,["18"] = 16,["19"] = 17,["20"] = 19,["21"] = 20,["22"] = 22,["23"] = 23,["24"] = 25,["25"] = 27,["27"] = 28,["28"] = 28,["30"] = 29,["31"] = 29,["32"] = 30,["33"] = 31,["34"] = 33,["35"] = 35,["36"] = 36,["37"] = 37,["38"] = 37,["39"] = 37,["40"] = 37,["41"] = 37,["42"] = 37,["43"] = 37,["44"] = 37,["45"] = 38,["46"] = 39,["47"] = 40,["48"] = 40,["49"] = 40,["51"] = 42,["53"] = 37,["54"] = 37,["55"] = 45,["56"] = 46,["58"] = 49,["59"] = 51,["60"] = 29,["63"] = 28,["66"] = 12,["67"] = 56,["68"] = 57,["69"] = 56,["70"] = 60,["71"] = 61,["72"] = 62,["74"] = 60,["75"] = 66,["76"] = 67,["77"] = 68,["78"] = 69,["80"] = 75,["82"] = 66});
 local ____exports = {}
 local ____campaignLevels = require("campaignLevels")
 local CampaignLevels = ____campaignLevels.CampaignLevels
@@ -13,6 +13,7 @@ local CampaignLevelPicker = ____exports.CampaignLevelPicker
 CampaignLevelPicker.name = "CampaignLevelPicker"
 function CampaignLevelPicker.prototype.____constructor(self)
     self.campaignLevels = CampaignLevels.getLevels()
+    self.buttons = {}
     self.buttons = {}
     local rows = 4
     local cols = 4
@@ -31,7 +32,8 @@ function CampaignLevelPicker.prototype.____constructor(self)
                     local x = startX + (padding * j)
                     local y = startY + (padding * i)
                     local currentCount = count
-                    local level = self.campaignLevels[tostring(currentCount)]
+                    local countAsString = tostring(currentCount)
+                    local level = self.campaignLevels[countAsString]
                     local button = __TS__New(
                         Button,
                         x,
@@ -40,6 +42,7 @@ function CampaignLevelPicker.prototype.____constructor(self)
                         height,
                         tostring(count),
                         function()
+                            local level = self.campaignLevels[countAsString]
                             if level then
                                 Application.pushState(
                                     __TS__New(Playing, level)
@@ -67,6 +70,14 @@ end
 function CampaignLevelPicker.prototype.keypressed(self, key)
     if key == "escape" then
         Application.popState()
+    end
+end
+function CampaignLevelPicker.prototype.filedropped(self, file)
+    local number = CampaignLevels.importLevelFromFile(file)
+    if not number then
+        love.window.showMessageBox("Error while importing", "something went wrong while importing this campaign level", "error")
+    else
+        self.buttons[number].disabled = false
     end
 end
 return ____exports

@@ -1,5 +1,5 @@
-import { WrappedDrawable } from "./wrappeddrawable";
 import { ImageUtils } from "./graphics/ImageUtils";
+import { WrappedDrawable } from "./wrappeddrawable";
 
 const rotationSpeed = (2 * math.pi) / 20;
 const maxThrust = 600;
@@ -26,8 +26,10 @@ export class Rocket {
         this.fixture.setUserData(Rocket.userData);
         this.rotation = 0;
         this.thrust = 0.9;
-        
-        this.rocketDrawable = new WrappedDrawable(ImageUtils.scaleImageToDimensions(rocketImage, Rocket.width, Rocket.height));
+
+        this.rocketDrawable = new WrappedDrawable(
+            ImageUtils.scaleImageToDimensions(rocketImage, Rocket.width, Rocket.height)
+        );
         [this.rocketDrawable.ox, this.rocketDrawable.oy] = [Rocket.width / 2, Rocket.height / 2];
     }
 

@@ -1,5 +1,7 @@
+import { fixData } from "./datafixer";
 import { json } from "./json";
 import { Level } from "./leveleditor";
+import { Settings } from "./settings";
 
 interface Lfs {
     /** @returnTuple */
@@ -62,6 +64,31 @@ export namespace CampaignLevels {
 
     export function getLevels() {
         return levels;
+    }
+
+    export function importLevelFromFile(file: File): number | undefined {
+        if (!Settings.isDevelopment()) {
+            return undefined;
+        }
+
+        const [contents, _size] = file.read();
+        if (!contents) {
+            return undefined;
+        }
+
+        const level: Level = json.decode(contents);
+        if (!fixData(level)) {
+            return undefined;
+        }
+
+        const asNumber = tonumber(level.name);
+        if (!asNumber) {
+            return undefined;
+        }
+
+        levels.set(level.name, level);
+        save();
+        return asNumber;
     }
 }
 

@@ -1,14 +1,16 @@
+import { KeyConstant } from "love.keyboard";
+
 import { Button } from "./gui";
 import { LevelEditor } from "./leveleditor";
 import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { WrappedDrawable } from "./wrappeddrawable";
-import { KeyConstant } from "love.keyboard";
 
 export class LevelPicker {
-    private static pageButtonCount = 6; 
+    private static pageButtonCount = 6;
 
     private importButton: Button;
+    private openSaveDirectoryButton: Button;
     private pageIndex: number;
     private buttons: Button[][] | undefined;
     private levelsNotAvailableTextWrapped: WrappedDrawable;
@@ -26,16 +28,23 @@ export class LevelPicker {
         this.importButton = new Button(50, 20, 400, 70, "Import Level", () => {
             love.window.showMessageBox("Import level", "to import a level just drop it into this window!", "info");
         });
+        this.openSaveDirectoryButton = new Button(500, 20, 400, 70, "Open save folder", () => {
+            love.system.openURL("file://" + love.filesystem.getSaveDirectory());
+        });
         this.createButtons();
 
         {
             const height = 30;
             const width = 70;
 
-            const y = love.graphics.getHeight() - height - 20
+            const y = love.graphics.getHeight() - height - 20;
 
-            this.backwardButton = new Button(20, y, width, height, "<-", () => { this.pageIndex--; });
-            this.forwardButton = new Button(love.graphics.getWidth() - width - 20, y, width, height, "->", () => { this.pageIndex++ });
+            this.backwardButton = new Button(20, y, width, height, "<-", () => {
+                this.pageIndex--;
+            });
+            this.forwardButton = new Button(love.graphics.getWidth() - width - 20, y, width, height, "->", () => {
+                this.pageIndex++;
+            });
         }
     }
 
@@ -48,7 +57,13 @@ export class LevelPicker {
     }
 
     getObjects() {
-        return [this.levelsNotAvailableTextWrapped, this.importButton, this.backwardButton, this.forwardButton];
+        return [
+            this.levelsNotAvailableTextWrapped,
+            this.importButton,
+            this.backwardButton,
+            this.forwardButton,
+            this.openSaveDirectoryButton,
+        ];
     }
 
     textinput(text: string) {
@@ -123,7 +138,7 @@ export class LevelPicker {
             let page: Button[] = [];
             for (let i = 0; i < levels.length; i++) {
                 if (i % LevelPicker.pageButtonCount == 0) {
-                    if (page.length > 0 ) {
+                    if (page.length > 0) {
                         buttons.push(page);
                         page = [];
                     }
