@@ -33,8 +33,8 @@ export class Playing {
         let rocketStartingLocation = level.rocketStartingLocation as Rectangle;
         let rocketLandingLocation = level.rocketLandingLocation as Rectangle;
 
-        let rocketX = rocketStartingLocation.x + (rocketStartingLocation.w - Rocket.width) / 2;
-        let rocketY = rocketStartingLocation.y - Rocket.height;
+        let rocketX = rocketStartingLocation.x + rocketStartingLocation.w / 2;
+        let rocketY = rocketStartingLocation.y - Rocket.height / 2;
 
         this.rocket = new Rocket(this.world, rocketX, rocketY);
 
@@ -84,7 +84,6 @@ export class Playing {
     }
 
     private isSafeLanding(rocket: Rocket): boolean {
-        const tilt = rocket.getTilt();
         if (math.abs(rocket.getTilt()) >= math.pi / 16) {
             return false;
         }

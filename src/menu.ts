@@ -1,12 +1,12 @@
 import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevelPicker } from "./campaignLevelPicker";
+import { CampaignLevels } from "./campaignLevels";
 import { Button, TextInput, Toggle } from "./gui";
-import { LevelEditor, Level } from "./leveleditor";
+import { Level, LevelEditor } from "./leveleditor";
 import { LevelPicker } from "./levelpicker";
 import { Levels } from "./levels";
 import { Settings } from "./settings";
-import { CampaignLevels } from "./campaignLevels";
 
 class PreLevelBuilderGameState {
     private textInput: TextInput;
@@ -40,9 +40,9 @@ class PreLevelBuilderGameState {
                                 name,
                                 rocketLandingLocation: undefined,
                                 rocketStartingLocation: undefined,
-                                terrainPoints: []
+                                terrainPoints: [],
                             };
-                            
+
                             Application.pushState(
                                 new LevelEditor(level, level => {
                                     if (level) {
@@ -57,14 +57,16 @@ class PreLevelBuilderGameState {
                             name,
                             rocketLandingLocation: undefined,
                             rocketStartingLocation: undefined,
-                            terrainPoints: []
+                            terrainPoints: [],
                         };
 
-                        Application.pushState(new LevelEditor(level, level => {
-                            if (level) {
-                                Levels.addLevel(level);
-                            }
-                        }));
+                        Application.pushState(
+                            new LevelEditor(level, level => {
+                                if (level) {
+                                    Levels.addLevel(level);
+                                }
+                            })
+                        );
                     }
                 }
             }

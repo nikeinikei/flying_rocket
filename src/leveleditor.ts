@@ -60,9 +60,9 @@ export class LevelEditor implements GameState {
     private camera: LevelBuilderCamera;
     private gridRenderer: GridRenderer;
     private currentTerrain: number[] | null = null;
-    private callback: (this:void, level: Level | undefined) => void;
+    private callback: (this: void, level: Level | undefined) => void;
 
-    constructor(level: Level, callback: (this:void, level: Level | undefined) => void) {
+    constructor(level: Level, callback: (this: void, level: Level | undefined) => void) {
         this.callback = callback;
         this.level = level;
         this.mode = Mode.Inspection;
