@@ -52,7 +52,7 @@ function Button.prototype.____constructor(self, x, y, w, h, text, callback)
 end
 function Button.prototype.mousepressed(self, x, y, button, istouch, presses)
     Element.prototype.mousepressed(self, x, y, button, istouch, presses)
-    if self.hovered and self.callback then
+    if ((not self.disabled) and self.hovered) and self.callback then
         self.callback()
     end
 end
