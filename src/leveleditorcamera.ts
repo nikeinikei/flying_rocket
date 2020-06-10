@@ -7,7 +7,9 @@ interface CameraControlKeycodes {
     left: KeyConstant;
 }
 
-export class LevelBuilderCamera {
+export class LevelEditorCamera {
+    private static zoomFactor = 0.1;
+
     /**
      * translation in x direction
      */
@@ -18,6 +20,8 @@ export class LevelBuilderCamera {
      */
     protected ty: number;
 
+    protected scale: number;
+
     protected cameraSpeed: Vector;
 
     protected cameraControlKeycodes: CameraControlKeycodes;
@@ -25,6 +29,7 @@ export class LevelBuilderCamera {
     constructor() {
         this.tx = 0;
         this.ty = 0;
+        this.scale = 1;
         this.cameraSpeed = {
             x: 300,
             y: 300,
@@ -64,7 +69,14 @@ export class LevelBuilderCamera {
         this.ty -= y * dy;
     }
 
+    wheelmoved(y: number) {
+        if (love.keyboard.isDown("lctrl")) {
+            this.scale += LevelEditorCamera.zoomFactor * y;
+        }
+    }
+
     apply() {
+        love.graphics.scale(this.scale);
         love.graphics.translate(this.tx, this.ty);
     }
 

@@ -2,7 +2,7 @@ import { KeyConstant } from "love.keyboard";
 
 import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
-import { LevelBuilderCamera } from "./levelbuildercamera";
+import { LevelEditorCamera } from "./leveleditorcamera";
 
 export interface Level {
     dataVersion: string;
@@ -55,7 +55,7 @@ export class LevelEditor implements GameState {
     private buttons: Button[];
     private mode: Mode;
     private newMode: boolean;
-    private camera: LevelBuilderCamera;
+    private camera: LevelEditorCamera;
     private gridRenderer: GridRenderer;
     private currentTerrain: number[] | null = null;
     private callback: (this: void, level: Level | undefined) => void;
@@ -103,7 +103,7 @@ export class LevelEditor implements GameState {
             };
             this.buttons.push(new Button(x, y, w, h, text, callback));
         }
-        this.camera = new LevelBuilderCamera();
+        this.camera = new LevelEditorCamera();
         this.gridRenderer = new GridRenderer(250, this.camera);
     }
 
@@ -130,6 +130,10 @@ export class LevelEditor implements GameState {
         for (const button of this.buttons) {
             button.update(dt);
         }
+    }
+
+    wheelmoved(_x: number, y: number) {
+        this.camera.wheelmoved(y);
     }
 
     private postTerrainBuilding() {

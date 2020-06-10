@@ -36,6 +36,7 @@ function save() {
         const [file] = io.open(fileName, "w");
         if (file) {
             file.write(jsonified);
+            file.close();
         } else {
             error("file doesn't exist");
         }
