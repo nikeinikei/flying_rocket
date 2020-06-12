@@ -1,7 +1,9 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 2,["8"] = 2,["9"] = 4,["10"] = 5,["11"] = 7,["12"] = 9,["13"] = 9,["14"] = 9,["15"] = 21,["16"] = 22,["17"] = 23,["18"] = 24,["19"] = 25,["20"] = 26,["21"] = 27,["22"] = 28,["23"] = 30,["24"] = 30,["25"] = 30,["26"] = 30,["27"] = 33,["28"] = 21,["29"] = 36,["30"] = 37,["31"] = 36,["32"] = 40,["33"] = 41,["34"] = 40,["35"] = 44,["36"] = 45,["37"] = 44,["38"] = 48,["39"] = 49,["40"] = 48,["41"] = 53,["42"] = 54,["43"] = 53,["44"] = 57,["45"] = 58,["46"] = 59,["47"] = 60,["48"] = 62,["49"] = 63,["50"] = 64,["51"] = 65,["52"] = 57,["53"] = 68,["54"] = 69,["55"] = 70,["56"] = 70,["58"] = 70,["59"] = 70,["60"] = 70,["61"] = 70,["62"] = 70,["63"] = 71,["64"] = 73,["65"] = 74,["66"] = 75,["67"] = 68,["68"] = 10,["69"] = 11,["70"] = 12});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 2,["8"] = 2,["9"] = 3,["10"] = 3,["11"] = 5,["12"] = 6,["13"] = 8,["14"] = 10,["15"] = 10,["16"] = 10,["17"] = 25,["18"] = 26,["19"] = 27,["20"] = 28,["21"] = 29,["22"] = 30,["23"] = 31,["24"] = 32,["25"] = 34,["26"] = 34,["27"] = 34,["28"] = 34,["29"] = 37,["30"] = 39,["31"] = 39,["32"] = 39,["33"] = 39,["34"] = 39,["35"] = 39,["36"] = 39,["37"] = 39,["38"] = 39,["39"] = 39,["40"] = 39,["41"] = 39,["42"] = 39,["43"] = 39,["44"] = 39,["45"] = 55,["46"] = 56,["47"] = 58,["49"] = 59,["50"] = 59,["52"] = 60,["53"] = 60,["54"] = 61,["55"] = 62,["56"] = 62,["57"] = 62,["58"] = 62,["59"] = 62,["60"] = 60,["63"] = 59,["66"] = 66,["68"] = 67,["69"] = 67,["70"] = 68,["71"] = 68,["72"] = 68,["73"] = 69,["74"] = 70,["75"] = 71,["76"] = 72,["77"] = 74,["78"] = 75,["79"] = 76,["80"] = 78,["81"] = 67,["84"] = 25,["85"] = 82,["86"] = 83,["87"] = 82,["88"] = 86,["89"] = 87,["90"] = 86,["91"] = 90,["92"] = 91,["93"] = 90,["94"] = 94,["95"] = 95,["96"] = 94,["97"] = 99,["98"] = 100,["99"] = 99,["100"] = 103,["101"] = 104,["102"] = 105,["103"] = 106,["104"] = 108,["105"] = 109,["106"] = 110,["107"] = 111,["108"] = 113,["109"] = 114,["110"] = 115,["111"] = 115,["112"] = 115,["113"] = 116,["114"] = 117,["115"] = 118,["116"] = 120,["117"] = 121,["119"] = 103,["120"] = 125,["121"] = 126,["122"] = 127,["123"] = 128,["124"] = 130,["125"] = 130,["126"] = 130,["127"] = 131,["128"] = 132,["129"] = 133,["131"] = 125,["132"] = 11,["133"] = 12,["134"] = 13,["135"] = 14});
 local ____exports = {}
+local ____Color4 = require("Color4")
+local Color = ____Color4.Color
 local ____ImageUtils = require("graphics.ImageUtils")
 local ImageUtils = ____ImageUtils.ImageUtils
 local ____wrappeddrawable = require("wrappeddrawable")
@@ -25,6 +27,60 @@ function Rocket.prototype.____constructor(self, world, x, y)
         ImageUtils.scaleImageToDimensions(rocketImage, ____exports.Rocket.width, ____exports.Rocket.height)
     )
     self.rocketDrawable.ox, self.rocketDrawable.oy = unpack({____exports.Rocket.width / 2, ____exports.Rocket.height / 2})
+    local shadesOfRed = {
+        Color:fromBytes(255, 160, 122),
+        Color:fromBytes(250, 128, 114),
+        Color:fromBytes(233, 150, 122),
+        Color:fromBytes(255, 160, 122),
+        Color:fromBytes(240, 128, 128),
+        Color:fromBytes(205, 92, 92),
+        Color:fromBytes(220, 20, 60),
+        Color:fromBytes(178, 34, 34),
+        Color:fromBytes(255, 0, 0),
+        Color:fromBytes(139, 0, 0),
+        Color:fromBytes(128, 0, 0),
+        Color:fromBytes(255, 99, 71),
+        Color:fromBytes(255, 69, 0)
+    }
+    local width = 4
+    local height = 4
+    local imageData = love.image.newImageData(4, 4)
+    do
+        local i = 0
+        while i < width do
+            do
+                local j = 0
+                while j < height do
+                    local randomColor = shadesOfRed[love.math.random(#shadesOfRed)]
+                    imageData:setPixel(
+                        i,
+                        j,
+                        randomColor:unpacked()
+                    )
+                    j = j + 1
+                end
+            end
+            i = i + 1
+        end
+    end
+    self.particleSystems = {}
+    do
+        local i = 0
+        while i < 3 do
+            local particleSystem = love.graphics.newParticleSystem(
+                love.graphics.newImage(imageData)
+            )
+            particleSystem:setParticleLifetime(0.4, 0.8)
+            particleSystem:setEmissionRate(0)
+            particleSystem:setLinearAcceleration(-10, 500, 10, 700)
+            particleSystem:setColors(1, 1, 1, 1, 1, 1, 1, 0)
+            local drawable = __TS__New(WrappedDrawable, particleSystem)
+            drawable.oy = -____exports.Rocket.height / 2
+            drawable.ox = (-____exports.Rocket.width / 2) + ((i * ____exports.Rocket.width) / 2)
+            __TS__ArrayPush(self.particleSystems, {particleSystem, drawable})
+            i = i + 1
+        end
+    end
 end
 function Rocket.prototype.getBody(self)
     return self.body
@@ -49,23 +105,32 @@ function Rocket.prototype.update(self, dt)
     local effectiveThrustX = math.sin(angle) * effectiveThrust
     local effectiveThrustY = -math.cos(angle) * effectiveThrust
     self.body:applyForce(effectiveThrustX, effectiveThrustY)
+    local decayRate = 0.01
+    local targetEmissionRate = self.thrust * ____exports.Rocket.maxEmissionRate
+    for ____, ____value in ipairs(self.particleSystems) do
+        local particleSystem = ____value[1]
+        local _ = ____value[2]
+        local currentEmissionRate = particleSystem:getEmissionRate()
+        local diff = targetEmissionRate - currentEmissionRate
+        local rate = 7
+        particleSystem:setEmissionRate(currentEmissionRate + ((diff * rate) * dt))
+        particleSystem:update(dt)
+    end
 end
 function Rocket.prototype.draw(self)
-    love.graphics.setColor(0.7, 0.7, 0.7, 1)
-    love.graphics.polygon(
-        "fill",
-        {
-            self.body:getWorldPoints(
-                self.shape:getPoints()
-            )
-        }
-    )
-    love.graphics.setColor(1, 1, 1, 1)
     self.rocketDrawable.x, self.rocketDrawable.y = self.body:getPosition()
     self.rocketDrawable.r = self.body:getAngle()
     self.rocketDrawable:draw()
+    for ____, ____value in ipairs(self.particleSystems) do
+        local _ = ____value[1]
+        local particleSystemDrawable = ____value[2]
+        particleSystemDrawable.x, particleSystemDrawable.y = self.body:getPosition()
+        particleSystemDrawable.r = self.body:getAngle()
+        particleSystemDrawable:draw()
+    end
 end
 Rocket.width = 50
 Rocket.height = 80
 Rocket.userData = "Rocket"
+Rocket.maxEmissionRate = 200
 return ____exports
