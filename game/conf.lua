@@ -1,6 +1,7 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 1,["5"] = 3,["6"] = 4,["7"] = 6,["8"] = 29,["9"] = 30,["10"] = 31,["11"] = 32,["12"] = 33,["13"] = 34,["17"] = 39,["18"] = 40,["20"] = 43,["21"] = 44,["22"] = 45,["23"] = 47,["24"] = 48,["25"] = 49,["26"] = 50,["27"] = 51,["28"] = 43});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["4"] = 4,["5"] = 6,["6"] = 8,["7"] = 9,["8"] = 11,["9"] = 34,["10"] = 35,["11"] = 36,["12"] = 37,["13"] = 38,["14"] = 39,["18"] = 44,["19"] = 45,["21"] = 48,["22"] = 49,["23"] = 50,["24"] = 52,["25"] = 53,["26"] = 54,["27"] = 55,["28"] = 56,["29"] = 48});
+require("love.font")
 loveWindow = require("love.window")
 display = 1
 desktopWidth, desktopHeight = loveWindow.getDesktopDimensions(display)

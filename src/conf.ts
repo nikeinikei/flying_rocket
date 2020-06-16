@@ -1,3 +1,8 @@
+/**
+ * workaround for https://github.com/love2d/love/issues/1590
+ */
+require("love.font");
+
 const loveWindow: typeof import("love.window") = require("love.window");
 
 const display = 1;
