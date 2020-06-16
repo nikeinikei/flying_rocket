@@ -134,6 +134,7 @@ const buttonSchemes = [
     {
         name: "Options",
         callback: () => {
+            error("oh no, options aren't there");
             love.window.showMessageBox("Not implemented", "Options are currently not available");
         },
     },

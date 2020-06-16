@@ -2,6 +2,7 @@ import { Menu } from "./menu";
 import { Settings } from "./settings";
 
 require("globals");
+require("customerrorhandler");
 
 function parseArgs(args: string[]) {
     for (const arg of args) {

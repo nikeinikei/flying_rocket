@@ -9,8 +9,6 @@ local Stack = require "util.stack"
 local LOVE_CALLBACKS = {
     "directorydropped",
     "draw",
-    "errhand",
-    "errorhandler",
     "filedropped",
     "focus",
     "keypressed",
