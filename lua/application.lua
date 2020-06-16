@@ -1,4 +1,5 @@
 local Stack = require "util.stack"
+local Settings = require("settings").Settings
 
 --[[
     Upon pushing a state the getObjects method gets called,
@@ -30,6 +31,22 @@ local LOVE_CALLBACKS = {
     "wheelmoved"
 }
 
+--sometimes a global override for a löve callback is of desire
+--should only be used for very special cases since it can 
+--lead to spaghetti code very quick
+local specialCases = {
+    {
+        name = "keypressed", 
+        func = function(f)
+            return function(key, code, isrepeat)
+                if Settings.isDevelopment() and key == "r" then
+                    love.event.quit("restart")
+                end
+                f(key, code, isrepeat)
+            end
+        end
+    }
+}
 
 local states = Stack()
 local usedCallbacks = {}
@@ -46,6 +63,16 @@ local function resetCallbacks()
 end
 
 local emptyTable = {}
+
+local function checkForSpecialCase(loveCallback)
+    for i = 1, #specialCases do
+        local specialCase = specialCases[i]
+        if specialCase.name == loveCallback then
+            love[loveCallback] = specialCase.func(love[loveCallback])
+            break
+        end
+    end
+end
 
 local function makeActive(state)
     if state.enter then
@@ -86,16 +113,7 @@ local function makeActive(state)
                 end
             end
 
-            if loveCallback == "draw" then
-                local camera = (state.getCamera and state:getCamera()) or nil
-                if camera then
-                    local oldLoveCallback = love[loveCallback]
-                    local wrapped = function()
-                        camera:apply()
-                        oldLoveCallback()
-                    end
-                end
-            end
+            checkForSpecialCase(loveCallback)
 
             table.insert(usedCallbacks, loveCallback)
         end
