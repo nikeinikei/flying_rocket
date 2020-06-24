@@ -3,7 +3,8 @@ import { KeyConstant } from "love.keyboard";
 import { CampaignLevelPicker } from "./campaignLevelPicker";
 import { CampaignLevels } from "./campaignLevels";
 import { Button, TextInput, Toggle } from "./gui";
-import { Level, LevelEditor } from "./leveleditor";
+import { Level, newLevel } from "./level";
+import { LevelEditor } from "./leveleditor";
 import { LevelPicker } from "./levelpicker";
 import { Levels } from "./levels";
 import { Settings } from "./settings";
@@ -35,13 +36,7 @@ class PreLevelBuilderGameState {
                                 "error"
                             );
                         } else {
-                            const level: Level = {
-                                dataVersion: "0.0.2",
-                                name,
-                                rocketLandingLocation: undefined,
-                                rocketStartingLocation: undefined,
-                                terrainPoints: [],
-                            };
+                            const level = newLevel(name);
 
                             Application.pushState(
                                 new LevelEditor(level, level => {
@@ -52,13 +47,7 @@ class PreLevelBuilderGameState {
                             );
                         }
                     } else {
-                        const level: Level = {
-                            dataVersion: "0.0.2",
-                            name,
-                            rocketLandingLocation: undefined,
-                            rocketStartingLocation: undefined,
-                            terrainPoints: [],
-                        };
+                        const level = newLevel(name);
 
                         Application.pushState(
                             new LevelEditor(level, level => {

@@ -29,15 +29,11 @@ export class ParticleSystem {
             minX: 0,
             maxX: 0,
             minY: 0,
-            maxY: 0
+            maxY: 0,
         };
     }
 
-    update(dt: number) {
-        
-    }
+    update(dt: number) {}
 
-    draw() {
-
-    }
+    draw() {}
 }

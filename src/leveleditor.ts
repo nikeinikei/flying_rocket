@@ -2,15 +2,8 @@ import { KeyConstant } from "love.keyboard";
 
 import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
+import { Level } from "./level";
 import { LevelBuilderCamera } from "./levelbuildercamera";
-
-export interface Level {
-    dataVersion: string;
-    name: string;
-    terrainPoints: number[][];
-    rocketStartingLocation: Rectangle | undefined;
-    rocketLandingLocation: Rectangle | undefined;
-}
 
 export interface CampaignLevelInfo {
     index: number;

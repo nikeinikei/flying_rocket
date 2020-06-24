@@ -2,7 +2,7 @@ import { KeyConstant } from "love.keyboard";
 import { World } from "love.physics";
 
 import { Controls } from "./controls";
-import { Level } from "./leveleditor";
+import { Level } from "./level";
 import { Lost } from "./lost";
 import { Paused } from "./paused";
 import { PlayingCamera } from "./playingCamera";

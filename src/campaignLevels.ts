@@ -1,6 +1,6 @@
 import { fixData } from "./datafixer";
 import { json } from "./json";
-import { Level } from "./leveleditor";
+import { Level } from "./level";
 import { Settings } from "./settings";
 
 interface Lfs {

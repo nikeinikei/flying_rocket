@@ -2,7 +2,7 @@ import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevels } from "./campaignLevels";
 import { Button } from "./gui";
-import { Level } from "./leveleditor";
+import { Level } from "./level";
 import { Playing } from "./playing";
 
 export class CampaignLevelPicker {
