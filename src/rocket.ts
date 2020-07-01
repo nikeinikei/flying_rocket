@@ -2,24 +2,25 @@ import { Color } from "./Color4";
 import { ImageUtils } from "./graphics/ImageUtils";
 import { WrappedDrawable } from "./wrappeddrawable";
 
-const rotationSpeed = (2 * math.pi) / 20;
-const maxThrust = 600;
-
-const rocketImage = love.graphics.newImage("res/rocket.png");
-
 export class Rocket {
+    public static userData = "Rocket";
     public static width: number = 50;
     public static height: number = 80;
-    public static userData = "Rocket";
-    public static maxEmissionRate = 200;
+
+    private static maxEmissionRate = 200;
+    private static maxThrust = 600;
+    private static rotationSpeed = (2 * math.pi) / 20;
+    private static rocketImage = love.graphics.newImage("res/rocket.png");
+    private static fuelThrustConversionFactor: number = 100 / 20;
 
     private body: Body;
     private shape: PolygonShape;
     private fixture: Fixture;
     private rotation: number;
+    private pedal: number;
     private thrust: number;
+    private fuel: number;
     private rocketDrawable: WrappedDrawable;
-
     private particleSystems: [ParticleSystem, WrappedDrawable][];
 
     constructor(world: World, x: number, y: number) {
@@ -29,10 +30,12 @@ export class Rocket {
         this.fixture = love.physics.newFixture(this.body, this.shape, 1);
         this.fixture.setUserData(Rocket.userData);
         this.rotation = 0;
-        this.thrust = 0.9;
+        this.pedal = 0;
+        this.thrust = 0;
+        this.fuel = 100;
 
         this.rocketDrawable = new WrappedDrawable(
-            ImageUtils.scaleImageToDimensions(rocketImage, Rocket.width, Rocket.height)
+            ImageUtils.scaleImageToDimensions(Rocket.rocketImage, Rocket.width, Rocket.height)
         );
         [this.rocketDrawable.ox, this.rocketDrawable.oy] = [Rocket.width / 2, Rocket.height / 2];
 
@@ -87,12 +90,16 @@ export class Rocket {
         return this.body.getAngle();
     }
 
-    setThrust(thrust: number) {
-        this.thrust = thrust;
+    setPedal(pedal: number) {
+        this.pedal = pedal;
     }
 
     setRotation(rotation: number) {
         this.rotation = rotation;
+    }
+
+    getFuel() {
+        return this.fuel;
     }
 
     /** @tupleReturn */
@@ -102,21 +109,29 @@ export class Rocket {
 
     update(dt: number) {
         let angle = this.body.getAngle();
-        angle = angle + rotationSpeed * dt * this.rotation;
+        angle = angle + Rocket.rotationSpeed * dt * this.rotation;
         this.body.setAngle(angle);
 
-        let effectiveThrust = this.thrust * maxThrust;
+        this.fuel -= this.thrust * Rocket.fuelThrustConversionFactor * dt;
+        this.fuel = Math.max(0, this.fuel);
+
+        const currentThrust = this.thrust;
+        let diff: number;
+        if (this.fuel > 0) {
+            diff = this.pedal - currentThrust
+        } else {
+            diff = -currentThrust;
+        }
+        const rate = 7;
+        this.thrust = this.thrust + diff * rate * dt;
+
+        let effectiveThrust = this.thrust * Rocket.maxThrust;
         let effectiveThrustX = math.sin(angle) * effectiveThrust;
         let effectiveThrustY = -math.cos(angle) * effectiveThrust;
         this.body.applyForce(effectiveThrustX, effectiveThrustY);
 
-        const targetEmissionRate = this.thrust * Rocket.maxEmissionRate;
         for (const [particleSystem, _] of this.particleSystems) {
-            const currentEmissionRate = particleSystem.getEmissionRate();
-            const diff = targetEmissionRate - currentEmissionRate;
-            const rate = 7;
-
-            particleSystem.setEmissionRate(currentEmissionRate + diff * rate * dt);
+            particleSystem.setEmissionRate(this.thrust * Rocket.maxEmissionRate);
             particleSystem.update(dt);
         }
     }

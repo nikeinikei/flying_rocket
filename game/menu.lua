@@ -10,6 +10,8 @@ local ____gui = require("gui")
 local Button = ____gui.Button
 local TextInput = ____gui.TextInput
 local Toggle = ____gui.Toggle
+local ____level = require("level")
+local newLevel = ____level.newLevel
 local ____leveleditor = require("leveleditor")
 local LevelEditor = ____leveleditor.LevelEditor
 local ____levelpicker = require("levelpicker")
@@ -18,8 +20,6 @@ local ____levels = require("levels")
 local Levels = ____levels.Levels
 local ____settings = require("settings")
 local Settings = ____settings.Settings
-local ____level = require("level")
-local newLevel = ____level.newLevel
 local PreLevelBuilderGameState = __TS__Class()
 PreLevelBuilderGameState.name = "PreLevelBuilderGameState"
 function PreLevelBuilderGameState.prototype.____constructor(self)

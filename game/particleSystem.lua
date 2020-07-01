@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 15,["6"] = 15,["7"] = 15,["8"] = 23,["9"] = 24,["10"] = 25,["11"] = 26,["12"] = 27,["13"] = 28,["14"] = 23,["15"] = 36,["16"] = 36,["17"] = 40,["18"] = 40});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 15,["6"] = 15,["7"] = 15,["8"] = 23,["9"] = 24,["10"] = 25,["11"] = 26,["12"] = 27,["13"] = 28,["14"] = 23,["15"] = 36,["16"] = 36,["17"] = 38,["18"] = 38});
 local ____exports = {}
 ____exports.ParticleSystem = __TS__Class()
 local ParticleSystem = ____exports.ParticleSystem

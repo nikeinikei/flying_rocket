@@ -158,9 +158,9 @@ export class Playing {
 
     update(dt: number) {
         if (love.keyboard.isDown(Controls.game.applyThrust)) {
-            this.rocket.setThrust(1);
+            this.rocket.setPedal(1);
         } else {
-            this.rocket.setThrust(0);
+            this.rocket.setPedal(0);
         }
 
         let rotation = 0;
@@ -197,6 +197,7 @@ export class Playing {
         love.graphics.origin();
         love.graphics.print("elapsed time " + tostring(this.clock.getElapsed()), love.graphics.getWidth() - 200, 0);
         love.graphics.print(tostring(love.timer.getFPS()));
+        love.graphics.print("fuel = " + tostring(this.rocket.getFuel()), 0, 15);
     }
 
     keypressed(key: KeyConstant) {
