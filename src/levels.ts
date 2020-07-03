@@ -1,6 +1,6 @@
-import { fixData } from "./datafixer";
 import { json } from "./json";
 import { Level } from "./level";
+import { DataFixer } from "./datafixer";
 
 const fileName = "levels.json";
 let levels: Level[];
@@ -10,7 +10,7 @@ function init() {
         const [contents, _size] = love.filesystem.read(fileName);
         if (contents) {
             levels = json.decode(contents);
-            levels = levels.filter(level => fixData(level));
+            levels = levels.filter(level => DataFixer.fixData(level));
         } else {
             levels = [];
         }
@@ -70,7 +70,7 @@ export namespace Levels {
         }
 
         const level = json.decode(contents);
-        if (!fixData(level)) {
+        if (!DataFixer.fixData(level)) {
             return false;
         }
 

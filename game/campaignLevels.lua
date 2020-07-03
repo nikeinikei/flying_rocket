@@ -1,32 +1,15 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 2,["8"] = 2,["9"] = 4,["10"] = 4,["11"] = 14,["12"] = 15,["13"] = 17,["14"] = 18,["15"] = 18,["16"] = 18,["17"] = 19,["18"] = 19,["19"] = 19,["20"] = 20,["21"] = 21,["23"] = 23,["26"] = 26,["28"] = 17,["29"] = 30,["30"] = 31,["31"] = 33,["32"] = 35,["33"] = 35,["34"] = 36,["35"] = 37,["36"] = 38,["38"] = 40,["40"] = 35,["41"] = 44,["42"] = 46,["43"] = 48,["44"] = 50,["45"] = 51,["46"] = 53,["47"] = 55,["48"] = 56,["49"] = 30,["51"] = 59,["53"] = 59,["54"] = 61,["55"] = 62,["56"] = 60,["57"] = 59,["58"] = 66,["59"] = 65,["60"] = 59,["61"] = 70,["62"] = 71,["64"] = 74,["65"] = 75,["66"] = 76,["68"] = 79,["69"] = 80,["70"] = 81,["72"] = 84,["73"] = 85,["74"] = 86,["76"] = 89,["77"] = 90,["78"] = 91,["79"] = 69,["81"] = 95});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 14,["12"] = 38,["13"] = 39,["14"] = 41,["15"] = 43,["16"] = 43,["17"] = 44,["18"] = 45,["19"] = 46,["21"] = 48,["23"] = 43,["24"] = 52,["25"] = 54,["26"] = 56,["27"] = 58,["28"] = 59,["29"] = 61,["30"] = 63,["31"] = 64,["32"] = 38,["33"] = 14,["34"] = 15,["35"] = 17,["36"] = 18,["37"] = 18,["38"] = 18,["39"] = 19,["40"] = 19,["41"] = 19,["42"] = 20,["43"] = 21,["45"] = 23,["48"] = 26,["50"] = 29,["51"] = 30,["53"] = 33,["54"] = 34,["56"] = 17,["58"] = 67,["60"] = 67,["61"] = 69,["62"] = 70,["63"] = 68,["64"] = 67,["65"] = 74,["66"] = 73,["67"] = 67,["68"] = 78,["69"] = 79,["71"] = 82,["72"] = 83,["73"] = 84,["75"] = 87,["76"] = 88,["77"] = 89,["79"] = 92,["80"] = 93,["81"] = 94,["83"] = 97,["84"] = 98,["85"] = 99,["86"] = 77,["88"] = 103});
 local ____exports = {}
-local ____datafixer = require("datafixer")
-local fixData = ____datafixer.fixData
 local ____json = require("json")
 local json = ____json.json
 local ____settings = require("settings")
 local Settings = ____settings.Settings
-local fileName = "campaignLevels.json"
-local levels = {}
-local function init()
-    if love.filesystem.getInfo(
-        "res/" .. tostring(fileName)
-    ) then
-        local contents, _size = love.filesystem.read(
-            "res/" .. tostring(fileName)
-        )
-        if contents then
-            levels = json.decode(contents)
-        else
-            error("this shouldn't happen")
-        end
-    else
-        error("no campaign levels found. Is the game corrupted?")
-    end
-end
-local function save()
+local ____datafixer = require("datafixer")
+local DataFixer = ____datafixer.DataFixer
+local fileName, levels, save
+function save()
     local jsonified = json.encode(levels)
     local lfs = require("lfs")
     local writeLevelsToFile
@@ -47,6 +30,30 @@ local function save()
     lfs.chdir("..")
     lfs.chdir("..")
 end
+fileName = "campaignLevels.json"
+levels = {}
+local function init()
+    if love.filesystem.getInfo(
+        "res/" .. tostring(fileName)
+    ) then
+        local contents, _size = love.filesystem.read(
+            "res/" .. tostring(fileName)
+        )
+        if contents then
+            levels = json.decode(contents)
+        else
+            error("this shouldn't happen")
+        end
+    else
+        error("no campaign levels found. Is the game corrupted?")
+    end
+    for k, v in pairs(levels) do
+        local res = DataFixer.fixData(v)
+    end
+    if Settings.isDevelopment() then
+        save()
+    end
+end
 ____exports.CampaignLevels = {}
 local CampaignLevels = ____exports.CampaignLevels
 do
@@ -66,7 +73,7 @@ do
             return nil
         end
         local level = json.decode(contents)
-        if not fixData(level) then
+        if not DataFixer.fixData(level) then
             return nil
         end
         local asNumber = tonumber(level.name)

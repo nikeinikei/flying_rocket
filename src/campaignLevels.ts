@@ -1,7 +1,7 @@
-import { fixData } from "./datafixer";
 import { json } from "./json";
 import { Level } from "./level";
 import { Settings } from "./settings";
+import { DataFixer } from "./datafixer";
 
 interface Lfs {
     /** @returnTuple */
@@ -24,6 +24,14 @@ function init() {
         }
     } else {
         error("no campaign levels found. Is the game corrupted?");
+    }
+
+    for (const [k, v] of pairs(levels)) {
+        const res = DataFixer.fixData(v);
+    }
+
+    if (Settings.isDevelopment()) {
+        save();
     }
 }
 
@@ -77,7 +85,7 @@ export namespace CampaignLevels {
         }
 
         const level: Level = json.decode(contents);
-        if (!fixData(level)) {
+        if (!DataFixer.fixData(level)) {
             return undefined;
         }
 
