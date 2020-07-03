@@ -14,7 +14,15 @@ interface Lfs {
 const fileName = "campaignLevels.json";
 let levels: Table<string, Level> = new Table();
 
-function init() {
+let isInit = false;
+
+function assertInit() {
+    if (!isInit) {
+        error("campaign levels are not initialized, CampaignLevels.init() has to be called in love.load before pushing the first state");
+    }
+}
+
+function internal_init() {
     if (love.filesystem.getInfo("res/" + fileName)) {
         const [contents, _size] = love.filesystem.read("res/" + fileName);
         if (contents) {
@@ -28,6 +36,9 @@ function init() {
 
     for (const [k, v] of pairs(levels)) {
         const res = DataFixer.fixData(v);
+        if (!res) {
+            error("campaign levels are corrupt, please message the developer.");
+        }
     }
 
     if (Settings.isDevelopment()) {
@@ -65,16 +76,25 @@ function save() {
 }
 
 export namespace CampaignLevels {
+    export function init() {
+        internal_init();
+        isInit = true;
+    }
+
     export function addLevel(level: Level) {
+        assertInit();
+
         levels.set(level.name, level);
         save();
     }
 
     export function getLevels() {
+        assertInit();
         return levels;
     }
 
     export function importLevelFromFile(file: File): number | undefined {
+        assertInit();
         if (!Settings.isDevelopment()) {
             return undefined;
         }
@@ -99,5 +119,3 @@ export namespace CampaignLevels {
         return asNumber;
     }
 }
-
-init();

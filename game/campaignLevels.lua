@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 14,["12"] = 38,["13"] = 39,["14"] = 41,["15"] = 43,["16"] = 43,["17"] = 44,["18"] = 45,["19"] = 46,["21"] = 48,["23"] = 43,["24"] = 52,["25"] = 54,["26"] = 56,["27"] = 58,["28"] = 59,["29"] = 61,["30"] = 63,["31"] = 64,["32"] = 38,["33"] = 14,["34"] = 15,["35"] = 17,["36"] = 18,["37"] = 18,["38"] = 18,["39"] = 19,["40"] = 19,["41"] = 19,["42"] = 20,["43"] = 21,["45"] = 23,["48"] = 26,["50"] = 29,["51"] = 30,["53"] = 33,["54"] = 34,["56"] = 17,["58"] = 67,["60"] = 67,["61"] = 69,["62"] = 70,["63"] = 68,["64"] = 67,["65"] = 74,["66"] = 73,["67"] = 67,["68"] = 78,["69"] = 79,["71"] = 82,["72"] = 83,["73"] = 84,["75"] = 87,["76"] = 88,["77"] = 89,["79"] = 92,["80"] = 93,["81"] = 94,["83"] = 97,["84"] = 98,["85"] = 99,["86"] = 77,["88"] = 103});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 14,["12"] = 49,["13"] = 50,["14"] = 52,["15"] = 54,["16"] = 54,["17"] = 55,["18"] = 56,["19"] = 57,["21"] = 59,["23"] = 54,["24"] = 63,["25"] = 65,["26"] = 67,["27"] = 69,["28"] = 70,["29"] = 72,["30"] = 74,["31"] = 75,["32"] = 49,["33"] = 14,["34"] = 15,["35"] = 17,["36"] = 19,["37"] = 20,["38"] = 21,["40"] = 19,["41"] = 25,["42"] = 26,["43"] = 26,["44"] = 26,["45"] = 27,["46"] = 27,["47"] = 27,["48"] = 28,["49"] = 29,["51"] = 31,["54"] = 34,["56"] = 37,["57"] = 38,["58"] = 39,["59"] = 40,["62"] = 44,["63"] = 45,["65"] = 25,["67"] = 78,["69"] = 78,["70"] = 80,["71"] = 81,["72"] = 79,["73"] = 78,["74"] = 85,["75"] = 87,["76"] = 88,["77"] = 84,["78"] = 78,["79"] = 92,["80"] = 93,["81"] = 91,["82"] = 78,["83"] = 97,["84"] = 98,["85"] = 99,["87"] = 102,["88"] = 103,["89"] = 104,["91"] = 107,["92"] = 108,["93"] = 109,["95"] = 112,["96"] = 113,["97"] = 114,["99"] = 117,["100"] = 118,["101"] = 119,["102"] = 96});
 local ____exports = {}
 local ____json = require("json")
 local json = ____json.json
@@ -32,7 +32,13 @@ function save()
 end
 fileName = "campaignLevels.json"
 levels = {}
-local function init()
+local isInit = false
+local function assertInit()
+    if not isInit then
+        error("campaign levels are not initialized, CampaignLevels.init() has to be called in love.load before pushing the first state")
+    end
+end
+local function internal_init()
     if love.filesystem.getInfo(
         "res/" .. tostring(fileName)
     ) then
@@ -49,6 +55,9 @@ local function init()
     end
     for k, v in pairs(levels) do
         local res = DataFixer.fixData(v)
+        if not res then
+            error("campaign levels are corrupt, please message the developer.")
+        end
     end
     if Settings.isDevelopment() then
         save()
@@ -57,14 +66,21 @@ end
 ____exports.CampaignLevels = {}
 local CampaignLevels = ____exports.CampaignLevels
 do
+    function CampaignLevels.init()
+        internal_init()
+        isInit = true
+    end
     function CampaignLevels.addLevel(level)
+        assertInit()
         levels[level.name] = level
         save()
     end
     function CampaignLevels.getLevels()
+        assertInit()
         return levels
     end
     function CampaignLevels.importLevelFromFile(file)
+        assertInit()
         if not Settings.isDevelopment() then
             return nil
         end
@@ -85,5 +101,4 @@ do
         return asNumber
     end
 end
-init()
 return ____exports
