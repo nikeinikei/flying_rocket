@@ -1,4 +1,4 @@
-const currentDataVersion: string = "0.0.2";
+const currentDataVersion: string = "0.0.3";
 
 export interface Level {
     dataVersion: string;
@@ -6,14 +6,16 @@ export interface Level {
     terrainPoints: number[][];
     rocketStartingLocation: Rectangle | undefined;
     rocketLandingLocation: Rectangle | undefined;
+    refuelStations: Rectangle[];
 }
 
 export function newLevel(name: string): Level {
     return {
-        dataVersion: "0.0.2",
+        dataVersion: currentDataVersion,
         name,
         rocketLandingLocation: undefined,
         rocketStartingLocation: undefined,
         terrainPoints: [],
+        refuelStations: [],
     };
 }

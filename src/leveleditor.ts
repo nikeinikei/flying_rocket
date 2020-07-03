@@ -13,6 +13,7 @@ enum Mode {
     TerrainBuilding,
     RocketStartingLocation,
     RocketLandingLocation,
+    AddRefuelStation,
     Inspection,
 }
 
@@ -35,6 +36,10 @@ const buttonSchemes = [
         mode: Mode.RocketLandingLocation,
     },
     {
+        name: "Add Refuel Station",
+        mode: Mode.AddRefuelStation,
+    },
+    {
         name: "Add Terrain",
         mode: Mode.TerrainBuilding,
     },
@@ -42,6 +47,9 @@ const buttonSchemes = [
 
 const rocketLocationWidth = 200;
 const rocketLocationHeight = 20;
+
+const refuelStationWidth = 200;
+const refuelStationHeight = 20;
 
 export class LevelEditor implements GameState {
     private level: Level;
@@ -51,6 +59,7 @@ export class LevelEditor implements GameState {
     private camera: LevelBuilderCamera;
     private gridRenderer: GridRenderer;
     private currentTerrain: number[] | null = null;
+    private currentRefuelStation: Rectangle | undefined = undefined;
     private callback: (this: void, level: Level | undefined) => void;
 
     constructor(level: Level, callback: (this: void, level: Level | undefined) => void) {
@@ -105,12 +114,23 @@ export class LevelEditor implements GameState {
             if (this.mode == Mode.TerrainBuilding) {
                 this.postTerrainBuilding();
             }
+            if (this.mode == Mode.AddRefuelStation) {
+                this.currentRefuelStation = undefined;
+            }
 
             this.mode = newMode;
             this.newMode = true;
 
             if (this.mode == Mode.TerrainBuilding) {
                 this.currentTerrain = [];
+            }
+            if (this.mode == Mode.AddRefuelStation) {
+                this.currentRefuelStation = {
+                    x: 0,
+                    y: 0,
+                    w: refuelStationWidth,
+                    h: refuelStationHeight,
+                };
             }
         }
     }
@@ -163,7 +183,20 @@ export class LevelEditor implements GameState {
                                 h: rocketLocationHeight,
                             };
                         }
-                        this.mode = Mode.Inspection;
+                        this.setNewMode(Mode.Inspection);
+                    }
+                    break;
+                case Mode.AddRefuelStation:
+                    if (button == 1) {
+                        if (this.currentRefuelStation) {
+                            this.currentRefuelStation.x = worldX;
+                            this.currentRefuelStation.y = worldY;
+                            this.level.refuelStations.push(this.currentRefuelStation);
+                            this.currentRefuelStation = undefined;
+                            this.setNewMode(Mode.Inspection);
+                        } else {
+                            assert(this.currentRefuelStation, "this.mode != Mode.AddRefuelStation");
+                        }
                     }
                     break;
                 case Mode.RocketLandingLocation:
@@ -179,7 +212,7 @@ export class LevelEditor implements GameState {
                                 h: rocketLocationHeight,
                             };
                         }
-                        this.mode = Mode.Inspection;
+                        this.setNewMode(Mode.Inspection);
                     }
                     break;
             }
@@ -196,6 +229,21 @@ export class LevelEditor implements GameState {
                 this.setNewMode(Mode.Inspection);
             }
         }
+    }
+
+    private drawStartingLocation(x: number, y: number, w: number, h: number) {
+        love.graphics.setColor(0, 1, 0, 1);
+        love.graphics.rectangle("fill", x, y, w, h);
+    }
+
+    private drawLandingLocation(x: number, y: number, w: number, h: number) {
+        love.graphics.setColor(0, 0, 1, 1);
+        love.graphics.rectangle("fill", x, y, w, h);
+    }
+
+    private drawRefuelStation(x: number, y: number, w: number, h: number) {
+        love.graphics.setColor(0.7, 0.7, 0.7, 1);
+        love.graphics.rectangle("fill", x, y, w, h);
     }
 
     draw() {
@@ -223,21 +271,31 @@ export class LevelEditor implements GameState {
         love.graphics.setColor(1, 1, 1, 1);
         let rect = this.level.rocketStartingLocation;
         if (this.mode == Mode.RocketStartingLocation) {
-            love.graphics.rectangle("fill", worldX, worldY, rocketLocationWidth, rocketLocationHeight);
+            this.drawStartingLocation(worldX, worldY, rocketLocationWidth, rocketLocationHeight);
         } else {
             if (rect) {
-                love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h);
+                this.drawStartingLocation(rect.x, rect.y, rect.w, rect.h);
             }
         }
 
         rect = this.level.rocketLandingLocation;
         if (this.mode == Mode.RocketLandingLocation) {
-            love.graphics.rectangle("fill", worldX, worldY, rocketLocationWidth, rocketLocationHeight);
+            this.drawLandingLocation(worldX, worldY, rocketLocationWidth, rocketLocationHeight);
         } else {
             if (rect) {
-                love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h);
+                this.drawLandingLocation(rect.x, rect.y, rect.w, rect.h);
             }
         }
+
+        rect = this.currentRefuelStation;
+        if (rect) {
+            this.drawRefuelStation(worldX, worldY, rect.w, rect.h);
+        }
+        for (const refuelStation of this.level.refuelStations) {
+            this.drawRefuelStation(refuelStation.x, refuelStation.y, refuelStation.w, refuelStation.h);
+        }
+
+        love.graphics.setColor(1, 1, 1, 1);
 
         love.graphics.origin();
         for (const button of this.buttons) {

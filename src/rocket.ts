@@ -12,6 +12,7 @@ export class Rocket {
     private static rotationSpeed = (2 * math.pi) / 20;
     private static rocketImage = love.graphics.newImage("res/rocket.png");
     private static fuelThrustConversionFactor: number = 100 / 20;
+    private static refuelRate = 10;
 
     private body: Body;
     private shape: PolygonShape;
@@ -107,6 +108,10 @@ export class Rocket {
         return this.body.getPosition();
     }
 
+    refuel(dt: number) {
+        this.fuel = Math.min(100, this.fuel + Rocket.refuelRate * dt);
+    }
+
     update(dt: number) {
         let angle = this.body.getAngle();
         angle = angle + Rocket.rotationSpeed * dt * this.rotation;
@@ -118,7 +123,7 @@ export class Rocket {
         const currentThrust = this.thrust;
         let diff: number;
         if (this.fuel > 0) {
-            diff = this.pedal - currentThrust
+            diff = this.pedal - currentThrust;
         } else {
             diff = -currentThrust;
         }

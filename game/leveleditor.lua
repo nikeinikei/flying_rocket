@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 4,["8"] = 4,["9"] = 6,["10"] = 6,["11"] = 12,["12"] = 12,["13"] = 12,["14"] = 12,["15"] = 12,["16"] = 12,["17"] = 12,["18"] = 12,["19"] = 12,["20"] = 19,["21"] = 24,["22"] = 43,["23"] = 44,["24"] = 46,["25"] = 46,["26"] = 46,["27"] = 56,["28"] = 53,["29"] = 57,["30"] = 58,["31"] = 59,["32"] = 60,["33"] = 61,["35"] = 63,["36"] = 64,["37"] = 65,["38"] = 66,["39"] = 67,["41"] = 68,["42"] = 68,["43"] = 69,["44"] = 70,["45"] = 71,["46"] = 72,["47"] = 73,["48"] = 74,["49"] = 75,["50"] = 75,["51"] = 76,["52"] = 75,["53"] = 78,["54"] = 78,["55"] = 78,["56"] = 78,["57"] = 68,["62"] = 82,["63"] = 83,["64"] = 84,["65"] = 85,["66"] = 86,["67"] = 87,["68"] = 87,["69"] = 88,["70"] = 89,["72"] = 91,["73"] = 93,["74"] = 94,["76"] = 87,["77"] = 97,["78"] = 97,["79"] = 97,["80"] = 97,["82"] = 99,["83"] = 100,["84"] = 56,["85"] = 103,["86"] = 104,["87"] = 105,["88"] = 106,["90"] = 109,["91"] = 110,["92"] = 112,["93"] = 113,["96"] = 103,["97"] = 118,["98"] = 119,["99"] = 118,["100"] = 122,["101"] = 123,["102"] = 124,["104"] = 122,["105"] = 128,["106"] = 129,["107"] = 130,["108"] = 131,["111"] = 134,["112"] = 128,["113"] = 137,["114"] = 138,["115"] = 139,["117"] = 141,["118"] = 142,["119"] = 143,["120"] = 144,["122"] = 153,["124"] = 169,["130"] = 145,["131"] = 146,["132"] = 147,["134"] = 149,["141"] = 154,["142"] = 155,["143"] = 156,["144"] = 157,["146"] = 159,["148"] = 166,["154"] = 170,["155"] = 171,["156"] = 172,["157"] = 173,["159"] = 175,["161"] = 182,["167"] = 187,["168"] = 137,["169"] = 190,["170"] = 191,["171"] = 192,["172"] = 193,["173"] = 194,["175"] = 196,["178"] = 190,["179"] = 201,["180"] = 202,["181"] = 203,["182"] = 205,["183"] = 205,["184"] = 205,["185"] = 207,["186"] = 208,["187"] = 209,["188"] = 210,["189"] = 211,["190"] = 213,["191"] = 215,["192"] = 216,["196"] = 219,["197"] = 219,["198"] = 220,["199"] = 219,["202"] = 223,["203"] = 224,["204"] = 225,["205"] = 226,["207"] = 228,["208"] = 229,["211"] = 233,["212"] = 234,["213"] = 235,["215"] = 237,["216"] = 238,["219"] = 242,["220"] = 243,["221"] = 244,["223"] = 201});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 4,["8"] = 4,["9"] = 6,["10"] = 6,["11"] = 12,["12"] = 12,["13"] = 12,["14"] = 12,["15"] = 12,["16"] = 12,["17"] = 12,["18"] = 12,["19"] = 12,["20"] = 12,["21"] = 12,["22"] = 20,["23"] = 25,["24"] = 48,["25"] = 49,["26"] = 51,["27"] = 52,["28"] = 54,["29"] = 54,["30"] = 54,["31"] = 65,["32"] = 61,["33"] = 62,["34"] = 66,["35"] = 67,["36"] = 68,["37"] = 69,["38"] = 70,["40"] = 72,["41"] = 73,["42"] = 74,["43"] = 75,["44"] = 76,["46"] = 77,["47"] = 77,["48"] = 78,["49"] = 79,["50"] = 80,["51"] = 81,["52"] = 82,["53"] = 83,["54"] = 84,["55"] = 84,["56"] = 85,["57"] = 84,["58"] = 87,["59"] = 87,["60"] = 87,["61"] = 87,["62"] = 77,["67"] = 91,["68"] = 92,["69"] = 93,["70"] = 94,["71"] = 95,["72"] = 96,["73"] = 96,["74"] = 97,["75"] = 98,["77"] = 100,["78"] = 102,["79"] = 103,["81"] = 96,["82"] = 106,["83"] = 106,["84"] = 106,["85"] = 106,["87"] = 108,["88"] = 109,["89"] = 65,["90"] = 112,["91"] = 113,["92"] = 114,["93"] = 115,["95"] = 117,["96"] = 118,["98"] = 121,["99"] = 122,["100"] = 124,["101"] = 125,["103"] = 127,["104"] = 128,["107"] = 112,["108"] = 138,["109"] = 139,["110"] = 138,["111"] = 142,["112"] = 143,["113"] = 144,["115"] = 142,["116"] = 148,["117"] = 149,["118"] = 150,["119"] = 151,["122"] = 154,["123"] = 148,["124"] = 157,["125"] = 158,["126"] = 159,["128"] = 161,["129"] = 162,["130"] = 163,["131"] = 164,["133"] = 173,["135"] = 189,["137"] = 202,["143"] = 165,["144"] = 166,["145"] = 167,["147"] = 169,["154"] = 174,["155"] = 175,["156"] = 176,["157"] = 177,["159"] = 179,["161"] = 186,["167"] = 190,["168"] = 191,["169"] = 192,["170"] = 193,["171"] = 194,["172"] = 195,["173"] = 196,["175"] = 198,["182"] = 203,["183"] = 204,["184"] = 205,["185"] = 206,["187"] = 208,["189"] = 215,["195"] = 220,["196"] = 157,["197"] = 223,["198"] = 224,["199"] = 225,["200"] = 226,["201"] = 227,["203"] = 229,["206"] = 223,["207"] = 234,["208"] = 235,["209"] = 236,["210"] = 234,["211"] = 239,["212"] = 240,["213"] = 241,["214"] = 239,["215"] = 244,["216"] = 245,["217"] = 246,["218"] = 244,["219"] = 249,["220"] = 250,["221"] = 251,["222"] = 253,["223"] = 253,["224"] = 253,["225"] = 255,["226"] = 256,["227"] = 257,["228"] = 258,["229"] = 259,["230"] = 261,["231"] = 263,["232"] = 264,["236"] = 267,["237"] = 267,["238"] = 268,["239"] = 267,["242"] = 271,["243"] = 272,["244"] = 273,["245"] = 274,["247"] = 276,["248"] = 277,["251"] = 281,["252"] = 282,["253"] = 283,["255"] = 285,["256"] = 286,["259"] = 290,["260"] = 291,["261"] = 292,["263"] = 294,["264"] = 295,["266"] = 298,["267"] = 300,["268"] = 301,["269"] = 302,["271"] = 249});
 local ____exports = {}
 local ____gridrenderer = require("gridrenderer")
 local GridRenderer = ____gridrenderer.GridRenderer
@@ -15,17 +15,22 @@ Mode.RocketStartingLocation = 1
 Mode[Mode.RocketStartingLocation] = "RocketStartingLocation"
 Mode.RocketLandingLocation = 2
 Mode[Mode.RocketLandingLocation] = "RocketLandingLocation"
-Mode.Inspection = 3
+Mode.AddRefuelStation = 3
+Mode[Mode.AddRefuelStation] = "AddRefuelStation"
+Mode.Inspection = 4
 Mode[Mode.Inspection] = "Inspection"
 local locationNotSetErrorMessage = "\nRocket starting location or landing location were not set\nThese are mandatory for the level to be saved.\n"
-local buttonSchemes = {{name = "Inspection", mode = Mode.Inspection}, {name = "Starting location", mode = Mode.RocketStartingLocation}, {name = "Landing location", mode = Mode.RocketLandingLocation}, {name = "Add Terrain", mode = Mode.TerrainBuilding}}
+local buttonSchemes = {{name = "Inspection", mode = Mode.Inspection}, {name = "Starting location", mode = Mode.RocketStartingLocation}, {name = "Landing location", mode = Mode.RocketLandingLocation}, {name = "Add Refuel Station", mode = Mode.AddRefuelStation}, {name = "Add Terrain", mode = Mode.TerrainBuilding}}
 local rocketLocationWidth = 200
 local rocketLocationHeight = 20
+local refuelStationWidth = 200
+local refuelStationHeight = 20
 ____exports.LevelEditor = __TS__Class()
 local LevelEditor = ____exports.LevelEditor
 LevelEditor.name = "LevelEditor"
 function LevelEditor.prototype.____constructor(self, level, callback)
     self.currentTerrain = nil
+    self.currentRefuelStation = nil
     self.callback = callback
     self.level = level
     self.mode = Mode.Inspection
@@ -87,10 +92,16 @@ function LevelEditor.prototype.setNewMode(self, newMode)
         if self.mode == Mode.TerrainBuilding then
             self:postTerrainBuilding()
         end
+        if self.mode == Mode.AddRefuelStation then
+            self.currentRefuelStation = nil
+        end
         self.mode = newMode
         self.newMode = true
         if self.mode == Mode.TerrainBuilding then
             self.currentTerrain = {}
+        end
+        if self.mode == Mode.AddRefuelStation then
+            self.currentRefuelStation = {x = 0, y = 0, w = refuelStationWidth, h = refuelStationHeight}
         end
     end
 end
@@ -116,16 +127,18 @@ function LevelEditor.prototype.mousepressed(self, mouseX, mouseY, button, istouc
     end
     local worldX, worldY = self.camera:convertScreencoordinatesToWorldCoordinates(mouseX, mouseY)
     if self.newMode == false then
-        local ____switch23 = self.mode
-        if ____switch23 == Mode.TerrainBuilding then
-            goto ____switch23_case_0
-        elseif ____switch23 == Mode.RocketStartingLocation then
-            goto ____switch23_case_1
-        elseif ____switch23 == Mode.RocketLandingLocation then
-            goto ____switch23_case_2
+        local ____switch25 = self.mode
+        if ____switch25 == Mode.TerrainBuilding then
+            goto ____switch25_case_0
+        elseif ____switch25 == Mode.RocketStartingLocation then
+            goto ____switch25_case_1
+        elseif ____switch25 == Mode.AddRefuelStation then
+            goto ____switch25_case_2
+        elseif ____switch25 == Mode.RocketLandingLocation then
+            goto ____switch25_case_3
         end
-        goto ____switch23_end
-        ::____switch23_case_0::
+        goto ____switch25_end
+        ::____switch25_case_0::
         do
             if button == 1 then
                 if not self.currentTerrain then
@@ -134,9 +147,9 @@ function LevelEditor.prototype.mousepressed(self, mouseX, mouseY, button, istouc
                     __TS__ArrayPush(self.currentTerrain, worldX, worldY)
                 end
             end
-            goto ____switch23_end
+            goto ____switch25_end
         end
-        ::____switch23_case_1::
+        ::____switch25_case_1::
         do
             if button == 1 then
                 if self.level.rocketStartingLocation then
@@ -145,11 +158,26 @@ function LevelEditor.prototype.mousepressed(self, mouseX, mouseY, button, istouc
                 else
                     self.level.rocketStartingLocation = {x = worldX, y = worldY, w = rocketLocationWidth, h = rocketLocationHeight}
                 end
-                self.mode = Mode.Inspection
+                self:setNewMode(Mode.Inspection)
             end
-            goto ____switch23_end
+            goto ____switch25_end
         end
-        ::____switch23_case_2::
+        ::____switch25_case_2::
+        do
+            if button == 1 then
+                if self.currentRefuelStation then
+                    self.currentRefuelStation.x = worldX
+                    self.currentRefuelStation.y = worldY
+                    __TS__ArrayPush(self.level.refuelStations, self.currentRefuelStation)
+                    self.currentRefuelStation = nil
+                    self:setNewMode(Mode.Inspection)
+                else
+                    assert(self.currentRefuelStation, "this.mode != Mode.AddRefuelStation")
+                end
+            end
+            goto ____switch25_end
+        end
+        ::____switch25_case_3::
         do
             if button == 1 then
                 if self.level.rocketLandingLocation then
@@ -158,11 +186,11 @@ function LevelEditor.prototype.mousepressed(self, mouseX, mouseY, button, istouc
                 else
                     self.level.rocketLandingLocation = {x = worldX, y = worldY, w = rocketLocationWidth, h = rocketLocationHeight}
                 end
-                self.mode = Mode.Inspection
+                self:setNewMode(Mode.Inspection)
             end
-            goto ____switch23_end
+            goto ____switch25_end
         end
-        ::____switch23_end::
+        ::____switch25_end::
     end
     self.newMode = false
 end
@@ -175,6 +203,18 @@ function LevelEditor.prototype.keypressed(self, key)
             self:setNewMode(Mode.Inspection)
         end
     end
+end
+function LevelEditor.prototype.drawStartingLocation(self, x, y, w, h)
+    love.graphics.setColor(0, 1, 0, 1)
+    love.graphics.rectangle("fill", x, y, w, h)
+end
+function LevelEditor.prototype.drawLandingLocation(self, x, y, w, h)
+    love.graphics.setColor(0, 0, 1, 1)
+    love.graphics.rectangle("fill", x, y, w, h)
+end
+function LevelEditor.prototype.drawRefuelStation(self, x, y, w, h)
+    love.graphics.setColor(0.7, 0.7, 0.7, 1)
+    love.graphics.rectangle("fill", x, y, w, h)
 end
 function LevelEditor.prototype.draw(self)
     self.camera:apply()
@@ -202,20 +242,28 @@ function LevelEditor.prototype.draw(self)
     love.graphics.setColor(1, 1, 1, 1)
     local rect = self.level.rocketStartingLocation
     if self.mode == Mode.RocketStartingLocation then
-        love.graphics.rectangle("fill", worldX, worldY, rocketLocationWidth, rocketLocationHeight)
+        self:drawStartingLocation(worldX, worldY, rocketLocationWidth, rocketLocationHeight)
     else
         if rect then
-            love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h)
+            self:drawStartingLocation(rect.x, rect.y, rect.w, rect.h)
         end
     end
     rect = self.level.rocketLandingLocation
     if self.mode == Mode.RocketLandingLocation then
-        love.graphics.rectangle("fill", worldX, worldY, rocketLocationWidth, rocketLocationHeight)
+        self:drawLandingLocation(worldX, worldY, rocketLocationWidth, rocketLocationHeight)
     else
         if rect then
-            love.graphics.rectangle("fill", rect.x, rect.y, rect.w, rect.h)
+            self:drawLandingLocation(rect.x, rect.y, rect.w, rect.h)
         end
     end
+    rect = self.currentRefuelStation
+    if rect then
+        self:drawRefuelStation(worldX, worldY, rect.w, rect.h)
+    end
+    for ____, refuelStation in ipairs(self.level.refuelStations) do
+        self:drawRefuelStation(refuelStation.x, refuelStation.y, refuelStation.w, refuelStation.h)
+    end
+    love.graphics.setColor(1, 1, 1, 1)
     love.graphics.origin()
     for ____, button in ipairs(self.buttons) do
         button:draw()

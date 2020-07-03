@@ -7,14 +7,20 @@ fixers.set("->0.0.1", data => {
 });
 fixers.set("0.0.1->0.0.2", data => {
     data.dataVersion = "0.0.2";
-    let points = data.terrainPoints;
-    let newTerrainPoints = [points];
+    const points = data.terrainPoints;
+    const newTerrainPoints = [points];
     data.terrainPoints = newTerrainPoints;
 
     return true;
 });
+fixers.set("0.0.2->0.0.3", data => {
+    data.dataVersion = "0.0.3";
+    data.refuelStations = [];
 
-let versionHistory = ["0.0.1", "0.0.2"];
+    return true;
+});
+
+const versionHistory = ["0.0.1", "0.0.2", "0.0.3"];
 
 export function fixData(this: void, data: any): boolean {
     if (data.dataVersion == undefined) {

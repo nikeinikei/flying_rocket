@@ -10,10 +10,12 @@ import { Rocket } from "./rocket";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
+import { Settings } from "./settings";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
+const refuelStationUserData = "refuelStationUserData";
 
 export class Playing {
     private level: Level;
@@ -23,7 +25,10 @@ export class Playing {
     private terrain: Terrain;
     private rocketStartingLocationObject: PhysicsObject<PolygonShape>;
     private rocketLandingLocationObject: PhysicsObject<PolygonShape>;
+    private refuelStations: PhysicsObject<PolygonShape>[];
     private camera: PlayingCamera;
+
+    private refueling: boolean = false;
 
     constructor(level: Level) {
         this.level = level;
@@ -55,6 +60,20 @@ export class Playing {
             rocketLandingLocation.h
         );
         this.rocketLandingLocationObject.fixture.setUserData(rocketLandingLocationUserdata);
+
+        this.refuelStations = [];
+        for (const station of this.level.refuelStations) {
+            const stationObject = this.newStaticRectangle(
+                this.world,
+                station.x + station.w / 2,
+                station.y + station.h / 2,
+                station.w,
+                station.h
+            );
+            stationObject.fixture.setUserData(refuelStationUserData);
+
+            this.refuelStations.push(stationObject);
+        }
 
         let [windowWidth, windowHeight] = love.graphics.getDimensions();
 
@@ -116,7 +135,7 @@ export class Playing {
     }
 
     private beginContact(a: Fixture, b: Fixture, contact: Contact) {
-        let rocket, border, terrain, rocketStartingLocation, rocketLandingLocation;
+        let rocket, border, terrain, rocketStartingLocation, rocketLandingLocation, refuelStation;
         [rocket, border] = this.matchFixtures(a, b, Rocket.userData, borderUserData);
         if (rocket) {
             this.lose();
@@ -141,6 +160,13 @@ export class Playing {
                 this.lose();
             }
         }
+
+        [rocket, refuelStation] = this.matchFixtures(a, b, Rocket.userData, refuelStationUserData);
+        if (rocket) {
+            if (!this.isSafeLanding(this.rocket)) {
+                this.lose();
+            }
+        }
     }
 
     private win() {
@@ -154,6 +180,11 @@ export class Playing {
     private lose() {
         Application.popState();
         Application.pushState(new Lost());
+    }
+
+    private notMoving(dx: number, dy: number): boolean {
+        const EPSILON = 0.0001;
+        return Math.abs(dx) < EPSILON && Math.abs(dy) < EPSILON;
     }
 
     update(dt: number) {
@@ -175,6 +206,33 @@ export class Playing {
         this.rocket.update(dt);
         this.world.update(dt);
 
+        const contacts: Contact[] = (this.world as any).getContacts();
+        let contactWithRefuelStation = false;
+        for (const contact of contacts) {
+            const [fixtureA, fixtureB] = contact.getFixtures();
+            const [rocket, refuelStation] = this.matchFixtures(
+                fixtureA,
+                fixtureB,
+                Rocket.userData,
+                refuelStationUserData
+            );
+            if (rocket) {
+                contactWithRefuelStation = true;
+                break;
+            }
+        }
+        if (contactWithRefuelStation) {
+            const [xVel, yVel] = this.rocket.getBody().getLinearVelocity();
+            if (this.notMoving(xVel, yVel)) {
+                this.rocket.refuel(dt);
+                this.refueling = true;
+            } else {
+                this.refueling = false;
+            }
+        } else {
+            this.refueling = false;
+        }
+
         if (math.abs(this.rocket.getTilt()) >= math.pi / 2) {
             this.lose();
         }
@@ -193,11 +251,18 @@ export class Playing {
         this.terrain.draw();
         this.drawObject(this.rocketStartingLocationObject);
         this.drawObject(this.rocketLandingLocationObject);
+        for (const station of this.refuelStations) {
+            this.drawObject(station);
+        }
 
         love.graphics.origin();
         love.graphics.print("elapsed time " + tostring(this.clock.getElapsed()), love.graphics.getWidth() - 200, 0);
-        love.graphics.print(tostring(love.timer.getFPS()));
-        love.graphics.print("fuel = " + tostring(this.rocket.getFuel()), 0, 15);
+
+        if (Settings.isDevelopment()) {
+            love.graphics.print(tostring(love.timer.getFPS()));
+            love.graphics.print("fuel = " + tostring(this.rocket.getFuel()), 0, 15);
+            love.graphics.print("refueling " + tostring(this.refueling), 0, 30);
+        }
     }
 
     keypressed(key: KeyConstant) {
