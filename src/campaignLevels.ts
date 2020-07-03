@@ -49,10 +49,8 @@ function internal_init() {
 function save() {
     const jsonified = json.encode(levels);
 
-    const lfs: Lfs = require("lfs");
-
-    const writeLevelsToFile = () => {
-        const [file] = io.open(fileName, "w");
+    const writeLevelsToFile = (path: string) => {
+        const [file] = io.open(path, "w");
         if (file) {
             file.write(jsonified);
         } else {
@@ -60,19 +58,8 @@ function save() {
         }
     };
 
-    lfs.chdir("res");
-
-    writeLevelsToFile();
-
-    lfs.chdir("..");
-
-    lfs.chdir("game");
-    lfs.chdir("res");
-
-    writeLevelsToFile();
-
-    lfs.chdir("..");
-    lfs.chdir("..");
+    writeLevelsToFile("res/" + fileName);
+    writeLevelsToFile("game/res/" + fileName);
 }
 
 export namespace CampaignLevels {
