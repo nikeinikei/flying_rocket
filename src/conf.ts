@@ -50,6 +50,7 @@ love.conf = t => {
     t.identity = "flying_rocket";
 
     t.window.width = windowWidth;
+    t.window.title = "Flying Rocket";
     t.window.height = windowHeight;
     t.window.msaa = 8;
     t.window.display = display;

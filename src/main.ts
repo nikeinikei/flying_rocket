@@ -1,9 +1,9 @@
 require("globals");
 require("customerrorhandler");
 
+import { CampaignLevels } from "./campaignLevels";
 import { Menu } from "./menu";
 import { Settings } from "./settings";
-import { CampaignLevels } from "./campaignLevels";
 
 function parseArgs(args: string[]) {
     for (const arg of args) {

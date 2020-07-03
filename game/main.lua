@@ -2,12 +2,12 @@
 require("lualib_bundle");
 __TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 5,["8"] = 5,["9"] = 6,["10"] = 6,["11"] = 1,["12"] = 2,["13"] = 8,["14"] = 9,["15"] = 10,["16"] = 11,["19"] = 8,["20"] = 16,["21"] = 17,["22"] = 19,["23"] = 21,["24"] = 21,["25"] = 21,["26"] = 16});
 local ____exports = {}
+local ____campaignLevels = require("campaignLevels")
+local CampaignLevels = ____campaignLevels.CampaignLevels
 local ____menu = require("menu")
 local Menu = ____menu.Menu
 local ____settings = require("settings")
 local Settings = ____settings.Settings
-local ____campaignLevels = require("campaignLevels")
-local CampaignLevels = ____campaignLevels.CampaignLevels
 require("globals")
 require("customerrorhandler")
 local function parseArgs(args)

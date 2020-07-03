@@ -1,6 +1,6 @@
+import { DataFixer } from "./datafixer";
 import { json } from "./json";
 import { Level } from "./level";
-import { DataFixer } from "./datafixer";
 
 const fileName = "levels.json";
 let levels: Level[];

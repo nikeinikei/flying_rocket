@@ -1,7 +1,7 @@
+import { DataFixer } from "./datafixer";
 import { json } from "./json";
 import { Level } from "./level";
 import { Settings } from "./settings";
-import { DataFixer } from "./datafixer";
 
 interface Lfs {
     /** @returnTuple */
@@ -18,7 +18,9 @@ let isInit = false;
 
 function assertInit() {
     if (!isInit) {
-        error("campaign levels are not initialized, CampaignLevels.init() has to be called in love.load before pushing the first state");
+        error(
+            "campaign levels are not initialized, CampaignLevels.init() has to be called in love.load before pushing the first state"
+        );
     }
 }
 

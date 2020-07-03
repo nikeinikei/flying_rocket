@@ -7,10 +7,10 @@ import { Lost } from "./lost";
 import { Paused } from "./paused";
 import { PlayingCamera } from "./playingCamera";
 import { Rocket } from "./rocket";
+import { Settings } from "./settings";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
-import { Settings } from "./settings";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
