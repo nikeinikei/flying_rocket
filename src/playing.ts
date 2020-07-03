@@ -206,7 +206,7 @@ export class Playing {
         this.rocket.update(dt);
         this.world.update(dt);
 
-        const contacts: Contact[] = (this.world as any).getContacts();
+        const contacts: Contact[] = this.world.getContacts();
         let contactWithRefuelStation = false;
         for (const contact of contacts) {
             const [fixtureA, fixtureB] = contact.getFixtures();
