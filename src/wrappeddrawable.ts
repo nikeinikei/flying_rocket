@@ -1,3 +1,5 @@
+import { Color } from "./Color4";
+
 export class WrappedDrawable {
     public x: number | undefined;
     public y: number | undefined;
@@ -8,6 +10,7 @@ export class WrappedDrawable {
     public oy: number | undefined;
     public kx: number | undefined;
     public ky: number | undefined;
+    public color: Color | undefined;
     public visible: boolean;
 
     private drawable: Drawable;
@@ -19,6 +22,11 @@ export class WrappedDrawable {
 
     draw() {
         if (this.visible) {
+            if (this.color) {
+                love.graphics.setColor(this.color.unpacked());
+            } else {
+                love.graphics.setColor(1, 1, 1, 1);
+            }
             love.graphics.draw(
                 this.drawable,
                 this.x,
