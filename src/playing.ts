@@ -75,8 +75,6 @@ export class Playing {
             this.refuelStations.push(stationObject);
         }
 
-        let [windowWidth, windowHeight] = love.graphics.getDimensions();
-
         this.terrain = new Terrain(this.world, level.terrainPoints);
         this.camera = new PlayingCamera(this.rocket);
         this.clock = new Clock();
@@ -244,6 +242,32 @@ export class Playing {
         love.graphics.polygon("fill", ...o.body.getWorldPoints(...o.shape.getPoints()));
     }
 
+    private drawFuelIndicator(fuel: number) {
+        const width = 30;
+        const height = 120;
+
+        const x = 15;
+        const y = 60;
+
+        const padding = 5;
+
+        const [r, g, b, a] = love.graphics.getColor();
+
+        love.graphics.setColor(0.7, 0.7, 0.7, 1);
+
+        love.graphics.rectangle("fill", x - padding, y - padding, width + 2 * padding, padding);
+        love.graphics.rectangle("fill", x - padding, y + height, width + 2 * padding, padding);
+        love.graphics.rectangle("fill", x + width, y, padding, height);
+        love.graphics.rectangle("fill", x - padding, y, padding, height);
+
+        love.graphics.setColor(0, 0, 1, 1);
+
+        const fraction = fuel / 100;
+        love.graphics.rectangle("fill", x, y + height - fraction * height, width, fraction * height);
+
+        love.graphics.setColor(r, g, b, a);
+    }
+
     draw() {
         this.camera.apply();
         love.graphics.setColor(1, 1, 1, 1);
@@ -255,7 +279,11 @@ export class Playing {
             this.drawObject(station);
         }
 
+
         love.graphics.origin();
+
+        this.drawFuelIndicator(this.rocket.getFuel());
+
         love.graphics.print("elapsed time " + tostring(this.clock.getElapsed()), love.graphics.getWidth() - 200, 0);
 
         if (Settings.isDevelopment()) {
