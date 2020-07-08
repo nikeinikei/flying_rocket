@@ -13,6 +13,11 @@ export class PlayingCamera {
         this.ty = 0;
     }
 
+    /** @tupleReturn */
+    public getTranslation(): [number, number] {
+        return [this.tx, this.ty];
+    }
+
     update(dt: number) {
         let [rocketX, rocketY] = this.rocket.getPosition();
         let [windowWidth, windowHeight] = love.graphics.getDimensions();

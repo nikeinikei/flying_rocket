@@ -11,6 +11,7 @@ import { Settings } from "./settings";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
+import { Stars } from "./stars";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
@@ -27,6 +28,7 @@ export class Playing {
     private rocketLandingLocationObject: PhysicsObject<PolygonShape>;
     private refuelStations: PhysicsObject<PolygonShape>[];
     private camera: PlayingCamera;
+    private stars: Stars;
 
     private refueling: boolean = false;
 
@@ -77,6 +79,7 @@ export class Playing {
 
         this.terrain = new Terrain(this.world, level.terrainPoints);
         this.camera = new PlayingCamera(this.rocket);
+        this.stars = new Stars();
         this.clock = new Clock();
     }
 
@@ -236,6 +239,9 @@ export class Playing {
         }
 
         this.camera.update(dt);
+        this.stars.update(dt);
+        const [x, y] = this.camera.getTranslation();
+        this.stars.setViewport(x, y, love.graphics.getWidth(), love.graphics.getHeight());
     }
 
     private drawObject(o: PhysicsObject<PolygonShape>) {
@@ -270,6 +276,7 @@ export class Playing {
 
     draw() {
         this.camera.apply();
+        this.stars.draw();
         love.graphics.setColor(1, 1, 1, 1);
         this.rocket.draw();
         this.terrain.draw();
