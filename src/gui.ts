@@ -6,11 +6,7 @@ const utf8: {
     offset(this: void, text: any, offset: any): any;
 } = require("utf8");
 
-const WeakCollectionConstructor: (this: void) => WeakCollection = require("weakcollection");
-
 class Element {
-    private static elements: WeakCollection = WeakCollectionConstructor();
-
     public x: number;
     public y: number;
     public w: number;
