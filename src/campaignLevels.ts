@@ -3,14 +3,6 @@ import { json } from "./json";
 import { Level } from "./level";
 import { Settings } from "./settings";
 
-interface Lfs {
-    /** @returnTuple */
-    attributes(this: void, path: string): [any, string | undefined];
-    currentdir(this: void): string;
-    /** @returnTuple */
-    chdir(this: void, path: string): [boolean, undefined | string];
-}
-
 const fileName = "campaignLevels.json";
 let levels: Table<string, Level> = new Table();
 
