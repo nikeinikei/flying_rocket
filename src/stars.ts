@@ -9,12 +9,8 @@ class Star {
         this.r = r;
     }
 
-    update(dt: number) {
-
-    }
-
     draw() {
-        love.graphics.setColor(1, 1, 1, 1),
+        love.graphics.setColor(1, 1, 1, love.math.noise(this.x, this.y, math.max(love.timer.getTime() * 0.4, 0.4)));
         love.graphics.circle("fill", this.x, this.y, this.r);
     }
 }
@@ -44,12 +40,6 @@ class Chunk {
                     table.insert(this.stars, new Star(starX, starY, r));
                 }
             }
-        }
-    }
-
-    update(dt: number) {
-        for (const star of this.stars) {
-            star.update(dt);
         }
     }
 
@@ -113,12 +103,6 @@ export class Stars {
             }
         }
         return this.activeChunks;
-    }
-
-    update(dt: number) {
-        for (const chunk of this.getActiveChunks()) {
-            chunk.update(dt);
-        }
     }
 
     draw() {

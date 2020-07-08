@@ -239,7 +239,6 @@ export class Playing {
         }
 
         this.camera.update(dt);
-        this.stars.update(dt);
         const [x, y] = this.camera.getTranslation();
         this.stars.setViewport(x, y, love.graphics.getWidth(), love.graphics.getHeight());
     }
