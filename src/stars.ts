@@ -16,7 +16,7 @@ class Star {
 }
 
 class Chunk {
-    private static starDensity = 5 / (500 * 500);   //read: 5 stars per 500 by 500 area
+    private static starDensity = 5 / (500 * 500); //read: 5 stars per 500 by 500 area
     private static deviation = 2;
 
     private stars: Star[];
@@ -32,7 +32,9 @@ class Chunk {
             for (let j = 0; j < n; j++) {
                 const currentX = x + i * length;
                 const currentY = y + j * length;
-                const numberOfStars = math.floor(math.max(love.math.randomNormal(Chunk.deviation, medianNumberOfStars), 0));
+                const numberOfStars = math.floor(
+                    math.max(love.math.randomNormal(Chunk.deviation, medianNumberOfStars), 0)
+                );
                 for (let i = 0; i < numberOfStars; i++) {
                     const starX = love.math.random(currentX, currentX + length);
                     const starY = love.math.random(currentY, currentY + length);
@@ -63,7 +65,7 @@ export class Stars {
             x: 0,
             y: 0,
             w: love.graphics.getWidth(),
-            h: love.graphics.getHeight()
+            h: love.graphics.getHeight(),
         };
     }
 

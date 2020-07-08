@@ -8,10 +8,10 @@ import { Paused } from "./paused";
 import { PlayingCamera } from "./playingCamera";
 import { Rocket } from "./rocket";
 import { Settings } from "./settings";
+import { Stars } from "./stars";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
-import { Stars } from "./stars";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
@@ -284,7 +284,6 @@ export class Playing {
         for (const station of this.refuelStations) {
             this.drawObject(station);
         }
-
 
         love.graphics.origin();
 
