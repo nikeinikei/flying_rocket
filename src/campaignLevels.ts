@@ -36,14 +36,18 @@ function internal_init() {
         error("no campaign levels found. Is the game corrupted?");
     }
 
+    let changed = false;
     for (const [k, v] of pairs(levels)) {
         const res = DataFixer.fixData(v);
+        if (res != undefined) {
+            changed = true;
+        }
         if (!res) {
             error("campaign levels are corrupt, please message the developer.");
         }
     }
 
-    if (Settings.isDevelopment()) {
+    if (changed && Settings.isDevelopment()) {
         save();
     }
 }

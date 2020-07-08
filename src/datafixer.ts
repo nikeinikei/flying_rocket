@@ -23,7 +23,7 @@ fixers.set("0.0.2->0.0.3", data => {
 const versionHistory = ["0.0.1", "0.0.2", "0.0.3"];
 
 export namespace DataFixer {
-    export function fixData(this: void, data: any): boolean {
+    export function fixData(this: void, data: any): boolean | undefined {
         if (data.dataVersion == undefined) {
             const fixer = fixers.get("->0.0.1");
             if (fixer) {
@@ -63,7 +63,7 @@ export namespace DataFixer {
             }
             return true;
         } else {
-            return true;
+            return undefined;
         }
     }
 }
