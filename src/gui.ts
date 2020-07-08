@@ -16,7 +16,6 @@ class Element {
     public disabled: boolean;
 
     constructor(x: number, y: number, w: number, h: number) {
-        Element.elements.add(this);
         this.x = x;
         this.y = y;
         this.w = w;
