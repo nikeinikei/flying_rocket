@@ -34,7 +34,7 @@ function internal_init() {
         if (res != undefined) {
             changed = true;
         }
-        if (!res) {
+        if (res == false) {
             error("campaign levels are corrupt, please message the developer.");
         }
     }

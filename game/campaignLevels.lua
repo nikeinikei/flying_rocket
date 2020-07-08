@@ -56,7 +56,7 @@ local function internal_init()
         if res ~= nil then
             changed = true
         end
-        if not res then
+        if res == false then
             error("campaign levels are corrupt, please message the developer.")
         end
     end

@@ -10,7 +10,10 @@ function init() {
         const [contents, _size] = love.filesystem.read(fileName);
         if (contents) {
             levels = json.decode(contents);
-            levels = levels.filter(level => DataFixer.fixData(level));
+            levels = levels.filter(level => {
+                const res = DataFixer.fixData(level);
+                return res == undefined || res == true;
+            });
         } else {
             levels = [];
         }
