@@ -1,12 +1,14 @@
 import { KeyConstant } from "love.keyboard";
 
 import { Playing } from "./playing";
+import { GameState } from "./gamestate";
 
-export class Paused implements GameState {
+export class Paused extends GameState {
     private playing: Playing;
     private onUnpaused: (this: void) => void;
 
     constructor(playing: Playing, onUnpaused: (this: void) => void) {
+        super();
         this.playing = playing;
         this.onUnpaused = onUnpaused;
     }

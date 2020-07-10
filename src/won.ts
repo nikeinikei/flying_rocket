@@ -1,10 +1,11 @@
 import { KeyConstant } from "love.keyboard";
+import { GameState } from "./gamestate";
 
 export interface GameEndMetrics {
     timeTaken: number;
 }
 
-export class Won implements GameState {
+export class Won extends GameState {
     private text: Text;
     private textPosition: Vector;
     private timeTakenText: Text;
@@ -12,6 +13,7 @@ export class Won implements GameState {
     private metrics: GameEndMetrics;
 
     constructor(metrics: GameEndMetrics) {
+        super();
         this.text = love.graphics.newText(love.graphics.newFont(40), "Congratulations, you won!");
         this.textPosition = {
             x: (love.graphics.getWidth() - this.text.getWidth()) / 2,

@@ -5,6 +5,7 @@ import { Button } from "./gui";
 import { Level } from "./level";
 import { LevelBuilderCamera } from "./leveleditorcamera";
 import { Stars } from "./stars";
+import { GameState } from "./gamestate";
 
 export interface CampaignLevelInfo {
     index: number;
@@ -52,7 +53,7 @@ const rocketLocationHeight = 20;
 const refuelStationWidth = 200;
 const refuelStationHeight = 20;
 
-export class LevelEditor implements GameState {
+export class LevelEditor extends GameState {
     private level: Level;
     private buttons: Button[];
     private mode: Mode;
@@ -65,6 +66,7 @@ export class LevelEditor implements GameState {
     private stars: Stars;
 
     constructor(level: Level, callback: (this: void, level: Level | undefined) => void) {
+        super();
         this.callback = callback;
         this.level = level;
         this.mode = Mode.Inspection;

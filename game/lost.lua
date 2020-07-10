@@ -1,11 +1,15 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 3,["9"] = 8,["10"] = 8,["11"] = 8,["12"] = 8,["13"] = 9,["14"] = 9,["15"] = 9,["16"] = 9,["17"] = 7,["18"] = 15,["19"] = 16,["20"] = 15,["21"] = 19,["22"] = 20,["23"] = 21,["25"] = 19,["26"] = 25,["27"] = 26,["28"] = 25});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 4,["8"] = 4,["9"] = 4,["10"] = 4,["12"] = 4,["13"] = 10,["14"] = 10,["15"] = 10,["16"] = 10,["17"] = 11,["18"] = 11,["19"] = 11,["20"] = 11,["21"] = 8,["22"] = 17,["23"] = 18,["24"] = 17,["25"] = 21,["26"] = 22,["27"] = 23,["29"] = 21,["30"] = 27,["31"] = 28,["32"] = 27});
 local ____exports = {}
+local ____gamestate = require("gamestate")
+local GameState = ____gamestate.GameState
 ____exports.Lost = __TS__Class()
 local Lost = ____exports.Lost
 Lost.name = "Lost"
+__TS__ClassExtends(Lost, GameState)
 function Lost.prototype.____constructor(self)
+    GameState.prototype.____constructor(self)
     self.text = love.graphics.newText(
         love.graphics.newFont(40),
         "You lost"

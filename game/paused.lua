@@ -1,11 +1,15 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 5,["6"] = 5,["7"] = 5,["8"] = 9,["9"] = 10,["10"] = 11,["11"] = 9,["12"] = 14,["13"] = 15,["14"] = 14,["15"] = 18,["16"] = 19,["17"] = 20,["18"] = 18,["19"] = 23,["20"] = 24,["21"] = 25,["23"] = 23,["24"] = 29,["25"] = 30,["26"] = 31,["27"] = 32,["28"] = 33,["29"] = 34,["30"] = 35,["31"] = 35,["32"] = 35,["33"] = 35,["34"] = 35,["35"] = 35,["36"] = 35,["37"] = 29});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 6,["8"] = 6,["9"] = 6,["10"] = 6,["11"] = 10,["12"] = 6,["13"] = 12,["14"] = 13,["15"] = 10,["16"] = 16,["17"] = 17,["18"] = 16,["19"] = 20,["20"] = 21,["21"] = 22,["22"] = 20,["23"] = 25,["24"] = 26,["25"] = 27,["27"] = 25,["28"] = 31,["29"] = 32,["30"] = 33,["31"] = 34,["32"] = 35,["33"] = 36,["34"] = 37,["35"] = 37,["36"] = 37,["37"] = 37,["38"] = 37,["39"] = 37,["40"] = 37,["41"] = 31});
 local ____exports = {}
+local ____gamestate = require("gamestate")
+local GameState = ____gamestate.GameState
 ____exports.Paused = __TS__Class()
 local Paused = ____exports.Paused
 Paused.name = "Paused"
+__TS__ClassExtends(Paused, GameState)
 function Paused.prototype.____constructor(self, playing, onUnpaused)
+    GameState.prototype.____constructor(self)
     self.playing = playing
     self.onUnpaused = onUnpaused
 end

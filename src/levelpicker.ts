@@ -6,8 +6,9 @@ import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";
+import { GameState } from "./gamestate";
 
-export class LevelPicker implements GameState, Serializable {
+export class LevelPicker extends GameState implements Serializable {
     private static pageButtonCount = 6;
 
     private importButton: Button;
@@ -20,6 +21,7 @@ export class LevelPicker implements GameState, Serializable {
     private backwardButton: Button;
 
     constructor(pageIndex?: number) {
+        super();
         this.pageIndex = pageIndex ?? 0;
         this.buttons = [];
         let levelsNotAvailableText = love.graphics.newText(love.graphics.newFont(50), "no levels available");
@@ -130,7 +132,8 @@ export class LevelPicker implements GameState, Serializable {
         }
     }
 
-    enter() {
+    onActive() {
+        super.onActive();
         this.createButtons();
     }
 

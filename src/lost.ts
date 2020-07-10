@@ -1,10 +1,12 @@
 import { KeyConstant } from "love.keyboard";
+import { GameState } from "./gamestate";
 
-export class Lost implements GameState {
+export class Lost extends GameState {
     private text: Text;
     private textPosition: Vector;
 
     constructor() {
+        super();
         this.text = love.graphics.newText(love.graphics.newFont(40), "You lost");
         this.textPosition = {
             x: (love.graphics.getWidth() - this.text.getWidth()) / 2,

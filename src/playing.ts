@@ -13,13 +13,14 @@ import { Terrain } from "./terrain";
 import { Serializable, Serialized } from "./types/Serializable";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
+import { GameState } from "./gamestate";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
 const refuelStationUserData = "refuelStationUserData";
 
-export class Playing implements GameState, Serializable {
+export class Playing extends GameState implements Serializable {
     private level: Level;
     private world: World;
     private clock: Clock;
@@ -34,6 +35,7 @@ export class Playing implements GameState, Serializable {
     private refueling: boolean = false;
 
     constructor(level: Level) {
+        super();
         this.level = level;
         this.world = love.physics.newWorld(0, 100);
         this.world.setCallbacks((a, b, c) => this.beginContact(a, b, c));

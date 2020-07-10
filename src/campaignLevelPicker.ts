@@ -5,12 +5,14 @@ import { Button } from "./gui";
 import { Level } from "./level";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
+import { GameState } from "./gamestate";
 
-export class CampaignLevelPicker implements GameState, Serializable {
+export class CampaignLevelPicker extends GameState implements Serializable {
     private buttons: Button[];
     private campaignLevels: Table<string, Level>;
 
     constructor() {
+        super();
         this.campaignLevels = CampaignLevels.getLevels();
         this.buttons = [];
         this.buttons = [];

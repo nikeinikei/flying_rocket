@@ -9,12 +9,14 @@ import { LevelPicker } from "./levelpicker";
 import { Levels } from "./levels";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
+import { GameState } from "./gamestate";
 
-export class PreLevelEditorGameState implements GameState, Serializable {
+export class PreLevelEditorGameState extends GameState implements Serializable {
     private textInput: TextInput;
     private toggle: Toggle | null;
 
     constructor(levelName?: string) {
+        super();
         const textInputWidth = 1200;
         const textInputHeight = 600;
         const x = love.graphics.getWidth() / 2 - textInputWidth / 2;
@@ -95,11 +97,12 @@ export class PreLevelEditorGameState implements GameState, Serializable {
     }
 }
 
-export class GameModeChooserGameState implements GameState, Serializable {
+export class GameModeChooserGameState extends GameState implements Serializable {
     private campaignButton: Button;
     private customGameButton: Button;
 
     constructor() {
+        super();
         this.campaignButton = new Button(50, 50, 400, 100, "Campaign", () => {
             Application.pushState(new CampaignLevelPicker());
         });
@@ -153,10 +156,11 @@ const buttonSchemes = [
     },
 ];
 
-export class Menu implements GameState, Serializable {
+export class Menu extends GameState implements Serializable {
     private buttons: Button[];
 
     constructor() {
+        super();
         this.buttons = [];
 
         const buttonHeight = 70;

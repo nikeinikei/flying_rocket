@@ -103,11 +103,7 @@ local function checkForSpecialCase(loveCallback)
     end
 end
 
-local function makeActive(state)
-    if state.enter then
-        state:enter()
-    end
-
+local function setupLoveCallbacks(state)
     local objects = (state.getObjects and state:getObjects()) or emptyTable
     local objectsLen = #objects
 
@@ -149,12 +145,6 @@ local function makeActive(state)
     end
 end
 
-local function makeInactive(state)
-    if state.leave ~= nil then
-        state:leave()
-    end
-end
-
 ---the global application table
 ---this will handle all the löve specific callbacks
 ---for each state
@@ -165,12 +155,13 @@ Application = {
 
         local top = states:peek()
         if top ~= nil then
-            makeInactive(state)
+            top:onInactive()
         end
 
         resetCallbacks()
 
-        makeActive(state)
+        setupLoveCallbacks(state)
+        state:enter()
 
         --push onto the stack
         states:push(state)
@@ -179,13 +170,15 @@ Application = {
         resetCallbacks()
 
         local state = states:pop()
-        makeInactive(state)
+        local data = state:leave()
 
         local top = states:peek()
         if top ~= nil then
-            makeActive(top)
+            setupLoveCallbacks(top)
+            top:onActive(data)
         else
             love.event.quit(0)
         end
-    end
+    end,
+
 }
