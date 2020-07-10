@@ -180,5 +180,4 @@ Application = {
             love.event.quit(0)
         end
     end,
-
 }

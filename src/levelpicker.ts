@@ -134,6 +134,7 @@ export class LevelPicker extends GameState implements Serializable {
 
     onActive() {
         super.onActive();
+        Levels.save();
         this.createButtons();
     }
 
@@ -183,9 +184,7 @@ export class LevelPicker extends GameState implements Serializable {
                     }),
                     new Button(1200, y, 200, height, "Edit", () => {
                         Application.pushState(
-                            new LevelEditor(level, _ => {
-                                Levels.save();
-                            })
+                            new LevelEditor(level)
                         );
                     })
                 );

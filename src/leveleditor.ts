@@ -62,12 +62,11 @@ export class LevelEditor extends GameState {
     private gridRenderer: GridRenderer;
     private currentTerrain: number[] | null = null;
     private currentRefuelStation: Rectangle | undefined = undefined;
-    private callback: (this: void, level: Level | undefined) => void;
     private stars: Stars;
+    private success = false;
 
-    constructor(level: Level, callback: (this: void, level: Level | undefined) => void) {
+    constructor(level: Level) {
         super();
-        this.callback = callback;
         this.level = level;
         this.mode = Mode.Inspection;
         this.newMode = false;
@@ -103,8 +102,8 @@ export class LevelEditor extends GameState {
                 } else {
                     this.setNewMode(Mode.Inspection);
 
+                    this.success = true;
                     Application.popState();
-                    this.callback(this.level);
                 }
             };
             this.buttons.push(new Button(x, y, w, h, text, callback));
@@ -229,10 +228,17 @@ export class LevelEditor extends GameState {
         this.newMode = false;
     }
 
+    leave() {
+        if (this.success ) {
+            return this.level;
+        } else {
+            return null;
+        }
+    }
+
     keypressed(key: KeyConstant) {
         if (key == "escape") {
             if (this.mode == Mode.Inspection) {
-                this.callback(undefined);
                 Application.popState();
             } else {
                 this.setNewMode(Mode.Inspection);

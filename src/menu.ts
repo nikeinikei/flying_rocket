@@ -14,6 +14,7 @@ import { GameState } from "./gamestate";
 export class PreLevelEditorGameState extends GameState implements Serializable {
     private textInput: TextInput;
     private toggle: Toggle | null;
+    private isCampaignLevel: boolean | null = null;
 
     constructor(levelName?: string) {
         super();
@@ -29,7 +30,6 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
                 if (Levels.nameUsed(name)) {
                     love.window.showMessageBox("Invalid Level Name", "level name already in use", "error");
                 } else {
-                    Application.popState();
                     if (this.toggle && this.toggle.isOn()) {
                         const index = tonumber(name);
                         if (!index) {
@@ -41,23 +41,17 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
                         } else {
                             const level = newLevel(name);
 
+                            this.isCampaignLevel = true;
                             Application.pushState(
-                                new LevelEditor(level, level => {
-                                    if (level) {
-                                        CampaignLevels.addLevel(level);
-                                    }
-                                })
+                                new LevelEditor(level)
                             );
                         }
                     } else {
                         const level = newLevel(name);
 
+                        this.isCampaignLevel = false;
                         Application.pushState(
-                            new LevelEditor(level, level => {
-                                if (level) {
-                                    Levels.addLevel(level);
-                                }
-                            })
+                            new LevelEditor(level)
                         );
                     }
                 }
@@ -72,6 +66,22 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
         } else {
             this.toggle = null;
         }
+    }
+
+    onActive(data?: any) {
+        print("PreLevelEditorGameState#onActive");
+        super.onActive(data);
+        if (data) {
+            const level = data as Level;
+            if (this.isCampaignLevel == true) {
+                print("saving campaign level");
+                CampaignLevels.addLevel(level);
+            } else if (this.isCampaignLevel == false) {
+                print("saving normal level");
+                Levels.addLevel(level);
+            }
+        }
+        Application.popState();
     }
 
     getName() {
