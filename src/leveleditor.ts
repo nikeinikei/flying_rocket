@@ -4,6 +4,7 @@ import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
 import { Level } from "./level";
 import { LevelBuilderCamera } from "./leveleditorcamera";
+import { Stars } from "./stars";
 
 export interface CampaignLevelInfo {
     index: number;
@@ -61,6 +62,7 @@ export class LevelEditor implements GameState {
     private currentTerrain: number[] | null = null;
     private currentRefuelStation: Rectangle | undefined = undefined;
     private callback: (this: void, level: Level | undefined) => void;
+    private stars: Stars;
 
     constructor(level: Level, callback: (this: void, level: Level | undefined) => void) {
         this.callback = callback;
@@ -107,6 +109,7 @@ export class LevelEditor implements GameState {
         }
         this.camera = new LevelBuilderCamera();
         this.gridRenderer = new GridRenderer(250, this.camera);
+        this.stars = new Stars();
     }
 
     getName() {
@@ -252,6 +255,9 @@ export class LevelEditor implements GameState {
 
     draw() {
         this.camera.apply();
+        const [tx, ty] = this.camera.getTranslation();
+        this.stars.setViewport(tx, ty, love.graphics.getWidth(), love.graphics.getHeight());
+        this.stars.draw();
         this.gridRenderer.draw();
 
         const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(...love.mouse.getPosition());
