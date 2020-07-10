@@ -46,10 +46,13 @@ end
 
 local function serializeApplication()
     local serializedApplication = {}
+    local i = states:size()
+    print("states:size()", i)
     while not states:empty() do
         local state = states:pop()
         local serializedState = serializeState(state)
         if serializedState == nil then
+            print("tried to serialize game state at stack pointer " .. tostring(i) .. " but didn't work")
             return
         end
         table.insert(serializedApplication, serializedState)

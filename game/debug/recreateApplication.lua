@@ -1,10 +1,11 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 2,["8"] = 3,["9"] = 3,["10"] = 4,["11"] = 4,["12"] = 5,["13"] = 5,["14"] = 6,["15"] = 6,["16"] = 7,["17"] = 7,["19"] = 9,["21"] = 10,["22"] = 11,["23"] = 17,["24"] = 12,["26"] = 14,["28"] = 16,["30"] = 24,["36"] = 13,["40"] = 15,["44"] = 17,["45"] = 18,["46"] = 19,["47"] = 20,["50"] = 23,["54"] = 25,["57"] = 28,["58"] = 10,["59"] = 9,["60"] = 32,["61"] = 34,["62"] = 35,["63"] = 36,["65"] = 39,["66"] = 40,["67"] = 41,["68"] = 42,["69"] = 43,["70"] = 44,["72"] = 45,["73"] = 45,["74"] = 46,["75"] = 47,["76"] = 48,["77"] = 49,["79"] = 51,["81"] = 45,["84"] = 54,["86"] = 57,["87"] = 31});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 2,["8"] = 2,["9"] = 3,["10"] = 3,["11"] = 4,["12"] = 4,["13"] = 5,["14"] = 5,["15"] = 6,["16"] = 6,["17"] = 7,["18"] = 7,["19"] = 8,["20"] = 8,["21"] = 10,["23"] = 11,["26"] = 10,["28"] = 14,["30"] = 15,["31"] = 16,["32"] = 22,["33"] = 17,["35"] = 19,["37"] = 21,["39"] = 29,["41"] = 31,["43"] = 33,["49"] = 18,["53"] = 20,["57"] = 22,["58"] = 23,["59"] = 24,["60"] = 25,["63"] = 28,["67"] = 30,["71"] = 32,["75"] = 34,["78"] = 37,["79"] = 15,["80"] = 14,["81"] = 41,["82"] = 43,["83"] = 44,["84"] = 45,["86"] = 48,["87"] = 49,["88"] = 50,["89"] = 51,["90"] = 52,["91"] = 53,["93"] = 54,["94"] = 54,["95"] = 55,["96"] = 56,["97"] = 57,["98"] = 58,["100"] = 60,["102"] = 54,["105"] = 63,["107"] = 66,["108"] = 40});
 local ____exports = {}
 local ____menu = require("menu")
 local Menu = ____menu.Menu
 local GameModeChooserGameState = ____menu.GameModeChooserGameState
+local PreLevelEditorGameState = ____menu.PreLevelEditorGameState
 local ____levelpicker = require("levelpicker")
 local LevelPicker = ____levelpicker.LevelPicker
 local ____playing = require("playing")
@@ -15,31 +16,43 @@ local ____settings = require("settings")
 local Settings = ____settings.Settings
 local ____json = require("json")
 local json = ____json.json
+local ____campaignLevelPicker = require("campaignLevelPicker")
+local CampaignLevelPicker = ____campaignLevelPicker.CampaignLevelPicker
+local function assertNever(o)
+    error(
+        __TS__New(Error, "this shouldn't occur"),
+        0
+    )
+end
 ____exports.RecreateApplication = {}
 local RecreateApplication = ____exports.RecreateApplication
 do
     local function createStateFromSerialized(serialized)
-        local ____switch4 = serialized.name
+        local ____switch5 = serialized.name
         local levels
-        if ____switch4 == "Menu" then
-            goto ____switch4_case_0
-        elseif ____switch4 == "LevelPicker" then
-            goto ____switch4_case_1
-        elseif ____switch4 == "Playing" then
-            goto ____switch4_case_2
-        elseif ____switch4 == "GameModeChooserGameState" then
-            goto ____switch4_case_3
+        if ____switch5 == "Menu" then
+            goto ____switch5_case_0
+        elseif ____switch5 == "LevelPicker" then
+            goto ____switch5_case_1
+        elseif ____switch5 == "Playing" then
+            goto ____switch5_case_2
+        elseif ____switch5 == "GameModeChooserGameState" then
+            goto ____switch5_case_3
+        elseif ____switch5 == "CampaignLevelPicker" then
+            goto ____switch5_case_4
+        elseif ____switch5 == "PreLevelEditorGameState" then
+            goto ____switch5_case_5
         end
-        goto ____switch4_end
-        ::____switch4_case_0::
+        goto ____switch5_end
+        ::____switch5_case_0::
         do
             return __TS__New(Menu)
         end
-        ::____switch4_case_1::
+        ::____switch5_case_1::
         do
-            return __TS__New(LevelPicker)
+            return __TS__New(LevelPicker, serialized.page)
         end
-        ::____switch4_case_2::
+        ::____switch5_case_2::
         do
             levels = Levels.getLevels()
             for ____, level in ipairs(levels) do
@@ -49,12 +62,20 @@ do
             end
             return nil
         end
-        ::____switch4_case_3::
+        ::____switch5_case_3::
         do
             return __TS__New(GameModeChooserGameState)
         end
-        ::____switch4_end::
-        return nil
+        ::____switch5_case_4::
+        do
+            return __TS__New(CampaignLevelPicker)
+        end
+        ::____switch5_case_5::
+        do
+            return __TS__New(PreLevelEditorGameState, serialized.levelName)
+        end
+        ::____switch5_end::
+        assertNever(serialized)
     end
     function RecreateApplication.attempt()
         local restartFilePath = Settings.getRestartFilePath()

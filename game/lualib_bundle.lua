@@ -136,6 +136,22 @@ function __TS__ArrayIndexOf(arr, searchElement, fromIndex)
     return -1
 end
 
+function __TS__ArrayJoin(self, separator)
+    if separator == nil then
+        separator = ","
+    end
+    local result = ""
+    for index, value in ipairs(self) do
+        if index > 1 then
+            result = tostring(result) .. tostring(separator)
+        end
+        result = tostring(result) .. tostring(
+            tostring(value)
+        )
+    end
+    return result
+end
+
 function __TS__ArrayMap(arr, callbackfn)
     local newArray = {}
     do
@@ -451,6 +467,9 @@ function __TS__ClassExtends(target, base)
     if type(base.prototype.__newindex) == "function" then
         target.prototype.__newindex = base.prototype.__newindex
     end
+    if type(base.prototype.__tostring) == "function" then
+        target.prototype.__tostring = base.prototype.__tostring
+    end
 end
 
 function __TS__Decorate(decorators, target, key, desc)
@@ -492,7 +511,7 @@ function ____descriptorIndex(self, key)
             local descriptor = descriptors[key]
             if descriptor then
                 if descriptor.get then
-                    return __TS__FunctionCall(descriptor.get, self)
+                    return descriptor.get(self)
                 end
                 return
             end
@@ -508,7 +527,7 @@ function ____descriptorNewindex(self, key, value)
             local descriptor = descriptors[key]
             if descriptor then
                 if descriptor.set then
-                    __TS__FunctionCall(descriptor.set, self, value)
+                    descriptor.set(self, value)
                 end
                 return
             end
@@ -545,14 +564,6 @@ function __TS__New(target, ...)
     return instance
 end
 
-function __TS__FunctionCall(fn, thisArg, ...)
-    local args = {...}
-    return fn(
-        thisArg,
-        (unpack or table.unpack)(args)
-    )
-end
-
 function __TS__GetErrorStack(self, constructor)
     local level = 1
     while true do
@@ -569,7 +580,7 @@ function __TS__GetErrorStack(self, constructor)
 end
 function __TS__WrapErrorToString(self, getDescription)
     return function(self)
-        local description = __TS__FunctionCall(getDescription, self)
+        local description = getDescription(self)
         local caller = debug.getinfo(3, "f")
         if (_VERSION == "Lua 5.1") or (caller and (caller.func ~= error)) then
             return description
@@ -629,16 +640,7 @@ for ____, errorName in ipairs({"RangeError", "ReferenceError", "SyntaxError", "T
     )
 end
 
-function __TS__FunctionApply(fn, thisArg, args)
-    if args then
-        return fn(
-            thisArg,
-            (unpack or table.unpack)(args)
-        )
-    else
-        return fn(thisArg)
-    end
-end
+__TS__Unpack = table.unpack or unpack
 
 function __TS__FunctionBind(fn, thisArg, ...)
     local boundArgs = {...}
@@ -653,18 +655,14 @@ function __TS__FunctionBind(fn, thisArg, ...)
         end
         return fn(
             thisArg,
-            (unpack or table.unpack)(args)
+            __TS__Unpack(args)
         )
     end
 end
 
 ____symbolMetatable = {
     __tostring = function(self)
-        if self.description == nil then
-            return "Symbol()"
-        else
-            return ("Symbol(" .. tostring(self.description)) .. ")"
-        end
+        return ("Symbol(" .. tostring(self.description or "")) .. ")"
     end
 }
 function __TS__Symbol(description)
@@ -676,6 +674,39 @@ Symbol = {
     species = __TS__Symbol("Symbol.species"),
     toStringTag = __TS__Symbol("Symbol.toStringTag")
 }
+
+function __TS__GeneratorIterator(self)
+    return self
+end
+function __TS__GeneratorNext(self, ...)
+    local co = self.____coroutine
+    if coroutine.status(co) == "dead" then
+        return {done = true}
+    end
+    local status, value = coroutine.resume(co, ...)
+    if not status then
+        error(value, 0)
+    end
+    return {
+        value = value,
+        done = coroutine.status(co) == "dead"
+    }
+end
+function __TS__Generator(fn)
+    return function(...)
+        local args = {...}
+        local argsLength = select("#", ...)
+        return {
+            ____coroutine = coroutine.create(
+                function() return fn(
+                    (unpack or table.unpack)(args, 1, argsLength)
+                ) end
+            ),
+            [Symbol.iterator] = __TS__GeneratorIterator,
+            next = __TS__GeneratorNext
+        }
+    end
+end
 
 function __TS__InstanceOf(obj, classTbl)
     if type(classTbl) ~= "table" then
@@ -701,23 +732,32 @@ function __TS__InstanceOfObject(value)
     return (valueType == "table") or (valueType == "function")
 end
 
+function __TS__IteratorGeneratorStep(self)
+    local co = self.____coroutine
+    local status, value = coroutine.resume(co)
+    if not status then
+        error(value, 0)
+    end
+    if coroutine.status(co) == "dead" then
+        return
+    end
+    return true, value
+end
+function __TS__IteratorIteratorStep(self)
+    local result = self:next()
+    if result.done then
+        return
+    end
+    return true, result.value
+end
 function __TS__Iterator(iterable)
-    if iterable[Symbol.iterator] then
+    if iterable.____coroutine ~= nil then
+        return __TS__IteratorGeneratorStep, iterable
+    elseif iterable[Symbol.iterator] then
         local iterator = iterable[Symbol.iterator](iterable)
-        return function()
-            local result = iterator:next()
-            if not result.done then
-                return result.value
-            else
-                return nil
-            end
-        end
+        return __TS__IteratorIteratorStep, iterator
     else
-        local i = 0
-        return function()
-            i = i + 1
-            return iterable[i]
-        end
+        return ipairs(iterable)
     end
 end
 
@@ -758,7 +798,6 @@ Map = (function()
         self.firstKey = nil
         self.lastKey = nil
         self.size = 0
-        return
     end
     function Map.prototype.delete(self, key)
         local contains = self:has(key)
@@ -786,12 +825,11 @@ Map = (function()
         return contains
     end
     function Map.prototype.forEach(self, callback)
-        for key in __TS__Iterator(
+        for ____, key in __TS__Iterator(
             self:keys()
         ) do
             callback(_G, self.items[key], key, self)
         end
-        return
     end
     function Map.prototype.get(self, key)
         return self.items[key]
@@ -819,8 +857,9 @@ Map = (function()
         return self:entries()
     end
     function Map.prototype.entries(self)
-        local items = self.items
-        local nextKey = self.nextKey
+        local ____ = self
+        local items = ____.items
+        local nextKey = ____.nextKey
         local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
@@ -848,8 +887,9 @@ Map = (function()
         }
     end
     function Map.prototype.values(self)
-        local items = self.items
-        local nextKey = self.nextKey
+        local ____ = self
+        local items = ____.items
+        local nextKey = ____.nextKey
         local key = self.firstKey
         return {
             [Symbol.iterator] = function(self)
@@ -865,6 +905,8 @@ Map = (function()
     Map[Symbol.species] = Map
     return Map
 end)()
+
+__TS__MathAtan2 = math.atan2 or math.atan
 
 function __TS__Number(value)
     local valueType = type(value)
@@ -922,7 +964,9 @@ function __TS__NumberToString(self, radix)
         repeat
             do
                 result = tostring(
-                    string.sub(____radixChars, (integer % radix) + 1, (integer % radix) + 1)
+                    (function(____index)
+                        return string.sub(____radixChars, ____index, ____index)
+                    end)((integer % radix) + 1)
                 ) .. tostring(result)
                 integer = math.floor(integer / radix)
             end
@@ -1066,7 +1110,6 @@ Set = (function()
         self.firstKey = nil
         self.lastKey = nil
         self.size = 0
-        return
     end
     function Set.prototype.delete(self, value)
         local contains = self:has(value)
@@ -1093,7 +1136,7 @@ Set = (function()
         return contains
     end
     function Set.prototype.forEach(self, callback)
-        for key in __TS__Iterator(
+        for ____, key in __TS__Iterator(
             self:keys()
         ) do
             callback(_G, key, key, self)
@@ -1281,11 +1324,11 @@ function __TS__Spread(iterable)
             end
         end
     else
-        for item in __TS__Iterator(iterable) do
+        for ____, item in __TS__Iterator(iterable) do
             arr[#arr + 1] = item
         end
     end
-    return (table.unpack or unpack)(arr)
+    return __TS__Unpack(arr)
 end
 
 function __TS__StringConcat(str1, ...)

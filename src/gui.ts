@@ -89,6 +89,7 @@ export class Button extends Element {
 }
 
 export class TextInput extends Element {
+
     private static promptPaddingPercentage = 0.05;
     private static promptHeightPercentage = 0.3;
     private static inputHeightPadding = 0.1;
@@ -133,6 +134,16 @@ export class TextInput extends Element {
 
         this.inputTextScrape = "";
         this.callback = callback;
+    }
+
+    getText(): string {
+        return this.inputTextScrape;
+    }
+
+    setText(text: string): void {
+        this.inputTextScrape = text;
+        this.inputText.set(this.inputTextScrape);
+        this.recalculatePosition();
     }
 
     private recalculatePosition() {

@@ -1,10 +1,15 @@
 import { Serialized } from "./../types/Serializable";
-import { Menu, GameModeChooserGameState } from "../menu";
+import { Menu, GameModeChooserGameState, PreLevelEditorGameState } from "../menu";
 import { LevelPicker } from "../levelpicker";
 import { Playing } from "../playing";
 import { Levels } from "../levels";
 import { Settings } from "../settings";
 import { json } from "../json";
+import { CampaignLevelPicker } from "../campaignLevelPicker";
+
+function assertNever(o: never) {
+    throw new Error("this shouldn't occur");
+}
 
 export namespace RecreateApplication {
     function createStateFromSerialized(serialized: Serialized): any {
@@ -12,7 +17,7 @@ export namespace RecreateApplication {
             case "Menu":
                 return new Menu();
             case "LevelPicker":
-                return new LevelPicker();
+                return new LevelPicker(serialized.page);
             case "Playing":
                 const levels = Levels.getLevels();
                 for (const level of levels) {
@@ -23,9 +28,13 @@ export namespace RecreateApplication {
                 return null;
             case "GameModeChooserGameState":
                 return new GameModeChooserGameState();
+            case "CampaignLevelPicker":
+                return new CampaignLevelPicker();
+            case "PreLevelEditorGameState":
+                return new PreLevelEditorGameState(serialized.levelName);
         }
 
-        return null;
+        assertNever(serialized);
     }
 
     export function attempt(): any[] | null {

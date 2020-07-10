@@ -1,4 +1,4 @@
-import { LevelBuilderCamera } from "./levelbuildercamera";
+import { LevelBuilderCamera } from "./leveleditorcamera";
 
 const highlightedLineWidth = 5;
 const normalLineWidth = 1;

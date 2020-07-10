@@ -43,6 +43,6 @@
     "lua-types": "^2.7.0",
     "prettier": "^2.0.2",
     "prettier-plugin-import-sort": "^0.0.4",
-    "typescript-to-lua": "^0.32.0"
+    "typescript-to-lua": "^0.34.0"
   }
 }

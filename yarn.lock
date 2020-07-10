@@ -2411,19 +2411,24 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-typescript-to-lua@^0.32.0:
-  version "0.32.2"
-  resolved "https://registry.yarnpkg.com/typescript-to-lua/-/typescript-to-lua-0.32.2.tgz#182e396793b400cada8a9bee85d7238a0dfe04ab"
-  integrity sha512-X50SJ5HXUH6qqRF0EJ1UKDMgM8E36JOyf/1XDXXm1m5YWlDS9s4NDpkAB/jtbt6OwEExFzQE5HDikkKyBFQnAw==
+typescript-to-lua@^0.34.0:
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/typescript-to-lua/-/typescript-to-lua-0.34.0.tgz#bd9cba84ce3fd8f44b13f17c7bd39ef2f3bf08db"
+  integrity sha512-00Sh6Pv90r664dEp1svHbML1A6/d8+SDdzeDFS3K6vFi9xht8ZGAxy8QRePK25/pclj9EV3caKYxb2x2mKv/PA==
   dependencies:
     resolve "^1.15.1"
     source-map "^0.7.3"
-    typescript "^3.8.3"
+    typescript "^3.9.2"
 
-typescript@^3.2.4, typescript@^3.8.3:
+typescript@^3.2.4:
   version "3.9.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.3.tgz#d3ac8883a97c26139e42df5e93eeece33d610b8a"
   integrity sha512-D/wqnB2xzNFIcoBG9FG8cXRDjiqSTbG2wd8DMZeQyJlP1vfTkIxH4GKveWaEBYySKIg+USu+E+EDIR47SqnaMQ==
+
+typescript@^3.9.2:
+  version "3.9.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.6.tgz#8f3e0198a34c3ae17091b35571d3afd31999365a"
+  integrity sha512-Pspx3oKAPJtjNwE92YS05HQoY7z2SFyOpHo9MqJor3BXAGNaPUs83CuVp9VISFkSjyRfiTpmKuAYGJB7S7hOxw==
 
 uri-js@^4.2.2:
   version "4.2.2"

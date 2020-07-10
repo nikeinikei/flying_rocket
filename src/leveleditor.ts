@@ -3,7 +3,7 @@ import { KeyConstant } from "love.keyboard";
 import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
 import { Level } from "./level";
-import { LevelBuilderCamera } from "./levelbuildercamera";
+import { LevelBuilderCamera } from "./leveleditorcamera";
 
 export interface CampaignLevelInfo {
     index: number;

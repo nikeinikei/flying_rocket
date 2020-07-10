@@ -10,11 +10,11 @@ import { Levels } from "./levels";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
 
-class PreLevelBuilderGameState {
+export class PreLevelEditorGameState implements Serializable {
     private textInput: TextInput;
     private toggle: Toggle | null;
 
-    constructor() {
+    constructor(levelName?: string) {
         const textInputWidth = 1200;
         const textInputHeight = 600;
         const x = love.graphics.getWidth() / 2 - textInputWidth / 2;
@@ -61,12 +61,19 @@ class PreLevelBuilderGameState {
                 }
             }
         });
+        if (levelName) {
+            this.textInput.setText(levelName);
+        }
 
         if (Settings.isDevelopment()) {
             this.toggle = new Toggle(10, 10, 40, 40);
         } else {
             this.toggle = null;
         }
+    }
+
+    serialize(): Serialized {
+        return { name: "PreLevelEditorGameState", levelName: this.textInput.getText() }
     }
 
     getObjects() {
@@ -120,9 +127,9 @@ const buttonSchemes = [
         },
     },
     {
-        name: "LevelBuilder",
+        name: "Level Editor",
         callback: () => {
-            Application.pushState(new PreLevelBuilderGameState());
+            Application.pushState(new PreLevelEditorGameState());
         },
     },
     {

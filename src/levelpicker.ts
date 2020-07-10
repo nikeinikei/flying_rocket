@@ -19,8 +19,8 @@ export class LevelPicker implements Serializable {
     private forwardButton: Button;
     private backwardButton: Button;
 
-    constructor() {
-        this.pageIndex = 0;
+    constructor(pageIndex?: number) {
+        this.pageIndex = pageIndex ?? 0;
         this.buttons = [];
         let levelsNotAvailableText = love.graphics.newText(love.graphics.newFont(50), "no levels available");
         this.levelsNotAvailableTextWrapped = new WrappedDrawable(levelsNotAvailableText);
@@ -49,7 +49,7 @@ export class LevelPicker implements Serializable {
         }
     }
     serialize(): Serialized {
-        return { name: "LevelPicker" }
+        return { name: "LevelPicker", page: this.pageIndex }
     }
 
     private currentButtons(): Button[] {
