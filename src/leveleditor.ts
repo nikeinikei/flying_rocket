@@ -255,8 +255,7 @@ export class LevelEditor implements GameState {
 
     draw() {
         this.camera.apply();
-        const [tx, ty] = this.camera.getTranslation();
-        this.stars.setViewport(tx, ty, love.graphics.getWidth(), love.graphics.getHeight());
+        this.stars.setViewport(...this.camera.getViewport());
         this.stars.draw();
         this.gridRenderer.draw();
 

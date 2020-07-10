@@ -248,8 +248,7 @@ export class Playing implements GameState, Serializable {
         }
 
         this.camera.update(dt);
-        const [x, y] = this.camera.getTranslation();
-        this.stars.setViewport(x, y, love.graphics.getWidth(), love.graphics.getHeight());
+        this.stars.setViewport(...this.camera.getViewport());
     }
 
     private drawObject(o: PhysicsObject<PolygonShape>) {

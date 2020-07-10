@@ -42,6 +42,11 @@ export class LevelBuilderCamera {
         return [-this.tx, -this.ty];
     }
 
+    /** @tupleReturn */
+    getViewport(): [number, number, number, number] {
+        return [-this.tx, -this.ty, love.graphics.getWidth(), love.graphics.getHeight()];
+    }
+
     update(dt: number) {
         let dx = this.cameraSpeed.x * dt;
         let dy = this.cameraSpeed.y * dt;
