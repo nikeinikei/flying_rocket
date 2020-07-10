@@ -71,7 +71,7 @@ local specialCases = {
         name = "keypressed", 
         func = function(f)
             return function(key, code, isrepeat)
-                if Settings.isDevelopment() and key == "r" then
+                if Settings.isDevelopment() and key == "r" and love.keyboard.isDown("lctrl") then
                     serializeApplication()
                     love.event.quit("restart")
                 end
