@@ -10,9 +10,9 @@ import { Rocket } from "./rocket";
 import { Settings } from "./settings";
 import { Stars } from "./stars";
 import { Terrain } from "./terrain";
+import { Serializable, Serialized } from "./types/Serializable";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
-import { Serialized, Serializable } from "./types/Serializable";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";

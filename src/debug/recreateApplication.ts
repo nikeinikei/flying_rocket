@@ -1,11 +1,11 @@
 import { Serialized } from "./../types/Serializable";
-import { Menu, GameModeChooserGameState, PreLevelEditorGameState } from "../menu";
-import { LevelPicker } from "../levelpicker";
-import { Playing } from "../playing";
-import { Levels } from "../levels";
-import { Settings } from "../settings";
-import { json } from "../json";
 import { CampaignLevelPicker } from "../campaignLevelPicker";
+import { json } from "../json";
+import { LevelPicker } from "../levelpicker";
+import { Levels } from "../levels";
+import { GameModeChooserGameState, Menu, PreLevelEditorGameState } from "../menu";
+import { Playing } from "../playing";
+import { Settings } from "../settings";
 
 function assertNever(o: never) {
     throw new Error("this shouldn't occur");
@@ -52,7 +52,7 @@ export namespace RecreateApplication {
             const serializeds = json.decode(contents) as Serialized[];
             const states: any[] = [];
             for (let i = serializeds.length - 1; i >= 0; i--) {
-                const serialized = serializeds[i]
+                const serialized = serializeds[i];
                 const deserialized = createStateFromSerialized(serialized);
                 if (deserialized == null) {
                     return null;

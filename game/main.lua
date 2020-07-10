@@ -4,12 +4,12 @@ __TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] 
 local ____exports = {}
 local ____campaignLevels = require("campaignLevels")
 local CampaignLevels = ____campaignLevels.CampaignLevels
+local ____recreateApplication = require("debug.recreateApplication")
+local RecreateApplication = ____recreateApplication.RecreateApplication
 local ____menu = require("menu")
 local Menu = ____menu.Menu
 local ____settings = require("settings")
 local Settings = ____settings.Settings
-local ____recreateApplication = require("debug.recreateApplication")
-local RecreateApplication = ____recreateApplication.RecreateApplication
 require("globals")
 require("customerrorhandler")
 local function parseArgs(args)

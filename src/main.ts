@@ -2,9 +2,9 @@ require("globals");
 require("customerrorhandler");
 
 import { CampaignLevels } from "./campaignLevels";
+import { RecreateApplication } from "./debug/recreateApplication";
 import { Menu } from "./menu";
 import { Settings } from "./settings";
-import { RecreateApplication } from "./debug/recreateApplication";
 
 function parseArgs(args: string[]) {
     for (const arg of args) {

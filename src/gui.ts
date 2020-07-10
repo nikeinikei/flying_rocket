@@ -89,7 +89,6 @@ export class Button extends Element {
 }
 
 export class TextInput extends Element {
-
     private static promptPaddingPercentage = 0.05;
     private static promptHeightPercentage = 0.3;
     private static inputHeightPadding = 0.1;

@@ -77,7 +77,7 @@ export class PreLevelEditorGameState implements GameState, Serializable {
     }
 
     serialize(): Serialized {
-        return { name: "PreLevelEditorGameState", levelName: this.textInput.getText() }
+        return { name: "PreLevelEditorGameState", levelName: this.textInput.getText() };
     }
 
     getObjects() {
@@ -185,7 +185,7 @@ export class Menu implements GameState, Serializable {
     }
 
     serialize(): Serialized {
-        return { name: "Menu", }
+        return { name: "Menu" };
     }
 
     getObjects() {
