@@ -4,7 +4,8 @@ export type Serialized =
     | { name: "LevelPicker"; page: number }
     | { name: "GameModeChooserGameState" }
     | { name: "CampaignLevelPicker" }
-    | { name: "PreLevelEditorGameState"; levelName: string };
+    | { name: "PreLevelEditorGameState"; levelName: string; isCampaignLevel: boolean | null }
+    | { name: "LevelEditor"; levelName: string };
 
 export interface Serializable {
     serialize(): Serialized;

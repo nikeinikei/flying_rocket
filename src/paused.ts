@@ -1,7 +1,7 @@
 import { KeyConstant } from "love.keyboard";
 
-import { Playing } from "./playing";
 import { GameState } from "./gamestate";
+import { Playing } from "./playing";
 
 export class Paused extends GameState {
     private playing: Playing;

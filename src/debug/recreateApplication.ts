@@ -1,6 +1,8 @@
 import { Serialized } from "./../types/Serializable";
 import { CampaignLevelPicker } from "../campaignLevelPicker";
 import { json } from "../json";
+import { newLevel } from "../level";
+import { LevelEditor } from "../leveleditor";
 import { LevelPicker } from "../levelpicker";
 import { Levels } from "../levels";
 import { GameModeChooserGameState, Menu, PreLevelEditorGameState } from "../menu";
@@ -31,7 +33,9 @@ export namespace RecreateApplication {
             case "CampaignLevelPicker":
                 return new CampaignLevelPicker();
             case "PreLevelEditorGameState":
-                return new PreLevelEditorGameState(serialized.levelName);
+                return new PreLevelEditorGameState(serialized.levelName, serialized.isCampaignLevel);
+            case "LevelEditor":
+                return new LevelEditor(newLevel(serialized.name));
         }
 
         assertNever(serialized);

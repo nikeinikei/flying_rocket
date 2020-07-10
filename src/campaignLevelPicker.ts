@@ -1,11 +1,11 @@
 import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevels } from "./campaignLevels";
+import { GameState } from "./gamestate";
 import { Button } from "./gui";
 import { Level } from "./level";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
-import { GameState } from "./gamestate";
 
 export class CampaignLevelPicker extends GameState implements Serializable {
     private buttons: Button[];

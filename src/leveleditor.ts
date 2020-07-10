@@ -1,11 +1,12 @@
 import { KeyConstant } from "love.keyboard";
 
+import { GameState } from "./gamestate";
 import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
 import { Level } from "./level";
 import { LevelBuilderCamera } from "./leveleditorcamera";
 import { Stars } from "./stars";
-import { GameState } from "./gamestate";
+import { Serializable, Serialized } from "./types/Serializable";
 
 export interface CampaignLevelInfo {
     index: number;
@@ -53,7 +54,7 @@ const rocketLocationHeight = 20;
 const refuelStationWidth = 200;
 const refuelStationHeight = 20;
 
-export class LevelEditor extends GameState {
+export class LevelEditor extends GameState implements Serializable {
     private level: Level;
     private buttons: Button[];
     private mode: Mode;
@@ -111,6 +112,10 @@ export class LevelEditor extends GameState {
         this.camera = new LevelBuilderCamera();
         this.gridRenderer = new GridRenderer(250, this.camera);
         this.stars = new Stars();
+    }
+
+    serialize(): Serialized {
+        return { name: "LevelEditor", levelName: this.level.name };
     }
 
     getName() {
@@ -229,7 +234,7 @@ export class LevelEditor extends GameState {
     }
 
     leave() {
-        if (this.success ) {
+        if (this.success) {
             return this.level;
         } else {
             return null;

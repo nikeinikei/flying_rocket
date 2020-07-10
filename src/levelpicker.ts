@@ -1,12 +1,12 @@
 import { KeyConstant } from "love.keyboard";
 
+import { GameState } from "./gamestate";
 import { Button } from "./gui";
 import { LevelEditor } from "./leveleditor";
 import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";
-import { GameState } from "./gamestate";
 
 export class LevelPicker extends GameState implements Serializable {
     private static pageButtonCount = 6;
@@ -183,9 +183,7 @@ export class LevelPicker extends GameState implements Serializable {
                         love.window.showMessageBox("Export successful", "successfully exported to " + fullPath, "info");
                     }),
                     new Button(1200, y, 200, height, "Edit", () => {
-                        Application.pushState(
-                            new LevelEditor(level)
-                        );
+                        Application.pushState(new LevelEditor(level));
                     })
                 );
             }

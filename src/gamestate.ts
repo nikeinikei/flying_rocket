@@ -5,23 +5,25 @@ export abstract class GameState {
     abstract getName(): string;
 
     /**
-     * called when pushed onto the stack 
+     * called when pushed onto the stack
      */
-    enter() { }
+    enter() {}
 
     /**
      * called when state becomes active again after the state
      * above gets popped
      */
-    onActive<T>(data?: T) { }
+    onActive<T>(data?: T) {}
 
     /**
      * called when getting destroyed because it gets popped
      */
-    leave(): any | null { return null; }
+    leave(): any | null {
+        return null;
+    }
 
     /**
      * called when state becomes inactive because another state gets pushed onto the stack
      */
-    onInactive() { }
+    onInactive() {}
 }

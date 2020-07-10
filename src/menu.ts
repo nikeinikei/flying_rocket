@@ -2,6 +2,7 @@ import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevelPicker } from "./campaignLevelPicker";
 import { CampaignLevels } from "./campaignLevels";
+import { GameState } from "./gamestate";
 import { Button, TextInput, Toggle } from "./gui";
 import { Level, newLevel } from "./level";
 import { LevelEditor } from "./leveleditor";
@@ -9,15 +10,15 @@ import { LevelPicker } from "./levelpicker";
 import { Levels } from "./levels";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
-import { GameState } from "./gamestate";
 
 export class PreLevelEditorGameState extends GameState implements Serializable {
     private textInput: TextInput;
     private toggle: Toggle | null;
     private isCampaignLevel: boolean | null = null;
 
-    constructor(levelName?: string) {
+    constructor(levelName?: string, isCampaignLevel?: boolean | null) {
         super();
+        this.isCampaignLevel = isCampaignLevel ?? null;
         const textInputWidth = 1200;
         const textInputHeight = 600;
         const x = love.graphics.getWidth() / 2 - textInputWidth / 2;
@@ -42,17 +43,13 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
                             const level = newLevel(name);
 
                             this.isCampaignLevel = true;
-                            Application.pushState(
-                                new LevelEditor(level)
-                            );
+                            Application.pushState(new LevelEditor(level));
                         }
                     } else {
                         const level = newLevel(name);
 
                         this.isCampaignLevel = false;
-                        Application.pushState(
-                            new LevelEditor(level)
-                        );
+                        Application.pushState(new LevelEditor(level));
                     }
                 }
             }
@@ -69,15 +66,12 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
     }
 
     onActive(data?: any) {
-        print("PreLevelEditorGameState#onActive");
         super.onActive(data);
         if (data) {
             const level = data as Level;
             if (this.isCampaignLevel == true) {
-                print("saving campaign level");
                 CampaignLevels.addLevel(level);
             } else if (this.isCampaignLevel == false) {
-                print("saving normal level");
                 Levels.addLevel(level);
             }
         }
@@ -89,7 +83,11 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
     }
 
     serialize(): Serialized {
-        return { name: "PreLevelEditorGameState", levelName: this.textInput.getText() };
+        return {
+            name: "PreLevelEditorGameState",
+            levelName: this.textInput.getText(),
+            isCampaignLevel: this.isCampaignLevel,
+        };
     }
 
     getObjects() {

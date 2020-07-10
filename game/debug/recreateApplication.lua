@@ -1,11 +1,15 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 5,["12"] = 5,["13"] = 6,["14"] = 6,["15"] = 6,["16"] = 6,["17"] = 7,["18"] = 7,["19"] = 8,["20"] = 8,["21"] = 10,["23"] = 11,["26"] = 10,["28"] = 14,["30"] = 15,["31"] = 16,["32"] = 22,["33"] = 17,["35"] = 19,["37"] = 21,["39"] = 29,["41"] = 31,["43"] = 33,["49"] = 18,["53"] = 20,["57"] = 22,["58"] = 23,["59"] = 24,["60"] = 25,["63"] = 28,["67"] = 30,["71"] = 32,["75"] = 34,["78"] = 37,["79"] = 15,["80"] = 14,["81"] = 41,["82"] = 43,["83"] = 44,["84"] = 45,["86"] = 48,["87"] = 49,["88"] = 50,["89"] = 51,["90"] = 52,["91"] = 53,["93"] = 54,["94"] = 54,["95"] = 55,["96"] = 56,["97"] = 57,["98"] = 58,["100"] = 60,["102"] = 54,["105"] = 63,["107"] = 66,["108"] = 40});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 3,["8"] = 3,["9"] = 4,["10"] = 4,["11"] = 5,["12"] = 5,["13"] = 6,["14"] = 6,["15"] = 7,["16"] = 7,["17"] = 8,["18"] = 8,["19"] = 8,["20"] = 8,["21"] = 9,["22"] = 9,["23"] = 10,["24"] = 10,["25"] = 12,["27"] = 13,["30"] = 12,["32"] = 16,["34"] = 17,["35"] = 18,["36"] = 24,["37"] = 19,["39"] = 21,["41"] = 23,["43"] = 31,["45"] = 33,["47"] = 35,["49"] = 37,["55"] = 20,["59"] = 22,["63"] = 24,["64"] = 25,["65"] = 26,["66"] = 27,["69"] = 30,["73"] = 32,["77"] = 34,["81"] = 36,["85"] = 38,["86"] = 38,["87"] = 38,["88"] = 38,["91"] = 41,["92"] = 17,["93"] = 16,["94"] = 45,["95"] = 47,["96"] = 48,["97"] = 49,["99"] = 52,["100"] = 53,["101"] = 54,["102"] = 55,["103"] = 56,["104"] = 57,["106"] = 58,["107"] = 58,["108"] = 59,["109"] = 60,["110"] = 61,["111"] = 62,["113"] = 64,["115"] = 58,["118"] = 67,["120"] = 70,["121"] = 44});
 local ____exports = {}
 local ____campaignLevelPicker = require("campaignLevelPicker")
 local CampaignLevelPicker = ____campaignLevelPicker.CampaignLevelPicker
 local ____json = require("json")
 local json = ____json.json
+local ____level = require("level")
+local newLevel = ____level.newLevel
+local ____leveleditor = require("leveleditor")
+local LevelEditor = ____leveleditor.LevelEditor
 local ____levelpicker = require("levelpicker")
 local LevelPicker = ____levelpicker.LevelPicker
 local ____levels = require("levels")
@@ -42,6 +46,8 @@ do
             goto ____switch5_case_4
         elseif ____switch5 == "PreLevelEditorGameState" then
             goto ____switch5_case_5
+        elseif ____switch5 == "LevelEditor" then
+            goto ____switch5_case_6
         end
         goto ____switch5_end
         ::____switch5_case_0::
@@ -72,7 +78,14 @@ do
         end
         ::____switch5_case_5::
         do
-            return __TS__New(PreLevelEditorGameState, serialized.levelName)
+            return __TS__New(PreLevelEditorGameState, serialized.levelName, serialized.isCampaignLevel)
+        end
+        ::____switch5_case_6::
+        do
+            return __TS__New(
+                LevelEditor,
+                newLevel(serialized.name)
+            )
         end
         ::____switch5_end::
         assertNever(serialized)

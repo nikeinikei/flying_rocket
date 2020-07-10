@@ -2,6 +2,7 @@ import { KeyConstant } from "love.keyboard";
 import { World } from "love.physics";
 
 import { Controls } from "./controls";
+import { GameState } from "./gamestate";
 import { Level } from "./level";
 import { Lost } from "./lost";
 import { Paused } from "./paused";
@@ -13,7 +14,6 @@ import { Terrain } from "./terrain";
 import { Serializable, Serialized } from "./types/Serializable";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
-import { GameState } from "./gamestate";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";

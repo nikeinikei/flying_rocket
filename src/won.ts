@@ -1,4 +1,5 @@
 import { KeyConstant } from "love.keyboard";
+
 import { GameState } from "./gamestate";
 
 export interface GameEndMetrics {
