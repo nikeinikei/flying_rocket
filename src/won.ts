@@ -4,7 +4,7 @@ export interface GameEndMetrics {
     timeTaken: number;
 }
 
-export class Won {
+export class Won implements GameState {
     private text: Text;
     private textPosition: Vector;
     private timeTakenText: Text;
@@ -23,6 +23,10 @@ export class Won {
             x: (love.graphics.getWidth() - this.timeTakenText.getWidth()) / 2,
             y: this.textPosition.y + 40,
         };
+    }
+
+    getName() {
+        return "Won";
     }
 
     keypressed(key: KeyConstant) {

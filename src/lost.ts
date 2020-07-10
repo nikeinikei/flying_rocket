@@ -1,6 +1,6 @@
 import { KeyConstant } from "love.keyboard";
 
-export class Lost {
+export class Lost implements GameState {
     private text: Text;
     private textPosition: Vector;
 
@@ -10,6 +10,10 @@ export class Lost {
             x: (love.graphics.getWidth() - this.text.getWidth()) / 2,
             y: (love.graphics.getHeight() - this.text.getHeight()) / 2,
         };
+    }
+
+    getName() {
+        return "Lost";
     }
 
     keypressed(key: KeyConstant) {

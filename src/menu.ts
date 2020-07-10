@@ -10,7 +10,7 @@ import { Levels } from "./levels";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
 
-export class PreLevelEditorGameState implements Serializable {
+export class PreLevelEditorGameState implements GameState, Serializable {
     private textInput: TextInput;
     private toggle: Toggle | null;
 
@@ -72,6 +72,10 @@ export class PreLevelEditorGameState implements Serializable {
         }
     }
 
+    getName() {
+        return "PreLevelEditorGameState";
+    }
+
     serialize(): Serialized {
         return { name: "PreLevelEditorGameState", levelName: this.textInput.getText() }
     }
@@ -91,7 +95,7 @@ export class PreLevelEditorGameState implements Serializable {
     }
 }
 
-export class GameModeChooserGameState implements Serializable {
+export class GameModeChooserGameState implements GameState, Serializable {
     private campaignButton: Button;
     private customGameButton: Button;
 
@@ -102,6 +106,10 @@ export class GameModeChooserGameState implements Serializable {
         this.customGameButton = new Button(50, 200, 400, 100, "Custom", () => {
             Application.pushState(new LevelPicker());
         });
+    }
+
+    getName() {
+        return "GameModeChooserGameState";
     }
 
     serialize(): Serialized {

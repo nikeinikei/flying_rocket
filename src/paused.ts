@@ -2,13 +2,17 @@ import { KeyConstant } from "love.keyboard";
 
 import { Playing } from "./playing";
 
-export class Paused {
+export class Paused implements GameState {
     private playing: Playing;
     private onUnpaused: (this: void) => void;
 
     constructor(playing: Playing, onUnpaused: (this: void) => void) {
         this.playing = playing;
         this.onUnpaused = onUnpaused;
+    }
+
+    getName() {
+        return "Paused";
     }
 
     private resume() {

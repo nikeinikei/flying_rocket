@@ -109,6 +109,10 @@ export class LevelEditor implements GameState {
         this.gridRenderer = new GridRenderer(250, this.camera);
     }
 
+    getName() {
+        return "LevelEditor";
+    }
+
     private setNewMode(newMode: Mode) {
         if (this.mode != newMode) {
             if (this.mode == Mode.TerrainBuilding) {

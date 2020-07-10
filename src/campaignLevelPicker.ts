@@ -6,7 +6,7 @@ import { Level } from "./level";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
 
-export class CampaignLevelPicker implements Serializable {
+export class CampaignLevelPicker implements GameState, Serializable {
     private buttons: Button[];
     private campaignLevels: Table<string, Level>;
 
@@ -52,6 +52,10 @@ export class CampaignLevelPicker implements Serializable {
                 count++;
             }
         }
+    }
+
+    getName() {
+        return "CampaignLevelPicker";
     }
 
     serialize(): Serialized {

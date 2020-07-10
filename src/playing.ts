@@ -19,7 +19,7 @@ const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
 const refuelStationUserData = "refuelStationUserData";
 
-export class Playing implements Serializable {
+export class Playing implements GameState, Serializable {
     private level: Level;
     private world: World;
     private clock: Clock;
@@ -82,6 +82,10 @@ export class Playing implements Serializable {
         this.camera = new PlayingCamera(this.rocket);
         this.stars = new Stars();
         this.clock = new Clock();
+    }
+
+    getName() {
+        return "Playing";
     }
 
     serialize(): Serialized {

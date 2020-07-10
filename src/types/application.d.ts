@@ -7,6 +7,6 @@
  * Implementation in pure lua in application.lua
  */
 declare module Application {
-    function pushState(this: void, state: any): void;
+    function pushState(this: void, state: GameState): void;
     function popState(this: void): void;
 }
