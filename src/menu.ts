@@ -153,7 +153,7 @@ const buttonSchemes = [
     },
 ];
 
-export class Menu implements Serializable {
+export class Menu implements GameState, Serializable {
     private buttons: Button[];
 
     constructor() {
@@ -178,6 +178,10 @@ export class Menu implements Serializable {
                 )
             );
         }
+    }
+
+    getName() {
+        return "Menu";
     }
 
     serialize(): Serialized {
