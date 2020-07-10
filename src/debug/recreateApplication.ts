@@ -35,9 +35,7 @@ export namespace RecreateApplication {
             case "PreLevelEditorGameState":
                 return new PreLevelEditorGameState(serialized.levelName, serialized.isCampaignLevel);
             case "LevelEditor":
-                const levelName = serialized.levelName;
-                print("levelName", levelName);
-                return new LevelEditor(newLevel(levelName));
+                return new LevelEditor(newLevel(serialized.levelName));
         }
 
         assertNever(serialized);
