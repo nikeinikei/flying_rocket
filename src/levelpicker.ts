@@ -153,7 +153,6 @@ export class LevelPicker implements Serializable {
                 const height = 70;
                 page.push(
                     new Button(50, y, 400, height, levels[i].name, () => {
-                        Application.popState();
                         Application.pushState(new Playing(level));
                     }),
                     new Button(500, y, 150, height, "Delete", () => {
