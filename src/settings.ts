@@ -8,4 +8,8 @@ export namespace Settings {
     export function isDevelopment(): boolean {
         return development;
     }
+
+    export function getRestartFilePath(): string {
+        return "restart.json";
+    }
 }

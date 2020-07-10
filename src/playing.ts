@@ -12,13 +12,14 @@ import { Stars } from "./stars";
 import { Terrain } from "./terrain";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
+import { Serialized, Serializable } from "./types/Serializable";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
 const refuelStationUserData = "refuelStationUserData";
 
-export class Playing {
+export class Playing implements Serializable {
     private level: Level;
     private world: World;
     private clock: Clock;
@@ -81,6 +82,10 @@ export class Playing {
         this.camera = new PlayingCamera(this.rocket);
         this.stars = new Stars();
         this.clock = new Clock();
+    }
+
+    serialize(): Serialized {
+        return { name: "Playing", level: this.level.name };
     }
 
     private pause() {

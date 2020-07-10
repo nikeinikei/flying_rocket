@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 5,["8"] = 5,["9"] = 6,["10"] = 6,["11"] = 1,["12"] = 2,["13"] = 8,["14"] = 9,["15"] = 10,["16"] = 11,["19"] = 8,["20"] = 16,["21"] = 17,["22"] = 19,["23"] = 21,["24"] = 21,["25"] = 21,["26"] = 16});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 5,["8"] = 5,["9"] = 6,["10"] = 6,["11"] = 7,["12"] = 7,["13"] = 1,["14"] = 2,["15"] = 9,["16"] = 10,["17"] = 11,["18"] = 12,["21"] = 9,["22"] = 17,["23"] = 18,["24"] = 20,["25"] = 22,["26"] = 23,["27"] = 24,["28"] = 25,["31"] = 28,["32"] = 28,["33"] = 28,["35"] = 17});
 local ____exports = {}
 local ____campaignLevels = require("campaignLevels")
 local CampaignLevels = ____campaignLevels.CampaignLevels
@@ -8,6 +8,8 @@ local ____menu = require("menu")
 local Menu = ____menu.Menu
 local ____settings = require("settings")
 local Settings = ____settings.Settings
+local ____recreateApplication = require("debug.recreateApplication")
+local RecreateApplication = ____recreateApplication.RecreateApplication
 require("globals")
 require("customerrorhandler")
 local function parseArgs(args)
@@ -20,8 +22,15 @@ end
 love.load = function(args)
     parseArgs(args)
     CampaignLevels.init()
-    Application.pushState(
-        __TS__New(Menu)
-    )
+    local states = RecreateApplication.attempt()
+    if states then
+        for ____, state in ipairs(states) do
+            Application.pushState(state)
+        end
+    else
+        Application.pushState(
+            __TS__New(Menu)
+        )
+    end
 end
 return ____exports

@@ -54,6 +54,7 @@ function save() {
         } else {
             error("file doesn't exist");
         }
+        file.close()
     };
 
     writeLevelsToFile("res/" + fileName);

@@ -1,5 +1,7 @@
 local Stack = require "util.stack"
 local Settings = require("settings").Settings
+local restartFilePath = Settings.getRestartFilePath()
+local json = require "libs.json"
 
 --[[
     Upon pushing a state the getObjects method gets called,
@@ -31,6 +33,33 @@ local LOVE_CALLBACKS = {
     "wheelmoved"
 }
 
+local states = Stack()
+local usedCallbacks = {}
+
+local function serializeState(state)
+    if state.serialize and type(state.serialize) == "function" then
+        return state:serialize()
+    else
+        return nil
+    end
+end
+
+local function serializeApplication()
+    local serializedApplication = {}
+    while not states:empty() do
+        local state = states:pop()
+        local serializedState = serializeState(state)
+        if serializedState == nil then
+            return
+        end
+        table.insert(serializedApplication, serializedState)
+    end
+    local asJson = json.encode(serializedApplication)
+    local file = io.open(restartFilePath, "w")
+    file:write(asJson)
+    file:close()
+end
+
 --sometimes a global override for a löve callback is of desire
 --should only be used for very special cases since it can 
 --lead to spaghetti code very quick
@@ -40,6 +69,7 @@ local specialCases = {
         func = function(f)
             return function(key, code, isrepeat)
                 if Settings.isDevelopment() and key == "r" then
+                    serializeApplication()
                     love.event.quit("restart")
                 end
                 f(key, code, isrepeat)
@@ -47,10 +77,6 @@ local specialCases = {
         end
     }
 }
-
-local states = Stack()
-local usedCallbacks = {}
-
 
 local function resetCallbacks()
     --reset all callbacks that are currently in use

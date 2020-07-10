@@ -5,8 +5,9 @@ import { LevelEditor } from "./leveleditor";
 import { Levels } from "./levels";
 import { Playing } from "./playing";
 import { WrappedDrawable } from "./wrappeddrawable";
+import { Serializable, Serialized } from "./types/Serializable";
 
-export class LevelPicker {
+export class LevelPicker implements Serializable {
     private static pageButtonCount = 6;
 
     private importButton: Button;
@@ -46,6 +47,9 @@ export class LevelPicker {
                 this.pageIndex++;
             });
         }
+    }
+    serialize(): Serialized {
+        return { name: "LevelPicker" }
     }
 
     private currentButtons(): Button[] {

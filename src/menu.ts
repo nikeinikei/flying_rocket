@@ -8,6 +8,7 @@ import { LevelEditor } from "./leveleditor";
 import { LevelPicker } from "./levelpicker";
 import { Levels } from "./levels";
 import { Settings } from "./settings";
+import { Serializable, Serialized } from "./types/Serializable";
 
 class PreLevelBuilderGameState {
     private textInput: TextInput;
@@ -83,7 +84,7 @@ class PreLevelBuilderGameState {
     }
 }
 
-class GameModeChooserGameState {
+export class GameModeChooserGameState implements Serializable {
     private campaignButton: Button;
     private customGameButton: Button;
 
@@ -94,6 +95,10 @@ class GameModeChooserGameState {
         this.customGameButton = new Button(50, 200, 400, 100, "Custom", () => {
             Application.pushState(new LevelPicker());
         });
+    }
+
+    serialize(): Serialized {
+        return { name: "GameModeChooserGameState" };
     }
 
     getObjects() {
@@ -133,7 +138,7 @@ const buttonSchemes = [
     },
 ];
 
-export class Menu {
+export class Menu implements Serializable {
     private buttons: Button[];
 
     constructor() {
@@ -158,6 +163,10 @@ export class Menu {
                 )
             );
         }
+    }
+
+    serialize(): Serialized {
+        return { name: "Menu", }
     }
 
     getObjects() {
