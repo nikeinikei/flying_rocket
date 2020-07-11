@@ -246,7 +246,7 @@ export class LevelEditor extends GameState implements Serializable {
     }
 
     leave() {
-        love.mouse.setGrabbed(true);
+        love.mouse.setGrabbed(false);
         if (this.success) {
             return this.level;
         } else {

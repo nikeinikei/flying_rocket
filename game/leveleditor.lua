@@ -217,7 +217,7 @@ function LevelEditor.prototype.mousepressed(self, mouseX, mouseY, button, istouc
     self.newMode = false
 end
 function LevelEditor.prototype.leave(self)
-    love.mouse.setGrabbed(true)
+    love.mouse.setGrabbed(false)
     if self.success then
         return self.level
     else
