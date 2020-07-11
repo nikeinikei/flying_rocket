@@ -26,8 +26,8 @@ export class LevelBuilderCamera {
         this.tx = 0;
         this.ty = 0;
         this.cameraSpeed = {
-            x: 300,
-            y: 300,
+            x: 600,
+            y: 600,
         };
         this.cameraControlKeycodes = {
             up: "down",
@@ -48,20 +48,23 @@ export class LevelBuilderCamera {
     }
 
     update(dt: number) {
+        const grabbed = love.mouse.isGrabbed();
+        const [mouseX, mouseY] = love.mouse.getPosition();
+
         let dx = this.cameraSpeed.x * dt;
         let dy = this.cameraSpeed.y * dt;
         let x = 0;
         let y = 0;
-        if (love.keyboard.isDown(this.cameraControlKeycodes.up)) {
+        if (love.keyboard.isDown(this.cameraControlKeycodes.up) || grabbed && mouseY >= love.graphics.getHeight() - 1 ) {
             y = 1;
         }
-        if (love.keyboard.isDown(this.cameraControlKeycodes.down)) {
+        if (love.keyboard.isDown(this.cameraControlKeycodes.down) || grabbed && mouseY == 0) {
             y -= 1;
         }
-        if (love.keyboard.isDown(this.cameraControlKeycodes.right)) {
+        if (love.keyboard.isDown(this.cameraControlKeycodes.right) || grabbed && mouseX >= love.graphics.getWidth() - 1) {
             x = 1;
         }
-        if (love.keyboard.isDown(this.cameraControlKeycodes.left)) {
+        if (love.keyboard.isDown(this.cameraControlKeycodes.left) || grabbed && mouseX == 0) {
             x -= 1;
         }
 

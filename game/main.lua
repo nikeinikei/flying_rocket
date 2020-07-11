@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 5,["8"] = 5,["9"] = 6,["10"] = 6,["11"] = 7,["12"] = 7,["13"] = 1,["14"] = 2,["15"] = 9,["16"] = 10,["17"] = 11,["18"] = 12,["21"] = 9,["22"] = 17,["23"] = 18,["24"] = 20,["25"] = 22,["26"] = 23,["27"] = 24,["28"] = 25,["31"] = 28,["32"] = 28,["33"] = 28,["35"] = 17});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 5,["8"] = 5,["9"] = 6,["10"] = 6,["11"] = 7,["12"] = 7,["13"] = 1,["14"] = 2,["15"] = 9,["16"] = 10,["17"] = 11,["18"] = 12,["21"] = 9,["22"] = 17,["23"] = 18,["24"] = 20,["25"] = 22,["26"] = 24,["27"] = 25,["28"] = 26,["29"] = 27,["32"] = 30,["33"] = 30,["34"] = 30,["36"] = 17});
 local ____exports = {}
 local ____campaignLevels = require("campaignLevels")
 local CampaignLevels = ____campaignLevels.CampaignLevels
@@ -22,6 +22,7 @@ end
 love.load = function(args)
     parseArgs(args)
     CampaignLevels.init()
+    love.mouse.setGrabbed(true)
     local states = RecreateApplication.attempt()
     if states then
         for ____, state in ipairs(states) do
