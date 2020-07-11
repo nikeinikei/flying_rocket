@@ -114,6 +114,18 @@ export class LevelEditor extends GameState implements Serializable {
         this.stars = new Stars();
     }
 
+    enter() {
+        love.mouse.setGrabbed(true);
+    }
+
+    onActive() {
+        love.mouse.setGrabbed(true);
+    }
+
+    onInactive() {
+        love.mouse.setGrabbed(false);
+    }
+
     serialize(): Serialized {
         return { name: "LevelEditor", levelName: this.level.name };
     }
@@ -234,6 +246,7 @@ export class LevelEditor extends GameState implements Serializable {
     }
 
     leave() {
+        love.mouse.setGrabbed(true);
         if (this.success) {
             return this.level;
         } else {

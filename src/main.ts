@@ -19,8 +19,6 @@ love.load = args => {
 
     CampaignLevels.init();
 
-    love.mouse.setGrabbed(true);
-
     const states = RecreateApplication.attempt();
     if (states) {
         for (const state of states) {
