@@ -4,7 +4,7 @@ import { GameState } from "./gamestate";
 import { GridRenderer } from "./gridrenderer";
 import { Button } from "./gui";
 import { Level } from "./level";
-import { LevelBuilderCamera } from "./leveleditorcamera";
+import { LevelEditorCamera } from "./leveleditorcamera";
 import { Stars } from "./stars";
 import { Serializable, Serialized } from "./types/Serializable";
 
@@ -59,7 +59,7 @@ export class LevelEditor extends GameState implements Serializable {
     private buttons: Button[];
     private mode: Mode;
     private newMode: boolean;
-    private camera: LevelBuilderCamera;
+    private camera: LevelEditorCamera;
     private gridRenderer: GridRenderer;
     private currentTerrain: number[] | null = null;
     private currentRefuelStation: Rectangle | undefined = undefined;
@@ -109,7 +109,7 @@ export class LevelEditor extends GameState implements Serializable {
             };
             this.buttons.push(new Button(x, y, w, h, text, callback));
         }
-        this.camera = new LevelBuilderCamera();
+        this.camera = new LevelEditorCamera();
         this.gridRenderer = new GridRenderer(250, this.camera);
         this.stars = new Stars();
     }
@@ -183,7 +183,11 @@ export class LevelEditor extends GameState implements Serializable {
         for (const b of this.buttons) {
             b.mousepressed(mouseX, mouseY, button, istouch, presses);
         }
-        const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(mouseX, mouseY);
+        love.graphics.push();
+        love.graphics.origin();
+        this.camera.apply();
+        const [worldX, worldY] = love.graphics.inverseTransformPoint(mouseX, mouseY);
+        love.graphics.pop();
         if (this.newMode == false) {
             switch (this.mode) {
                 case Mode.TerrainBuilding:
@@ -279,13 +283,17 @@ export class LevelEditor extends GameState implements Serializable {
         love.graphics.rectangle("fill", x, y, w, h);
     }
 
+    wheelmoved(_x: number, y: number) {
+        this.camera.scale(y * 0.05);
+    }
+
     draw() {
         this.camera.apply();
         this.stars.setViewport(...this.camera.getViewport());
         this.stars.draw();
         this.gridRenderer.draw();
 
-        const [worldX, worldY] = this.camera.convertScreencoordinatesToWorldCoordinates(...love.mouse.getPosition());
+        const [worldX, worldY] = love.graphics.inverseTransformPoint(...love.mouse.getPosition());
 
         love.graphics.setColor(1, 0, 0, 1);
         love.graphics.setLineWidth(5);
@@ -331,7 +339,6 @@ export class LevelEditor extends GameState implements Serializable {
         }
 
         love.graphics.setColor(1, 1, 1, 1);
-
         love.graphics.origin();
         for (const button of this.buttons) {
             button.draw();

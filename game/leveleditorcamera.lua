@@ -1,23 +1,32 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 10,["6"] = 10,["7"] = 10,["9"] = 26,["10"] = 27,["11"] = 28,["12"] = 32,["13"] = 25,["14"] = 41,["15"] = 42,["16"] = 41,["17"] = 46,["18"] = 47,["19"] = 46,["20"] = 50,["21"] = 51,["22"] = 52,["23"] = 54,["24"] = 55,["25"] = 56,["26"] = 57,["27"] = 58,["28"] = 59,["30"] = 61,["31"] = 62,["33"] = 64,["34"] = 65,["36"] = 67,["37"] = 68,["39"] = 71,["40"] = 72,["41"] = 50,["42"] = 75,["43"] = 76,["44"] = 75,["45"] = 80,["46"] = 81,["47"] = 80});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 2,["6"] = 2,["7"] = 11,["8"] = 11,["9"] = 11,["11"] = 34,["12"] = 35,["13"] = 36,["14"] = 37,["15"] = 38,["16"] = 42,["17"] = 33,["18"] = 50,["19"] = 51,["20"] = 52,["21"] = 52,["22"] = 52,["23"] = 52,["24"] = 50,["25"] = 56,["26"] = 57,["27"] = 56,["28"] = 60,["29"] = 61,["30"] = 63,["31"] = 64,["32"] = 66,["33"] = 67,["34"] = 68,["35"] = 69,["36"] = 70,["37"] = 71,["39"] = 73,["40"] = 74,["42"] = 76,["43"] = 77,["45"] = 79,["46"] = 80,["48"] = 83,["49"] = 84,["50"] = 60,["51"] = 87,["52"] = 88,["53"] = 88,["54"] = 88,["55"] = 88,["56"] = 89,["57"] = 90,["58"] = 87,["59"] = 12,["60"] = 13});
 local ____exports = {}
-____exports.LevelBuilderCamera = __TS__Class()
-local LevelBuilderCamera = ____exports.LevelBuilderCamera
-LevelBuilderCamera.name = "LevelBuilderCamera"
-function LevelBuilderCamera.prototype.____constructor(self)
+local ____smoothvalue = require("util.smoothvalue")
+local updateSmoothValue = ____smoothvalue.updateSmoothValue
+____exports.LevelEditorCamera = __TS__Class()
+local LevelEditorCamera = ____exports.LevelEditorCamera
+LevelEditorCamera.name = "LevelEditorCamera"
+function LevelEditorCamera.prototype.____constructor(self)
     self.tx = 0
     self.ty = 0
+    self.scaleFactor = 1
+    self.targetScaleFactor = 1
     self.cameraSpeed = {x = 600, y = 600}
     self.cameraControlKeycodes = {up = "down", right = "right", down = "up", left = "left"}
 end
-function LevelBuilderCamera.prototype.getTranslation(self)
-    return -self.tx, -self.ty
+function LevelEditorCamera.prototype.scale(self, factor)
+    self.targetScaleFactor = self.targetScaleFactor + factor
+    self.targetScaleFactor = math.max(
+        math.min(self.targetScaleFactor, ____exports.LevelEditorCamera.maximumScaleFactor),
+        ____exports.LevelEditorCamera.minimumScaleFactor
+    )
 end
-function LevelBuilderCamera.prototype.getViewport(self)
-    return -self.tx, -self.ty, love.graphics.getWidth(), love.graphics.getHeight()
+function LevelEditorCamera.prototype.getViewport(self)
+    return (-love.graphics.getWidth() / (2 * self.scaleFactor)) - self.tx, (-love.graphics.getHeight() / (2 * self.scaleFactor)) - self.ty, love.graphics.getWidth() / self.scaleFactor, love.graphics.getHeight() / self.scaleFactor
 end
-function LevelBuilderCamera.prototype.update(self, dt)
+function LevelEditorCamera.prototype.update(self, dt)
+    self.scaleFactor = updateSmoothValue(self.scaleFactor, self.targetScaleFactor, 10, dt)
     local grabbed = love.mouse.isGrabbed()
     local mouseX, mouseY = love.mouse.getPosition()
     local dx = self.cameraSpeed.x * dt
@@ -36,13 +45,17 @@ function LevelBuilderCamera.prototype.update(self, dt)
     if love.keyboard.isDown(self.cameraControlKeycodes.left) or (grabbed and (mouseX == 0)) then
         x = x - 1
     end
-    self.tx = self.tx - (x * dx)
-    self.ty = self.ty - (y * dy)
+    self.tx = self.tx - ((x * dx) / self.scaleFactor)
+    self.ty = self.ty - ((y * dy) / self.scaleFactor)
 end
-function LevelBuilderCamera.prototype.apply(self)
+function LevelEditorCamera.prototype.apply(self)
+    love.graphics.translate(
+        love.graphics.getWidth() / 2,
+        love.graphics.getHeight() / 2
+    )
+    love.graphics.scale(self.scaleFactor, self.scaleFactor)
     love.graphics.translate(self.tx, self.ty)
 end
-function LevelBuilderCamera.prototype.convertScreencoordinatesToWorldCoordinates(self, x, y)
-    return x - self.tx, y - self.ty
-end
+LevelEditorCamera.minimumScaleFactor = 0.1
+LevelEditorCamera.maximumScaleFactor = 1.5
 return ____exports

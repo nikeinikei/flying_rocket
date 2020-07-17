@@ -1,4 +1,5 @@
 import { KeyConstant } from "love.keyboard";
+import { updateSmoothValue } from "./util/smoothvalue";
 
 interface CameraControlKeycodes {
     up: KeyConstant;
@@ -7,7 +8,10 @@ interface CameraControlKeycodes {
     left: KeyConstant;
 }
 
-export class LevelBuilderCamera {
+export class LevelEditorCamera {
+    private static minimumScaleFactor = 0.1;
+    private static maximumScaleFactor = 1.5;
+
     /**
      * translation in x direction
      */
@@ -18,6 +22,10 @@ export class LevelBuilderCamera {
      */
     protected ty: number;
 
+    private targetScaleFactor: number;
+
+    private scaleFactor: number;
+
     protected cameraSpeed: Vector;
 
     protected cameraControlKeycodes: CameraControlKeycodes;
@@ -25,6 +33,8 @@ export class LevelBuilderCamera {
     constructor() {
         this.tx = 0;
         this.ty = 0;
+        this.scaleFactor = 1;
+        this.targetScaleFactor = 1;
         this.cameraSpeed = {
             x: 600,
             y: 600,
@@ -37,17 +47,19 @@ export class LevelBuilderCamera {
         };
     }
 
-    /** @tupleReturn */
-    getTranslation(): [number, number] {
-        return [-this.tx, -this.ty];
+    scale(factor: number) {
+        this.targetScaleFactor += factor;
+        this.targetScaleFactor = math.max(math.min(this.targetScaleFactor, LevelEditorCamera.maximumScaleFactor), LevelEditorCamera.minimumScaleFactor);
     }
 
     /** @tupleReturn */
     getViewport(): [number, number, number, number] {
-        return [-this.tx, -this.ty, love.graphics.getWidth(), love.graphics.getHeight()];
+        return [-love.graphics.getWidth() / (2 * this.scaleFactor) - this.tx, -love.graphics.getHeight() / (2 * this.scaleFactor) - this.ty, love.graphics.getWidth() / this.scaleFactor, love.graphics.getHeight() / this.scaleFactor];
     }
 
     update(dt: number) {
+        this.scaleFactor = updateSmoothValue(this.scaleFactor, this.targetScaleFactor, 10, dt);
+
         const grabbed = love.mouse.isGrabbed();
         const [mouseX, mouseY] = love.mouse.getPosition();
 
@@ -68,16 +80,13 @@ export class LevelBuilderCamera {
             x -= 1;
         }
 
-        this.tx -= x * dx;
-        this.ty -= y * dy;
+        this.tx -= x * dx / this.scaleFactor;
+        this.ty -= y * dy / this.scaleFactor;
     }
-
+    
     apply() {
+        love.graphics.translate(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2);
+        love.graphics.scale(this.scaleFactor, this.scaleFactor);
         love.graphics.translate(this.tx, this.ty);
-    }
-
-    /** @tupleReturn */
-    convertScreencoordinatesToWorldCoordinates(x: number, y: number): [number, number] {
-        return [x - this.tx, y - this.ty];
     }
 }
