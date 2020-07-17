@@ -1,5 +1,5 @@
-import { LevelEditorCamera } from "./leveleditorcamera";
 import { Color } from "./Color4";
+import { LevelEditorCamera } from "./leveleditorcamera";
 
 const highlightedLineWidth = 7;
 const normalLineWidth = 2.5;

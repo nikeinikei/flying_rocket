@@ -1,4 +1,5 @@
 import { KeyConstant } from "love.keyboard";
+
 import { updateSmoothValue } from "./util/smoothvalue";
 
 interface CameraControlKeycodes {
@@ -49,12 +50,20 @@ export class LevelEditorCamera {
 
     scale(factor: number) {
         this.targetScaleFactor += factor;
-        this.targetScaleFactor = math.max(math.min(this.targetScaleFactor, LevelEditorCamera.maximumScaleFactor), LevelEditorCamera.minimumScaleFactor);
+        this.targetScaleFactor = math.max(
+            math.min(this.targetScaleFactor, LevelEditorCamera.maximumScaleFactor),
+            LevelEditorCamera.minimumScaleFactor
+        );
     }
 
     /** @tupleReturn */
     getViewport(): [number, number, number, number] {
-        return [-love.graphics.getWidth() / (2 * this.scaleFactor) - this.tx, -love.graphics.getHeight() / (2 * this.scaleFactor) - this.ty, love.graphics.getWidth() / this.scaleFactor, love.graphics.getHeight() / this.scaleFactor];
+        return [
+            -love.graphics.getWidth() / (2 * this.scaleFactor) - this.tx,
+            -love.graphics.getHeight() / (2 * this.scaleFactor) - this.ty,
+            love.graphics.getWidth() / this.scaleFactor,
+            love.graphics.getHeight() / this.scaleFactor,
+        ];
     }
 
     update(dt: number) {
@@ -67,23 +76,29 @@ export class LevelEditorCamera {
         let dy = this.cameraSpeed.y * dt;
         let x = 0;
         let y = 0;
-        if (love.keyboard.isDown(this.cameraControlKeycodes.up) || grabbed && mouseY >= love.graphics.getHeight() - 1 ) {
+        if (
+            love.keyboard.isDown(this.cameraControlKeycodes.up) ||
+            (grabbed && mouseY >= love.graphics.getHeight() - 1)
+        ) {
             y = 1;
         }
-        if (love.keyboard.isDown(this.cameraControlKeycodes.down) || grabbed && mouseY == 0) {
+        if (love.keyboard.isDown(this.cameraControlKeycodes.down) || (grabbed && mouseY == 0)) {
             y -= 1;
         }
-        if (love.keyboard.isDown(this.cameraControlKeycodes.right) || grabbed && mouseX >= love.graphics.getWidth() - 1) {
+        if (
+            love.keyboard.isDown(this.cameraControlKeycodes.right) ||
+            (grabbed && mouseX >= love.graphics.getWidth() - 1)
+        ) {
             x = 1;
         }
-        if (love.keyboard.isDown(this.cameraControlKeycodes.left) || grabbed && mouseX == 0) {
+        if (love.keyboard.isDown(this.cameraControlKeycodes.left) || (grabbed && mouseX == 0)) {
             x -= 1;
         }
 
-        this.tx -= x * dx / this.scaleFactor;
-        this.ty -= y * dy / this.scaleFactor;
+        this.tx -= (x * dx) / this.scaleFactor;
+        this.ty -= (y * dy) / this.scaleFactor;
     }
-    
+
     apply() {
         love.graphics.translate(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2);
         love.graphics.scale(this.scaleFactor, this.scaleFactor);
