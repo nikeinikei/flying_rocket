@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 12,["8"] = 12,["9"] = 12,["11"] = 35,["12"] = 36,["13"] = 37,["14"] = 38,["15"] = 39,["16"] = 43,["17"] = 34,["18"] = 51,["19"] = 52,["20"] = 53,["21"] = 53,["22"] = 53,["23"] = 53,["24"] = 51,["25"] = 60,["26"] = 61,["27"] = 60,["28"] = 69,["29"] = 70,["30"] = 72,["31"] = 73,["32"] = 75,["33"] = 76,["34"] = 77,["35"] = 78,["36"] = 80,["37"] = 83,["39"] = 85,["40"] = 86,["42"] = 89,["43"] = 92,["45"] = 94,["46"] = 95,["48"] = 98,["49"] = 99,["50"] = 69,["51"] = 102,["52"] = 103,["53"] = 103,["54"] = 103,["55"] = 103,["56"] = 104,["57"] = 105,["58"] = 102,["59"] = 13,["60"] = 14});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] = 12,["8"] = 12,["9"] = 12,["11"] = 38,["12"] = 39,["13"] = 40,["14"] = 41,["15"] = 42,["16"] = 46,["17"] = 52,["18"] = 53,["19"] = 37,["20"] = 56,["21"] = 57,["22"] = 58,["23"] = 58,["24"] = 58,["25"] = 58,["26"] = 56,["27"] = 65,["28"] = 66,["29"] = 65,["30"] = 74,["31"] = 75,["32"] = 77,["33"] = 78,["34"] = 80,["35"] = 81,["36"] = 82,["37"] = 83,["38"] = 85,["39"] = 88,["41"] = 90,["42"] = 91,["44"] = 94,["45"] = 97,["47"] = 99,["48"] = 100,["50"] = 103,["51"] = 104,["52"] = 106,["53"] = 107,["54"] = 74,["55"] = 110,["56"] = 111,["57"] = 111,["58"] = 111,["59"] = 111,["60"] = 112,["61"] = 113,["62"] = 110,["63"] = 13,["64"] = 14});
 local ____exports = {}
 local ____smoothvalue = require("util.smoothvalue")
 local updateSmoothValue = ____smoothvalue.updateSmoothValue
@@ -14,6 +14,8 @@ function LevelEditorCamera.prototype.____constructor(self)
     self.targetScaleFactor = 1
     self.cameraSpeed = {x = 600, y = 600}
     self.cameraControlKeycodes = {up = "down", right = "right", down = "up", left = "left"}
+    self.dx = 0
+    self.dy = 0
 end
 function LevelEditorCamera.prototype.scale(self, factor)
     self.targetScaleFactor = self.targetScaleFactor + factor
@@ -45,8 +47,10 @@ function LevelEditorCamera.prototype.update(self, dt)
     if love.keyboard.isDown(self.cameraControlKeycodes.left) or (grabbed and (mouseX == 0)) then
         x = x - 1
     end
-    self.tx = self.tx - ((x * dx) / self.scaleFactor)
-    self.ty = self.ty - ((y * dy) / self.scaleFactor)
+    self.dx = updateSmoothValue(self.dx, x, 18, dt)
+    self.dy = updateSmoothValue(self.dy, y, 18, dt)
+    self.tx = self.tx - ((self.dx * dx) / self.scaleFactor)
+    self.ty = self.ty - ((self.dy * dy) / self.scaleFactor)
 end
 function LevelEditorCamera.prototype.apply(self)
     love.graphics.translate(

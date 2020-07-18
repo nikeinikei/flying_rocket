@@ -31,6 +31,9 @@ export class LevelEditorCamera {
 
     protected cameraControlKeycodes: CameraControlKeycodes;
 
+    private dx: number;
+    private dy: number;
+
     constructor() {
         this.tx = 0;
         this.ty = 0;
@@ -46,6 +49,8 @@ export class LevelEditorCamera {
             down: "up",
             left: "left",
         };
+        this.dx = 0;
+        this.dy = 0;
     }
 
     scale(factor: number) {
@@ -95,8 +100,11 @@ export class LevelEditorCamera {
             x -= 1;
         }
 
-        this.tx -= (x * dx) / this.scaleFactor;
-        this.ty -= (y * dy) / this.scaleFactor;
+        this.dx = updateSmoothValue(this.dx, x, 18, dt);
+        this.dy = updateSmoothValue(this.dy, y, 18, dt);
+
+        this.tx -= (this.dx * dx) / this.scaleFactor;
+        this.ty -= (this.dy * dy) / this.scaleFactor;
     }
 
     apply() {
