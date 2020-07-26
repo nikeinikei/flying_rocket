@@ -20,6 +20,9 @@ const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
 const refuelStationUserData = "refuelStationUserData";
 
+const physicsTicks = 60;
+const timePerTick = 1 / physicsTicks;
+
 export class Playing extends GameState implements Serializable {
     private level: Level;
     private world: World;
@@ -33,6 +36,8 @@ export class Playing extends GameState implements Serializable {
     private stars: Stars;
 
     private refueling: boolean = false;
+
+    private elapsed: number;
 
     constructor(level: Level) {
         super();
@@ -79,6 +84,8 @@ export class Playing extends GameState implements Serializable {
 
             this.refuelStations.push(stationObject);
         }
+
+        this.elapsed = 0;
 
         this.terrain = new Terrain(this.world, level.terrainPoints);
         this.camera = new PlayingCamera(this.rocket);
@@ -200,6 +207,15 @@ export class Playing extends GameState implements Serializable {
     }
 
     update(dt: number) {
+        this.elapsed += dt;
+
+        while (this.elapsed >= timePerTick) {
+            this.physicsUpdate(timePerTick);
+            this.elapsed -= timePerTick;
+        }
+    }
+
+    physicsUpdate(dt: number) {
         if (love.keyboard.isDown(Controls.game.applyThrust)) {
             this.rocket.setPedal(1);
         } else {
