@@ -5,6 +5,12 @@ export abstract class GameState {
     abstract getName(): string;
 
     /**
+     * objects that are dependant on all the löve callbacks
+     * convenient method so all the callbacks don't have to be hooked up manually
+     */
+    getObjects(): unknown[] { return []; }
+
+    /**
      * called when pushed onto the stack
      */
     enter() {}

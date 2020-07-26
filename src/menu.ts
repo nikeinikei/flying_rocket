@@ -24,36 +24,7 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
         const x = love.graphics.getWidth() / 2 - textInputWidth / 2;
         const y = love.graphics.getHeight() / 2 - textInputHeight / 2;
 
-        this.textInput = new TextInput(x, y, textInputWidth, textInputHeight, "level name", name => {
-            if (name.length === 0) {
-                love.window.showMessageBox("Invalid Level Name", "empty string is not allowed.", "error");
-            } else {
-                if (Levels.nameUsed(name)) {
-                    love.window.showMessageBox("Invalid Level Name", "level name already in use", "error");
-                } else {
-                    if (this.toggle && this.toggle.isOn()) {
-                        const index = tonumber(name);
-                        if (!index) {
-                            love.window.showMessageBox(
-                                "Invalid level name",
-                                "when creating a campaign level the name must be the index of the campaign",
-                                "error"
-                            );
-                        } else {
-                            const level = newLevel(name);
-
-                            this.isCampaignLevel = true;
-                            Application.pushState(new LevelEditor(level));
-                        }
-                    } else {
-                        const level = newLevel(name);
-
-                        this.isCampaignLevel = false;
-                        Application.pushState(new LevelEditor(level));
-                    }
-                }
-            }
-        });
+        this.textInput = new TextInput(x, y, textInputWidth, textInputHeight, "level name");
         if (levelName) {
             this.textInput.setText(levelName);
         }
@@ -101,6 +72,38 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
     keypressed(key: KeyConstant) {
         if (key == "escape") {
             Application.popState();
+        }
+        if (key == "return") {
+            const name = this.textInput.getText();
+
+            if (name.length === 0) {
+                love.window.showMessageBox("Invalid Level Name", "empty string is not allowed.", "error");
+            } else {
+                if (Levels.nameUsed(name)) {
+                    love.window.showMessageBox("Invalid Level Name", "level name already in use", "error");
+                } else {
+                    if (this.toggle && this.toggle.isOn()) {
+                        const index = tonumber(name);
+                        if (!index) {
+                            love.window.showMessageBox(
+                                "Invalid level name",
+                                "when creating a campaign level the name must be the index of the campaign",
+                                "error"
+                            );
+                        } else {
+                            const level = newLevel(name);
+    
+                            this.isCampaignLevel = true;
+                            Application.pushState(new LevelEditor(level));
+                        }
+                    } else {
+                        const level = newLevel(name);
+    
+                        this.isCampaignLevel = false;
+                        Application.pushState(new LevelEditor(level));
+                    }
+                }
+            }
         }
     }
 }

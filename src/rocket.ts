@@ -95,12 +95,20 @@ export class Rocket {
         this.pedal = pedal;
     }
 
+    getPedal() {
+        return this.pedal;
+    }
+
     setRotation(rotation: number) {
         this.rotation = rotation;
     }
 
     getFuel() {
         return this.fuel;
+    }
+    
+    getThrust(): number {
+        return this.thrust;
     }
 
     /** @tupleReturn */

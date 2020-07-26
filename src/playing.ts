@@ -14,6 +14,9 @@ import { Terrain } from "./terrain";
 import { Serializable, Serialized } from "./types/Serializable";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
+import { Button, TextInput } from "./gui";
+import { WrappedDrawable } from "./wrappeddrawable";
+import { Replays } from "./fs/replays";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
@@ -22,6 +25,62 @@ const refuelStationUserData = "refuelStationUserData";
 
 const physicsTicks = 60;
 const timePerTick = 1 / physicsTicks;
+
+interface Frame {
+    rocket: {
+        x: number;
+        y: number;
+        tilt: number;
+        thrust: number;
+        pedal: number;
+    }
+}
+
+export interface Replay {
+    frame: Frame[];
+    level: Level;
+}
+
+class SaveReplayGameState extends GameState {
+    private replay: Replay;
+
+    private yesButton: Button;
+    private noButton: Button;
+    private replayNameTextInput: TextInput;
+    private wantReplayText: WrappedDrawable;
+
+    constructor(replay: Replay) {
+        super();
+        this.replay = replay;
+
+        const text = love.graphics.newText(love.graphics.newFont(40), "Save Replay?");
+        const width = text.getWidth();
+        this.wantReplayText = new WrappedDrawable(text);
+        this.wantReplayText.x = (love.graphics.getWidth() - width) / 2;
+        this.wantReplayText.y = 300;
+
+        const buttonWidth = 130;
+        const buttonHeight = 70;
+        const y = 450;
+
+        this.replayNameTextInput = new TextInput(200, 200, 600, 200, "Replay Name");
+
+        this.yesButton = new Button(400, y, buttonWidth, buttonHeight, "Yes", () => {
+            Application.popState();
+        });
+        this.noButton = new Button(600, y, buttonWidth, buttonHeight, "No", () => {
+            Application.popState();
+        });
+    }
+
+    getObjects(): unknown[] {
+        return [this.wantReplayText, this.yesButton, this.noButton];
+    }
+
+    getName(): string {
+        return "SaveReplayGameState";
+    }
+}
 
 export class Playing extends GameState implements Serializable {
     private level: Level;
@@ -38,6 +97,8 @@ export class Playing extends GameState implements Serializable {
     private refueling: boolean = false;
 
     private elapsed: number;
+
+    private frames: Frame[];
 
     constructor(level: Level) {
         super();
@@ -90,7 +151,11 @@ export class Playing extends GameState implements Serializable {
         this.terrain = new Terrain(this.world, level.terrainPoints);
         this.camera = new PlayingCamera(this.rocket);
         this.stars = new Stars();
+        
+        this.frames = [];
+
         this.clock = new Clock();
+        this.recordFrame();
     }
 
     getName() {
@@ -188,7 +253,11 @@ export class Playing extends GameState implements Serializable {
         }
     }
 
+    private end() {
+    }
+
     private win() {
+        this.end();
         const metrics: GameEndMetrics = {
             timeTaken: this.clock.getElapsed(),
         };
@@ -197,6 +266,7 @@ export class Playing extends GameState implements Serializable {
     }
 
     private lose() {
+        this.end();
         Application.popState();
         Application.pushState(new Lost());
     }
@@ -206,11 +276,31 @@ export class Playing extends GameState implements Serializable {
         return Math.abs(dx) < EPSILON && Math.abs(dy) < EPSILON;
     }
 
+    private recordFrame() {
+        const rocketBody = this.rocket.getBody();
+        const [x, y] = rocketBody.getPosition();
+        const tilt = this.rocket.getTilt();
+        const pedal = this.rocket.getPedal();
+        const thrust = this.rocket.getThrust();
+        const frame: Frame = {
+            rocket: {
+                x,
+                y,
+                pedal,
+                thrust,
+                tilt
+            }
+        };
+
+        this.frames.push(frame);
+    }
+
     update(dt: number) {
         this.elapsed += dt;
 
         while (this.elapsed >= timePerTick) {
             this.physicsUpdate(timePerTick);
+            this.recordFrame();
             this.elapsed -= timePerTick;
         }
     }

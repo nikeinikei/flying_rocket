@@ -100,15 +100,13 @@ export class TextInput extends Element {
     private inputTextPosition: { x: number; y: number };
 
     private inputTextScrape: string;
-    private callback: (this: void, text: string) => void;
 
     constructor(
         x: number,
         y: number,
         w: number,
         h: number,
-        prompt: string,
-        callback: (this: void, text: string) => void
+        prompt: string
     ) {
         super(x, y, w, h);
 
@@ -132,7 +130,6 @@ export class TextInput extends Element {
         };
 
         this.inputTextScrape = "";
-        this.callback = callback;
     }
 
     getText(): string {
@@ -160,9 +157,6 @@ export class TextInput extends Element {
                 this.inputText.set(this.inputTextScrape);
                 this.recalculatePosition();
             }
-        }
-        if (key == "return") {
-            this.callback(this.inputTextScrape);
         }
     }
 
