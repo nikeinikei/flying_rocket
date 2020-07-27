@@ -1,7 +1,7 @@
 {
-  "name": "love-typescript-boilerplate",
+  "name": "flying_rocket",
   "license": "MIT",
-  "prettierGlob": "**/*.{js,ts,ym,md}",
+  "prettierGlob": "**/*.{ts,ym,md}",
   "scripts": {
     "start": "love game --console --dev",
     "start:release": "love game --console",
