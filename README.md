@@ -13,3 +13,9 @@ Dependencies:
 -   NodeJS (https://nodejs.org/en/)
 -   Yarn (https://yarnpkg.com/)
 -   love2d (https://love2d.org/)
+
+# Targetting web
+
+To target the web additional setup is needed. Python 3 needs to be installed.
+Additionally a specific fork of Love.js (https://github.com/Davidobot/love.js) needs to be 
+cloned and `npm install`ed next to this project. Now the scrips `build:web` and `start:web` can be used.
