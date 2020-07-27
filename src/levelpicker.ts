@@ -3,7 +3,7 @@ import { KeyConstant } from "love.keyboard";
 import { GameState } from "./gamestate";
 import { Button } from "./gui";
 import { LevelEditor } from "./leveleditor";
-import { Levels } from "./levels";
+import { Levels } from "./fs/levels";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";

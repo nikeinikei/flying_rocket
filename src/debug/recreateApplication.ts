@@ -4,7 +4,7 @@ import { json } from "../json";
 import { newLevel } from "../level";
 import { LevelEditor } from "../leveleditor";
 import { LevelPicker } from "../levelpicker";
-import { Levels } from "../levels";
+import { Levels } from "../fs/levels";
 import { GameModeChooserGameState, Menu, PreLevelEditorGameState } from "../menu";
 import { Playing } from "../playing";
 import { Settings } from "../settings";

@@ -1,13 +1,13 @@
 import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevelPicker } from "./campaignLevelPicker";
-import { CampaignLevels } from "./campaignLevels";
+import { CampaignLevels } from "./fs/campaignLevels";
 import { GameState } from "./gamestate";
 import { Button, TextInput, Toggle } from "./gui";
 import { Level, newLevel } from "./level";
 import { LevelEditor } from "./leveleditor";
 import { LevelPicker } from "./levelpicker";
-import { Levels } from "./levels";
+import { Levels } from "./fs/levels";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
 

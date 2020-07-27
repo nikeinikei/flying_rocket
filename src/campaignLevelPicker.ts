@@ -1,6 +1,6 @@
 import { KeyConstant } from "love.keyboard";
 
-import { CampaignLevels } from "./campaignLevels";
+import { CampaignLevels } from "./fs/campaignLevels";
 import { GameState } from "./gamestate";
 import { Button } from "./gui";
 import { Level } from "./level";

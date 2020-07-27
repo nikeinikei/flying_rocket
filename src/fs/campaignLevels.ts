@@ -1,7 +1,7 @@
-import { DataFixer } from "./datafixer";
-import { json } from "./json";
-import { Level } from "./level";
-import { Settings } from "./settings";
+import { DataFixer } from "../datafixer";
+import { json } from "../json";
+import { Level } from "../level";
+import { Settings } from "../settings";
 
 const fileName = "campaignLevels.json";
 let levels: Table<string, Level> = new Table();

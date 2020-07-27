@@ -4,7 +4,7 @@ __TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 3,["6"] = 3,["7"] 
 local ____exports = {}
 local ____campaignLevelPicker = require("campaignLevelPicker")
 local CampaignLevelPicker = ____campaignLevelPicker.CampaignLevelPicker
-local ____campaignLevels = require("campaignLevels")
+local ____campaignLevels = require("fs.campaignLevels")
 local CampaignLevels = ____campaignLevels.CampaignLevels
 local ____gamestate = require("gamestate")
 local GameState = ____gamestate.GameState
@@ -18,7 +18,7 @@ local ____leveleditor = require("leveleditor")
 local LevelEditor = ____leveleditor.LevelEditor
 local ____levelpicker = require("levelpicker")
 local LevelPicker = ____levelpicker.LevelPicker
-local ____levels = require("levels")
+local ____levels = require("fs.levels")
 local Levels = ____levels.Levels
 local ____settings = require("settings")
 local Settings = ____settings.Settings
