@@ -5,6 +5,7 @@
   "scripts": {
     "start": "love game --console --dev",
     "start:release": "love game --console",
+    "start:web": "concurrently \"python -m http.server 1234 --directory web\" \"start http://localhost:1234\"",
     "build": "yarn build:tstl && yarn build:copy && yarn build:copyLua",
     "lint": "yarn lint:prettier && yarn lint:eslint",
     "docs": "./node_modules/love-typescript-definitions/docs/index.html",
@@ -13,6 +14,7 @@
     "build:copyLua": "copyfiles -u 1 lua/**/*.lua game",
     "build:watch": "tstl -w -p tsconfig.json",
     "build:release": "yarn build && powershell .\\createGameExecutable.ps1",
+    "build:web": "yarn build:release && node ../love.js/index.js -t \"Flying Rocket\" flying_rocket.love web",
     "lint:eslint": "eslint -c .eslintrc src/**",
     "lint:prettier": "cross-var prettier \"$npm_package_prettierGlob\" --check",
     "fix:prettier": "cross-var prettier \"$npm_package_prettierGlob\" --check --write"
@@ -33,6 +35,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
+    "concurrently": "^5.2.0",
     "copyfiles": "^2.1.1",
     "cross-var": "^1.1.0",
     "eslint": "^6.8.0",
