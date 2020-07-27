@@ -66,7 +66,14 @@ class SaveReplayGameState extends GameState {
         this.replayNameTextInput = new TextInput(200, 200, 600, 200, "Replay Name");
 
         this.yesButton = new Button(400, y, buttonWidth, buttonHeight, "Yes", () => {
-            Application.popState();
+            const name = this.replayNameTextInput.getText();
+            if (name.length == 0) {
+                love.window.showMessageBox("no name provided", "A name is needed to save a replay", "warning");
+            } else {
+                Replays.addReplay(this.replay, name);
+
+                Application.popState();
+            }
         });
         this.noButton = new Button(600, y, buttonWidth, buttonHeight, "No", () => {
             Application.popState();
@@ -74,7 +81,7 @@ class SaveReplayGameState extends GameState {
     }
 
     getObjects(): unknown[] {
-        return [this.wantReplayText, this.yesButton, this.noButton];
+        return [this.wantReplayText, this.replayNameTextInput, this.yesButton, this.noButton];
     }
 
     getName(): string {
@@ -253,21 +260,26 @@ export class Playing extends GameState implements Serializable {
         }
     }
 
-    private end() {}
+    private constructReplay(): Replay {
+        return {
+            frame: this.frames,
+            level: this.level
+        };
+    }
 
     private win() {
-        this.end();
         const metrics: GameEndMetrics = {
             timeTaken: this.clock.getElapsed(),
         };
         Application.popState();
         Application.pushState(new Won(metrics));
+        Application.pushState(new SaveReplayGameState(this.constructReplay()));
     }
 
     private lose() {
-        this.end();
         Application.popState();
         Application.pushState(new Lost());
+        Application.pushState(new SaveReplayGameState(this.constructReplay()));
     }
 
     private notMoving(dx: number, dy: number): boolean {

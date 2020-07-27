@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 6,["8"] = 7,["9"] = 9,["10"] = 10,["11"] = 11,["12"] = 12,["14"] = 14,["16"] = 9,["17"] = 18,["18"] = 19,["19"] = 19,["20"] = 19,["21"] = 19,["22"] = 18,["24"] = 22,["26"] = 22,["27"] = 24,["28"] = 23,["29"] = 22,["30"] = 28,["31"] = 29,["32"] = 27});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 6,["8"] = 7,["9"] = 9,["10"] = 10,["11"] = 11,["12"] = 12,["14"] = 14,["16"] = 9,["17"] = 18,["18"] = 19,["19"] = 19,["20"] = 19,["21"] = 19,["22"] = 18,["24"] = 22,["26"] = 22,["27"] = 24,["28"] = 23,["29"] = 22,["30"] = 28,["31"] = 29,["32"] = 30,["33"] = 27});
 local ____exports = {}
 local ____json = require("json")
 local json = ____json.json
@@ -26,8 +26,9 @@ do
     function Replays.getReplays()
         return replays
     end
-    function Replays.addReplay(replay)
-        __TS__ArrayPush(replays, replay)
+    function Replays.addReplay(replay, name)
+        local serializedReplay = __TS__ObjectAssign({}, replay, {name = name})
+        __TS__ArrayPush(replays, serializedReplay)
         save()
     end
 end
