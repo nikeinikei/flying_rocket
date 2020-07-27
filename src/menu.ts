@@ -157,15 +157,18 @@ const buttonSchemes = [
     {
         name: "Options",
         callback: () => {
-            error("oh no, options aren't there");
             love.window.showMessageBox("Not implemented", "Options are currently not available");
         },
     },
-    {
+
+];
+
+if (!Settings.isWeb()) {
+    buttonSchemes.push({
         name: "Exit",
         callback: love.event.quit,
-    },
-];
+    });
+}
 
 export class Menu extends GameState implements Serializable {
     private buttons: Button[];
@@ -208,7 +211,7 @@ export class Menu extends GameState implements Serializable {
     }
 
     keypressed(key: KeyConstant) {
-        if (key == "escape") {
+        if (key == "escape" && !Settings.isWeb()) {
             love.event.quit(0);
         }
     }

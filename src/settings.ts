@@ -1,3 +1,5 @@
+const web = love.system.getOS() == "Web" as any;
+
 export namespace Settings {
     let development = false;
 
@@ -11,5 +13,9 @@ export namespace Settings {
 
     export function getRestartFilePath(): string {
         return "restart.json";
+    }
+
+    export function isWeb(): boolean {
+        return web;
     }
 }
