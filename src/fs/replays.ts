@@ -1,5 +1,5 @@
-import { Replay } from "../playing";
 import { json } from "../json";
+import { Replay } from "../playing";
 
 export type SerializedReplay = Replay & { name: string };
 

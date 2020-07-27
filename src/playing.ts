@@ -2,7 +2,9 @@ import { KeyConstant } from "love.keyboard";
 import { World } from "love.physics";
 
 import { Controls } from "./controls";
+import { Replays } from "./fs/replays";
 import { GameState } from "./gamestate";
+import { Button, TextInput } from "./gui";
 import { Level } from "./level";
 import { Lost } from "./lost";
 import { Paused } from "./paused";
@@ -14,9 +16,7 @@ import { Terrain } from "./terrain";
 import { Serializable, Serialized } from "./types/Serializable";
 import { Clock } from "./util/clock";
 import { GameEndMetrics, Won } from "./won";
-import { Button, TextInput } from "./gui";
 import { WrappedDrawable } from "./wrappeddrawable";
-import { Replays } from "./fs/replays";
 
 const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
@@ -33,7 +33,7 @@ interface Frame {
         tilt: number;
         thrust: number;
         pedal: number;
-    }
+    };
 }
 
 export interface Replay {
@@ -151,7 +151,7 @@ export class Playing extends GameState implements Serializable {
         this.terrain = new Terrain(this.world, level.terrainPoints);
         this.camera = new PlayingCamera(this.rocket);
         this.stars = new Stars();
-        
+
         this.frames = [];
 
         this.clock = new Clock();
@@ -253,8 +253,7 @@ export class Playing extends GameState implements Serializable {
         }
     }
 
-    private end() {
-    }
+    private end() {}
 
     private win() {
         this.end();
@@ -288,8 +287,8 @@ export class Playing extends GameState implements Serializable {
                 y,
                 pedal,
                 thrust,
-                tilt
-            }
+                tilt,
+            },
         };
 
         this.frames.push(frame);

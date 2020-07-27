@@ -1,4 +1,4 @@
-const web = love.system.getOS() == "Web" as any;
+const web = love.system.getOS() == ("Web" as any);
 
 export namespace Settings {
     let development = false;

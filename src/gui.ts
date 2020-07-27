@@ -101,13 +101,7 @@ export class TextInput extends Element {
 
     private inputTextScrape: string;
 
-    constructor(
-        x: number,
-        y: number,
-        w: number,
-        h: number,
-        prompt: string
-    ) {
+    constructor(x: number, y: number, w: number, h: number, prompt: string) {
         super(x, y, w, h);
 
         let fontSize = TextInput.promptHeightPercentage * h;

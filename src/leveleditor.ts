@@ -190,7 +190,6 @@ export class LevelEditor extends GameState implements Serializable {
         love.graphics.pop();
         if (this.newMode == false) {
             if (this.mode == Mode.TerrainBuilding) {
-
                 if (button == 1) {
                     if (!this.currentTerrain) {
                         error("this shouldn't happen");

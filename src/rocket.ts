@@ -106,7 +106,7 @@ export class Rocket {
     getFuel() {
         return this.fuel;
     }
-    
+
     getThrust(): number {
         return this.thrust;
     }

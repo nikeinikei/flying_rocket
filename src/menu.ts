@@ -92,13 +92,13 @@ export class PreLevelEditorGameState extends GameState implements Serializable {
                             );
                         } else {
                             const level = newLevel(name);
-    
+
                             this.isCampaignLevel = true;
                             Application.pushState(new LevelEditor(level));
                         }
                     } else {
                         const level = newLevel(name);
-    
+
                         this.isCampaignLevel = false;
                         Application.pushState(new LevelEditor(level));
                     }
@@ -160,7 +160,6 @@ const buttonSchemes = [
             love.window.showMessageBox("Not implemented", "Options are currently not available");
         },
     },
-
 ];
 
 if (!Settings.isWeb()) {
