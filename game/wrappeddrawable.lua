@@ -7,10 +7,10 @@ local WrappedDrawable = ____exports.WrappedDrawable
 WrappedDrawable.name = "WrappedDrawable"
 function WrappedDrawable.prototype.____constructor(self, drawable)
     self.drawable = drawable
-    self.visible = true
+    self.show = true
 end
 function WrappedDrawable.prototype.draw(self)
-    if self.visible then
+    if self.show then
         if self.color then
             love.graphics.setColor(
                 {

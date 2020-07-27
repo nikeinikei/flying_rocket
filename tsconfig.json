@@ -12,7 +12,7 @@
   },
   "tstl": {
     "luaLibImport": "require",
-    "luaTarget": "JIT",
+    "luaTarget": "5.1",
     "noImplicitSelf": true,
     "sourceMapTraceback": true
   }

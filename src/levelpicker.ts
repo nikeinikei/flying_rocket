@@ -22,6 +22,7 @@ export class LevelPicker extends GameState implements Serializable {
 
     constructor(pageIndex?: number) {
         super();
+        print("hello from levelpicker");
         this.pageIndex = pageIndex ?? 0;
         this.buttons = [];
         let levelsNotAvailableText = love.graphics.newText(love.graphics.newFont(50), "no levels available");
@@ -144,10 +145,10 @@ export class LevelPicker extends GameState implements Serializable {
         const levels = Levels.getLevels();
 
         if (levels.length == 0) {
-            this.levelsNotAvailableTextWrapped.visible = true;
+            this.levelsNotAvailableTextWrapped.show = true;
         } else {
             const buttons = [];
-            this.levelsNotAvailableTextWrapped.visible = false;
+            this.levelsNotAvailableTextWrapped.show = false;
             let page: Button[] = [];
             for (let i = 0; i < levels.length; i++) {
                 if (i % LevelPicker.pageButtonCount == 0) {

@@ -189,61 +189,57 @@ export class LevelEditor extends GameState implements Serializable {
         const [worldX, worldY] = love.graphics.inverseTransformPoint(mouseX, mouseY);
         love.graphics.pop();
         if (this.newMode == false) {
-            switch (this.mode) {
-                case Mode.TerrainBuilding:
-                    if (button == 1) {
-                        if (!this.currentTerrain) {
-                            error("this shouldn't happen");
-                        } else {
-                            this.currentTerrain.push(worldX, worldY);
-                        }
+            if (this.mode == Mode.TerrainBuilding) {
+
+                if (button == 1) {
+                    if (!this.currentTerrain) {
+                        error("this shouldn't happen");
+                    } else {
+                        this.currentTerrain.push(worldX, worldY);
                     }
-                    break;
-                case Mode.RocketStartingLocation:
-                    if (button == 1) {
-                        if (this.level.rocketStartingLocation) {
-                            this.level.rocketStartingLocation.x = worldX;
-                            this.level.rocketStartingLocation.y = worldY;
-                        } else {
-                            this.level.rocketStartingLocation = {
-                                x: worldX,
-                                y: worldY,
-                                w: rocketLocationWidth,
-                                h: rocketLocationHeight,
-                            };
-                        }
+                }
+            } else if (this.mode == Mode.RocketStartingLocation) {
+                if (button == 1) {
+                    if (this.level.rocketStartingLocation) {
+                        this.level.rocketStartingLocation.x = worldX;
+                        this.level.rocketStartingLocation.y = worldY;
+                    } else {
+                        this.level.rocketStartingLocation = {
+                            x: worldX,
+                            y: worldY,
+                            w: rocketLocationWidth,
+                            h: rocketLocationHeight,
+                        };
+                    }
+                    this.setNewMode(Mode.Inspection);
+                }
+            } else if (this.mode == Mode.AddRefuelStation) {
+                if (button == 1) {
+                    if (this.currentRefuelStation) {
+                        this.currentRefuelStation.x = worldX;
+                        this.currentRefuelStation.y = worldY;
+                        this.level.refuelStations.push(this.currentRefuelStation);
+                        this.currentRefuelStation = undefined;
                         this.setNewMode(Mode.Inspection);
+                    } else {
+                        assert(this.currentRefuelStation, "this.mode != Mode.AddRefuelStation");
                     }
-                    break;
-                case Mode.AddRefuelStation:
-                    if (button == 1) {
-                        if (this.currentRefuelStation) {
-                            this.currentRefuelStation.x = worldX;
-                            this.currentRefuelStation.y = worldY;
-                            this.level.refuelStations.push(this.currentRefuelStation);
-                            this.currentRefuelStation = undefined;
-                            this.setNewMode(Mode.Inspection);
-                        } else {
-                            assert(this.currentRefuelStation, "this.mode != Mode.AddRefuelStation");
-                        }
+                }
+            } else if (this.mode == Mode.RocketLandingLocation) {
+                if (button == 1) {
+                    if (this.level.rocketLandingLocation) {
+                        this.level.rocketLandingLocation.x = worldX;
+                        this.level.rocketLandingLocation.y = worldY;
+                    } else {
+                        this.level.rocketLandingLocation = {
+                            x: worldX,
+                            y: worldY,
+                            w: rocketLocationWidth,
+                            h: rocketLocationHeight,
+                        };
                     }
-                    break;
-                case Mode.RocketLandingLocation:
-                    if (button == 1) {
-                        if (this.level.rocketLandingLocation) {
-                            this.level.rocketLandingLocation.x = worldX;
-                            this.level.rocketLandingLocation.y = worldY;
-                        } else {
-                            this.level.rocketLandingLocation = {
-                                x: worldX,
-                                y: worldY,
-                                w: rocketLocationWidth,
-                                h: rocketLocationHeight,
-                            };
-                        }
-                        this.setNewMode(Mode.Inspection);
-                    }
-                    break;
+                    this.setNewMode(Mode.Inspection);
+                }
             }
         }
         this.newMode = false;

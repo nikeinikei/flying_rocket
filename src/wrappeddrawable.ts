@@ -11,17 +11,17 @@ export class WrappedDrawable {
     public kx: number | undefined;
     public ky: number | undefined;
     public color: Color | undefined;
-    public visible: boolean;
+    public show: boolean;
 
     private drawable: Drawable;
 
     constructor(drawable: Drawable) {
         this.drawable = drawable;
-        this.visible = true;
+        this.show = true;
     }
 
     draw() {
-        if (this.visible) {
+        if (this.show) {
             if (this.color) {
                 love.graphics.setColor(this.color.unpacked());
             } else {

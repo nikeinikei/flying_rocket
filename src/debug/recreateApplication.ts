@@ -15,30 +15,29 @@ function assertNever(o: never) {
 
 export namespace RecreateApplication {
     function createStateFromSerialized(serialized: Serialized): any {
-        switch (serialized.name) {
-            case "Menu":
-                return new Menu();
-            case "LevelPicker":
-                return new LevelPicker(serialized.page);
-            case "Playing":
-                const levels = Levels.getLevels();
-                for (const level of levels) {
-                    if (level.name == serialized.level) {
-                        return new Playing(level);
-                    }
+        if (serialized.name == "Menu") {
+            return new Menu();
+        } else if (serialized.name == "LevelPicker") {
+            return new LevelPicker(serialized.page);
+        } else if (serialized.name == "Playing") {
+            const levels = Levels.getLevels();
+            for (const level of levels) {
+                if (level.name == serialized.level) {
+                    return new Playing(level);
                 }
-                return null;
-            case "GameModeChooserGameState":
-                return new GameModeChooserGameState();
-            case "CampaignLevelPicker":
-                return new CampaignLevelPicker();
-            case "PreLevelEditorGameState":
-                return new PreLevelEditorGameState(serialized.levelName, serialized.isCampaignLevel);
-            case "LevelEditor":
-                return new LevelEditor(newLevel(serialized.levelName));
+            }
+            return null;
+        } else if (serialized.name == "GameModeChooserGameState") {
+            return new GameModeChooserGameState();
+        } else if (serialized.name == "CampaignLevelPicker") {
+            return new CampaignLevelPicker();
+        } else if (serialized.name == "PreLevelEditorGameState") {
+            return new PreLevelEditorGameState(serialized.levelName, serialized.isCampaignLevel);
+        } else if (serialized.name == "LevelEditor") {
+            return new LevelEditor(newLevel(serialized.levelName));
+        } else {
+            assertNever(serialized);
         }
-
-        assertNever(serialized);
     }
 
     export function attempt(): any[] | null {
