@@ -10,6 +10,7 @@ import { LevelPicker } from "./levelpicker";
 import { Levels } from "./fs/levels";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
+import { LearningSession } from "./learningSessionController";
 
 export class PreLevelEditorGameState extends GameState implements Serializable {
     private textInput: TextInput;
@@ -159,7 +160,7 @@ const buttonSchemes = [
         callback: () => {
             love.window.showMessageBox("Not implemented", "Options are currently not available");
         },
-    },
+    }
 ];
 
 if (!Settings.isWeb()) {

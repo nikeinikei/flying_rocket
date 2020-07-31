@@ -41,6 +41,24 @@ export interface Replay {
     level: Level;
 }
 
+export interface GameInput {
+    rotation: number;
+    pedal: number;
+}
+
+export interface GameUpdate {
+    x: number;
+    y: number;
+    tilt: number;
+}
+
+export interface GameController {
+    init(level: Level): void;
+    sendUpdate(gameUpdate: GameUpdate): void;
+    getInput(): GameInput;
+    end(): void;
+}
+
 class SaveReplayGameState extends GameState {
     private replay: Replay;
 
@@ -89,7 +107,9 @@ class SaveReplayGameState extends GameState {
     }
 }
 
-export class Playing extends GameState implements Serializable {
+export class Playing extends GameState implements Serializable, GameController {
+    private gameController: GameController;
+
     private level: Level;
     private world: World;
     private clock: Clock;
@@ -107,8 +127,12 @@ export class Playing extends GameState implements Serializable {
 
     private frames: Frame[];
 
-    constructor(level: Level) {
+    constructor(level: Level, gameController?: GameController) {
         super();
+        if (gameController) {
+            print("using custom controller");
+        }
+        this.gameController = gameController ?? this;
         this.level = level;
         this.world = love.physics.newWorld(0, 100);
         this.world.setCallbacks((a, b, c) => this.beginContact(a, b, c));
@@ -163,6 +187,37 @@ export class Playing extends GameState implements Serializable {
 
         this.clock = new Clock();
         this.recordFrame();
+
+        this.gameController.init(this.level);
+    }
+
+    end(): void {
+        // noop
+    }
+
+    init(level: Level) {
+        // noop
+    }
+
+    sendUpdate(gameUpdate: GameUpdate) {
+        // noop
+    }
+
+    getInput(): GameInput {
+        const pedal = love.keyboard.isDown(Controls.game.applyThrust) ? 1 : 0;
+
+        let rotation = 0;
+        if (love.keyboard.isDown(Controls.game.rotateLeft)) {
+            rotation = -1;
+        }
+        if (love.keyboard.isDown(Controls.game.rotateRight)) {
+            rotation += 1;
+        }
+
+        return {
+            pedal,
+            rotation: rotation
+        }
     }
 
     getName() {
@@ -267,7 +322,12 @@ export class Playing extends GameState implements Serializable {
         };
     }
 
+    private endGame() {
+        this.gameController.end();
+    }
+
     private win() {
+        this.endGame();
         const metrics: GameEndMetrics = {
             timeTaken: this.clock.getElapsed(),
         };
@@ -277,6 +337,7 @@ export class Playing extends GameState implements Serializable {
     }
 
     private lose() {
+        this.endGame();
         Application.popState();
         Application.pushState(new Lost());
         Application.pushState(new SaveReplayGameState(this.constructReplay()));
@@ -311,26 +372,22 @@ export class Playing extends GameState implements Serializable {
 
         while (this.elapsed >= timePerTick) {
             this.physicsUpdate(timePerTick);
+            const [x, y] = this.rocket.getBody().getPosition();
+            this.gameController.sendUpdate({
+                tilt: this.rocket.getTilt(),
+                x,
+                y
+            })
             this.recordFrame();
             this.elapsed -= timePerTick;
         }
     }
 
     physicsUpdate(dt: number) {
-        if (love.keyboard.isDown(Controls.game.applyThrust)) {
-            this.rocket.setPedal(1);
-        } else {
-            this.rocket.setPedal(0);
-        }
+        const gameInput = this.gameController.getInput();
 
-        let rotation = 0;
-        if (love.keyboard.isDown(Controls.game.rotateLeft)) {
-            rotation = -1;
-        }
-        if (love.keyboard.isDown(Controls.game.rotateRight)) {
-            rotation += 1;
-        }
-        this.rocket.setRotation(rotation);
+        this.rocket.setPedal(gameInput.pedal);
+        this.rocket.setRotation(gameInput.rotation);
 
         this.rocket.update(dt);
         this.world.update(dt);

@@ -7,6 +7,7 @@ import { Levels } from "./fs/levels";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";
+import { LearningSession } from "./learningSessionController";
 
 export class LevelPicker extends GameState implements Serializable {
     private static pageButtonCount = 6;
@@ -163,7 +164,11 @@ export class LevelPicker extends GameState implements Serializable {
                 const height = 70;
                 page.push(
                     new Button(50, y, 400, height, levels[i].name, () => {
-                        Application.pushState(new Playing(level));
+                        if (love.keyboard.isDown("lctrl")) {
+                            Application.pushState(new Playing(level, new LearningSession()))
+                        } else {
+                            Application.pushState(new Playing(level));
+                        }
                     }),
                     new Button(500, y, 150, height, "Delete", () => {
                         Levels.removeLevel(level);
@@ -177,7 +182,7 @@ export class LevelPicker extends GameState implements Serializable {
                             "/" +
                             "LOVE" +
                             "/" +
-                            (love.filesystem.getIdentity as any)() +
+                            love.filesystem.getIdentity() +
                             "/" +
                             fileName;
 
