@@ -1,10 +1,10 @@
 import { Serialized } from "./../types/Serializable";
 import { CampaignLevelPicker } from "../campaignLevelPicker";
+import { Levels } from "../fs/levels";
 import { json } from "../json";
 import { newLevel } from "../level";
 import { LevelEditor } from "../leveleditor";
 import { LevelPicker } from "../levelpicker";
-import { Levels } from "../fs/levels";
 import { GameModeChooserGameState, Menu, PreLevelEditorGameState } from "../menu";
 import { Playing } from "../playing";
 import { Settings } from "../settings";

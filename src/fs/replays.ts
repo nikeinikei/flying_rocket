@@ -25,7 +25,7 @@ export module Replays {
     }
 
     export function addReplay(replay: Replay, name: string) {
-        const serializedReplay: SerializedReplay = {...replay, name };
+        const serializedReplay: SerializedReplay = { ...replay, name };
         replays.push(serializedReplay);
         save();
     }

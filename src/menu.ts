@@ -2,15 +2,15 @@ import { KeyConstant } from "love.keyboard";
 
 import { CampaignLevelPicker } from "./campaignLevelPicker";
 import { CampaignLevels } from "./fs/campaignLevels";
+import { Levels } from "./fs/levels";
 import { GameState } from "./gamestate";
 import { Button, TextInput, Toggle } from "./gui";
+import { LearningSession } from "./learningSessionController";
 import { Level, newLevel } from "./level";
 import { LevelEditor } from "./leveleditor";
 import { LevelPicker } from "./levelpicker";
-import { Levels } from "./fs/levels";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
-import { LearningSession } from "./learningSessionController";
 
 export class PreLevelEditorGameState extends GameState implements Serializable {
     private textInput: TextInput;
@@ -160,7 +160,7 @@ const buttonSchemes = [
         callback: () => {
             love.window.showMessageBox("Not implemented", "Options are currently not available");
         },
-    }
+    },
 ];
 
 if (!Settings.isWeb()) {

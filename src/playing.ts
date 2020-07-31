@@ -216,8 +216,8 @@ export class Playing extends GameState implements Serializable, GameController {
 
         return {
             pedal,
-            rotation: rotation
-        }
+            rotation: rotation,
+        };
     }
 
     getName() {
@@ -318,7 +318,7 @@ export class Playing extends GameState implements Serializable, GameController {
     private constructReplay(): Replay {
         return {
             frame: this.frames,
-            level: this.level
+            level: this.level,
         };
     }
 
@@ -376,8 +376,8 @@ export class Playing extends GameState implements Serializable, GameController {
             this.gameController.sendUpdate({
                 tilt: this.rocket.getTilt(),
                 x,
-                y
-            })
+                y,
+            });
             this.recordFrame();
             this.elapsed -= timePerTick;
         }

@@ -1,6 +1,6 @@
-import { GameInput, GameUpdate, GameController } from "./playing";
 import { json } from "./json";
 import { Level } from "./level";
+import { GameController, GameInput, GameUpdate } from "./playing";
 
 const threadCode = `
 local ip, port = ...
@@ -59,8 +59,8 @@ export class LearningSession implements GameController {
     defaultGameInput(): GameInput {
         return {
             pedal: 0,
-            rotation: 0
-        }
+            rotation: 0,
+        };
     }
 
     getInput(): GameInput {

@@ -1,8 +1,8 @@
 require("globals");
 require("customerrorhandler");
 
-import { CampaignLevels } from "./fs/campaignLevels";
 import { RecreateApplication } from "./debug/recreateApplication";
+import { CampaignLevels } from "./fs/campaignLevels";
 import { Menu } from "./menu";
 import { Settings } from "./settings";
 
