@@ -14,7 +14,7 @@
     "build:copyLua": "copyfiles -u 1 lua/**/*.lua game",
     "build:watch": "tstl -w -p tsconfig.json",
     "build:release": "yarn build && powershell .\\createGameExecutable.ps1",
-    "build:web": "yarn build:release && node ../love.js/index.js -t \"Flying Rocket\" flying_rocket.love web",
+    "build:web": "yarn build:release && love-js -t \"Flying Rocket\" flying_rocket.love web",
     "lint:eslint": "eslint -c .eslintrc src/**",
     "lint:prettier": "cross-var prettier \"$npm_package_prettierGlob\" --check",
     "fix:prettier": "cross-var prettier \"$npm_package_prettierGlob\" --check --write"

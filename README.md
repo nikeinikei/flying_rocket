@@ -17,5 +17,5 @@ Dependencies:
 # Targetting web
 
 To target the web additional setup is needed. Python 3 needs to be installed.
-Furthermore, a specific fork of Love.js (https://github.com/Davidobot/love.js) needs to be
-cloned and `npm install`ed next to this project. Now the scripts `build:web` and `start:web` can be used.
+Furthermore, a specific fork of Love.js (https://github.com/Davidobot/love.js) needs to beinstalled.
+Now the scripts `build:web` and `start:web` can be used.
