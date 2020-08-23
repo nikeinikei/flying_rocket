@@ -1,4 +1,4 @@
-require("globals");
+require("application");
 require("customerrorhandler");
 
 import { RecreateApplication } from "./debug/recreateApplication";

@@ -151,8 +151,6 @@ end
 Application = {
     ---@param state Gamestate
     pushState = function(state)
-        assertTable(state)
-
         local top = states:peek()
         if top ~= nil then
             top:onInactive()

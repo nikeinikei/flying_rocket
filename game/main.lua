@@ -10,7 +10,7 @@ local ____menu = require("menu")
 local Menu = ____menu.Menu
 local ____settings = require("settings")
 local Settings = ____settings.Settings
-require("globals")
+require("application")
 require("customerrorhandler")
 local function parseArgs(args)
     for ____, arg in ipairs(args) do
