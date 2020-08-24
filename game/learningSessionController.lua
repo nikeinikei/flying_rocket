@@ -1,16 +1,17 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 5,["8"] = 35,["9"] = 35,["10"] = 35,["12"] = 41,["13"] = 42,["14"] = 43,["15"] = 44,["16"] = 40,["17"] = 47,["18"] = 48,["19"] = 47,["20"] = 51,["21"] = 52,["22"] = 52,["23"] = 52,["24"] = 51,["25"] = 55,["26"] = 56,["27"] = 56,["28"] = 56,["29"] = 55,["30"] = 59,["31"] = 60,["32"] = 59,["33"] = 66,["34"] = 67,["35"] = 69,["36"] = 70,["38"] = 72,["40"] = 66});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 1,["6"] = 1,["7"] = 5,["8"] = 37,["9"] = 37,["10"] = 37,["12"] = 44,["13"] = 45,["14"] = 46,["15"] = 47,["16"] = 48,["17"] = 43,["18"] = 51,["19"] = 52,["20"] = 51,["21"] = 55,["22"] = 56,["23"] = 56,["24"] = 56,["25"] = 55,["26"] = 59,["27"] = 60,["29"] = 61,["30"] = 61,["31"] = 61,["32"] = 62,["33"] = 62,["34"] = 62,["36"] = 59,["37"] = 66,["38"] = 67,["39"] = 66,["40"] = 70,["41"] = 71,["42"] = 70});
 local ____exports = {}
 local ____json = require("json")
 local json = ____json.json
-local threadCode = "\nlocal ip, port = ...\nprint(\"ip\", ip, \"port\", port)\n\nlocal inChannel = love.thread.getChannel(\"LearningSessionInChannel\")\nlocal outChannel = love.thread.getChannel(\"LearningSessionOutChannel\")\n\nlocal socket = require \"socket\"\n\nlocal tcp = socket.tcp()\ntcp:connect(ip, port)\n\nlocal levelData = inChannel:demand()\ntcp:send(levelData)\n\nwhile true do\n    local gameInput = tcp:receive(\"*l*\")\n    outChannel:push(gameInput)\n\n    local playingState = inChannel:demand()\n    if playingState == false then\n        break\n    end\n    tcp:send(playingState)\nend\n\nprint(\"closing\")\ntcp:close()\n"
+local threadCode = "\nrequire(\"love.image\")\nrequire(\"love.data\")\n\nlocal ip, port = ...\n\nlocal inChannel = love.thread.getChannel(\"LearningSessionInChannel\")\nlocal outChannel = love.thread.getChannel(\"LearningSessionOutChannel\")\n\nlocal socket = require \"socket\"\n\nlocal tcp = socket.tcp()\ntcp:connect(ip, port)\n\nlocal levelData = inChannel:demand()\ntcp:send(levelData)\n\nwhile true do\n    local gameInput = tcp:receive(\"*l*\")\n    outChannel:push(gameInput)\n\n    local playingState = inChannel:demand()\n    if playingState == false then\n        break\n    end\n\n    tcp:send(playingState:encode(\"png\"):getString())\nend\n\ntcp:close()\n"
 ____exports.LearningSession = __TS__Class()
 local LearningSession = ____exports.LearningSession
 LearningSession.name = "LearningSession"
 function LearningSession.prototype.____constructor(self)
     self.inChannel = love.thread.getChannel("LearningSessionInChannel")
     self.outChannel = love.thread.getChannel("LearningSessionOutChannel")
+    self.gameInputChannel = love.thread.newChannel()
     self.thread = love.thread.newThread(threadCode)
     self.thread:start("127.0.0.1", 5005)
 end
@@ -22,20 +23,21 @@ function LearningSession.prototype.init(self, level)
         json.encode(level)
     )
 end
-function LearningSession.prototype.sendUpdate(self, gameUpdate)
-    self.inChannel:push(
-        json.encode(gameUpdate)
-    )
-end
-function LearningSession.prototype.defaultGameInput(self)
-    return {pedal = 0, rotation = 0}
-end
-function LearningSession.prototype.getInput(self)
-    local inputAsString = self.outChannel:pop()
-    if inputAsString == nil then
-        return self:defaultGameInput()
-    else
-        return json.decode(inputAsString)
+function LearningSession.prototype.update(self, dt)
+    local popped
+    while (function()
+        popped = self.outChannel:pop()
+        return popped
+    end)() do
+        self.gameInputChannel:push(
+            json.decode(popped)
+        )
     end
+end
+function LearningSession.prototype.getGameUpdateChannel(self)
+    return self.inChannel
+end
+function LearningSession.prototype.getGameInputChannel(self)
+    return self.gameInputChannel
 end
 return ____exports

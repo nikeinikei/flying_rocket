@@ -1,10 +1,12 @@
 import { json } from "./json";
 import { Level } from "./level";
-import { GameController, GameInput, GameUpdate } from "./playing";
+import { GameController, GameInput } from "./playing";
 
 const threadCode = `
+require("love.image")
+require("love.data")
+
 local ip, port = ...
-print("ip", ip, "port", port)
 
 local inChannel = love.thread.getChannel("LearningSessionInChannel")
 local outChannel = love.thread.getChannel("LearningSessionOutChannel")
@@ -25,10 +27,10 @@ while true do
     if playingState == false then
         break
     end
-    tcp:send(playingState)
+
+    tcp:send(playingState:encode("png"):getString())
 end
 
-print("closing")
 tcp:close()
 `;
 
@@ -36,10 +38,12 @@ export class LearningSession implements GameController {
     private thread: Thread;
     private inChannel: Channel;
     private outChannel: Channel;
+    private gameInputChannel: Channel;
 
     constructor() {
         this.inChannel = love.thread.getChannel("LearningSessionInChannel");
         this.outChannel = love.thread.getChannel("LearningSessionOutChannel");
+        this.gameInputChannel = love.thread.newChannel();
         this.thread = love.thread.newThread(threadCode);
         this.thread.start("127.0.0.1", 5005);
     }
@@ -52,24 +56,18 @@ export class LearningSession implements GameController {
         this.inChannel.push(json.encode(level));
     }
 
-    sendUpdate(gameUpdate: GameUpdate) {
-        this.inChannel.push(json.encode(gameUpdate));
-    }
-
-    defaultGameInput(): GameInput {
-        return {
-            pedal: 0,
-            rotation: 0,
-        };
-    }
-
-    getInput(): GameInput {
-        const inputAsString = this.outChannel.pop();
-
-        if (inputAsString == null) {
-            return this.defaultGameInput();
-        } else {
-            return json.decode(inputAsString);
+    update(dt: number) {
+        let popped: any;
+        while (popped = this.outChannel.pop()) {
+            this.gameInputChannel.push(json.decode(popped));
         }
+    }
+
+    getGameUpdateChannel() {
+        return this.inChannel;
+    }
+
+    getGameInputChannel() {
+        return this.gameInputChannel;
     }
 }

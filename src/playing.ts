@@ -46,16 +46,11 @@ export interface GameInput {
     pedal: number;
 }
 
-export interface GameUpdate {
-    x: number;
-    y: number;
-    tilt: number;
-}
-
 export interface GameController {
     init(level: Level): void;
-    sendUpdate(gameUpdate: GameUpdate): void;
-    getInput(): GameInput;
+    getGameUpdateChannel(): Channel;
+    getGameInputChannel(): Channel;
+    update(dt: number): void;
     end(): void;
 }
 
@@ -120,15 +115,20 @@ export class Playing extends GameState implements Serializable, GameController {
     private refuelStations: PhysicsObject<PolygonShape>[];
     private camera: PlayingCamera;
     private stars: Stars;
-
     private refueling: boolean = false;
-
     private elapsed: number;
-
     private frames: Frame[];
+    private gameUpdateChannel: Channel;
+    private gameInputChannel: Channel;
+    private usingCustomController: boolean;
 
     constructor(level: Level, gameController?: GameController) {
         super();
+        if (gameController) {
+            this.usingCustomController = true;
+        } else {
+            this.usingCustomController = false;
+        }
         if (gameController) {
             print("using custom controller");
         }
@@ -185,10 +185,13 @@ export class Playing extends GameState implements Serializable, GameController {
 
         this.frames = [];
 
-        this.clock = new Clock();
-        this.recordFrame();
-
+        this.recordReplayFrame();
         this.gameController.init(this.level);
+        this.gameUpdateChannel = love.thread.newChannel();
+        this.gameInputChannel = love.thread.newChannel();
+
+
+        this.clock = new Clock();
     }
 
     end(): void {
@@ -199,8 +202,12 @@ export class Playing extends GameState implements Serializable, GameController {
         // noop
     }
 
-    sendUpdate(gameUpdate: GameUpdate) {
-        // noop
+    getGameUpdateChannel(): Channel {
+        return this.gameUpdateChannel;
+    }
+
+    getGameInputChannel(): Channel {
+        return this.gameInputChannel;
     }
 
     getInput(): GameInput {
@@ -216,7 +223,7 @@ export class Playing extends GameState implements Serializable, GameController {
 
         return {
             pedal,
-            rotation: rotation,
+            rotation,
         };
     }
 
@@ -348,7 +355,7 @@ export class Playing extends GameState implements Serializable, GameController {
         return Math.abs(dx) < EPSILON && Math.abs(dy) < EPSILON;
     }
 
-    private recordFrame() {
+    private recordReplayFrame() {
         const rocketBody = this.rocket.getBody();
         const [x, y] = rocketBody.getPosition();
         const tilt = this.rocket.getTilt();
@@ -368,26 +375,31 @@ export class Playing extends GameState implements Serializable, GameController {
     }
 
     update(dt: number) {
+        if (this.usingCustomController) {
+            this.gameController.update(dt);
+        }
+
         this.elapsed += dt;
 
         while (this.elapsed >= timePerTick) {
+            if (this.usingCustomController == false) {
+                this.gameInputChannel.push(this.getInput());
+            }
             this.physicsUpdate(timePerTick);
-            const [x, y] = this.rocket.getBody().getPosition();
-            this.gameController.sendUpdate({
-                tilt: this.rocket.getTilt(),
-                x,
-                y,
-            });
-            this.recordFrame();
+            love.graphics.captureScreenshot(this.gameUpdateChannel);
+            this.recordReplayFrame();
             this.elapsed -= timePerTick;
         }
     }
 
     physicsUpdate(dt: number) {
-        const gameInput = this.gameController.getInput();
+        const popped = this.gameController.getGameInputChannel().pop();
+        if (popped) {
+            const gameInput = popped as GameInput;
 
-        this.rocket.setPedal(gameInput.pedal);
-        this.rocket.setRotation(gameInput.rotation);
+            this.rocket.setPedal(gameInput.pedal);
+            this.rocket.setRotation(gameInput.rotation);
+        }
 
         this.rocket.update(dt);
         this.world.update(dt);
@@ -484,6 +496,7 @@ export class Playing extends GameState implements Serializable, GameController {
 
     keypressed(key: KeyConstant) {
         if (key == "escape") {
+            this.endGame();
             Application.popState();
         }
         if (key == "p") {
