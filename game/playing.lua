@@ -1,6 +1,6 @@
 --[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 require("lualib_bundle");
-__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 5,["8"] = 5,["9"] = 6,["10"] = 6,["11"] = 7,["12"] = 7,["13"] = 7,["14"] = 9,["15"] = 9,["16"] = 10,["17"] = 10,["18"] = 11,["19"] = 11,["20"] = 12,["21"] = 12,["22"] = 13,["23"] = 13,["24"] = 14,["25"] = 14,["26"] = 15,["27"] = 15,["28"] = 17,["29"] = 17,["30"] = 18,["31"] = 18,["32"] = 19,["33"] = 19,["34"] = 21,["35"] = 22,["36"] = 23,["37"] = 24,["38"] = 26,["39"] = 27,["40"] = 57,["41"] = 57,["42"] = 57,["43"] = 65,["44"] = 57,["45"] = 67,["46"] = 69,["47"] = 69,["48"] = 69,["49"] = 69,["50"] = 70,["51"] = 71,["52"] = 72,["53"] = 73,["54"] = 75,["55"] = 76,["56"] = 77,["57"] = 79,["58"] = 81,["59"] = 81,["60"] = 81,["61"] = 81,["62"] = 81,["63"] = 81,["64"] = 81,["65"] = 81,["66"] = 82,["67"] = 83,["68"] = 84,["70"] = 86,["71"] = 88,["73"] = 81,["74"] = 81,["75"] = 91,["76"] = 91,["77"] = 91,["78"] = 91,["79"] = 91,["80"] = 91,["81"] = 91,["82"] = 91,["83"] = 92,["84"] = 91,["85"] = 91,["86"] = 65,["87"] = 96,["88"] = 97,["89"] = 96,["90"] = 100,["91"] = 101,["92"] = 100,["93"] = 105,["94"] = 105,["95"] = 105,["96"] = 105,["97"] = 125,["98"] = 105,["99"] = 118,["100"] = 127,["101"] = 128,["103"] = 130,["105"] = 132,["106"] = 133,["108"] = 135,["109"] = 136,["110"] = 137,["111"] = 138,["112"] = 138,["113"] = 138,["114"] = 140,["115"] = 141,["116"] = 143,["117"] = 144,["118"] = 146,["119"] = 148,["120"] = 155,["121"] = 157,["122"] = 164,["123"] = 166,["124"] = 167,["125"] = 168,["126"] = 175,["127"] = 177,["129"] = 180,["130"] = 182,["131"] = 183,["132"] = 184,["133"] = 186,["134"] = 188,["135"] = 189,["136"] = 190,["137"] = 191,["138"] = 194,["139"] = 125,["140"] = 197,["141"] = 197,["142"] = 201,["143"] = 201,["144"] = 205,["145"] = 206,["146"] = 205,["147"] = 209,["148"] = 210,["149"] = 209,["150"] = 213,["151"] = 214,["152"] = 216,["153"] = 217,["154"] = 218,["156"] = 220,["157"] = 221,["159"] = 224,["160"] = 213,["161"] = 230,["162"] = 231,["163"] = 230,["164"] = 234,["165"] = 235,["166"] = 234,["167"] = 238,["168"] = 239,["169"] = 239,["170"] = 240,["171"] = 239,["172"] = 242,["173"] = 242,["174"] = 242,["175"] = 243,["176"] = 238,["177"] = 246,["178"] = 247,["179"] = 248,["180"] = 249,["181"] = 251,["182"] = 246,["183"] = 258,["184"] = 259,["185"] = 259,["186"] = 259,["187"] = 260,["189"] = 263,["190"] = 264,["191"] = 265,["192"] = 266,["194"] = 269,["195"] = 258,["196"] = 273,["197"] = 279,["198"] = 280,["199"] = 281,["200"] = 282,["202"] = 284,["203"] = 285,["205"] = 287,["206"] = 273,["207"] = 290,["208"] = 291,["209"] = 291,["210"] = 291,["211"] = 291,["212"] = 291,["213"] = 291,["214"] = 292,["215"] = 293,["216"] = 294,["218"] = 297,["219"] = 298,["220"] = 299,["222"] = 301,["223"] = 302,["224"] = 303,["225"] = 304,["228"] = 308,["229"] = 309,["230"] = 310,["231"] = 311,["233"] = 313,["236"] = 317,["237"] = 318,["238"] = 319,["239"] = 320,["242"] = 290,["243"] = 325,["244"] = 326,["245"] = 325,["246"] = 332,["248"] = 333,["250"] = 333,["251"] = 332,["252"] = 336,["253"] = 337,["254"] = 338,["255"] = 338,["256"] = 338,["257"] = 341,["258"] = 342,["259"] = 342,["260"] = 342,["261"] = 343,["262"] = 343,["263"] = 343,["264"] = 343,["265"] = 343,["266"] = 343,["267"] = 336,["268"] = 346,["269"] = 347,["270"] = 348,["271"] = 349,["272"] = 349,["273"] = 349,["274"] = 350,["275"] = 350,["276"] = 350,["277"] = 350,["278"] = 350,["279"] = 350,["280"] = 346,["281"] = 353,["282"] = 354,["283"] = 355,["284"] = 353,["285"] = 358,["286"] = 359,["287"] = 360,["288"] = 361,["289"] = 362,["290"] = 363,["291"] = 364,["292"] = 374,["293"] = 358,["294"] = 377,["295"] = 378,["296"] = 379,["298"] = 382,["299"] = 384,["300"] = 385,["301"] = 386,["302"] = 386,["303"] = 386,["305"] = 388,["306"] = 389,["307"] = 390,["308"] = 391,["310"] = 377,["311"] = 395,["312"] = 396,["313"] = 397,["314"] = 398,["315"] = 400,["316"] = 401,["318"] = 404,["319"] = 405,["320"] = 407,["321"] = 408,["322"] = 409,["323"] = 410,["324"] = 411,["325"] = 417,["326"] = 418,["330"] = 422,["331"] = 423,["332"] = 424,["333"] = 425,["334"] = 426,["336"] = 428,["339"] = 431,["341"] = 434,["342"] = 434,["343"] = 434,["344"] = 435,["346"] = 438,["347"] = 439,["348"] = 439,["349"] = 439,["350"] = 395,["351"] = 442,["352"] = 443,["353"] = 443,["354"] = 443,["355"] = 443,["356"] = 443,["357"] = 443,["358"] = 442,["359"] = 446,["360"] = 447,["361"] = 448,["362"] = 450,["363"] = 451,["364"] = 453,["365"] = 455,["366"] = 457,["367"] = 459,["368"] = 460,["369"] = 461,["370"] = 462,["371"] = 464,["372"] = 466,["373"] = 467,["374"] = 469,["375"] = 446,["376"] = 472,["377"] = 473,["378"] = 474,["379"] = 475,["380"] = 476,["381"] = 477,["382"] = 478,["383"] = 479,["384"] = 480,["385"] = 481,["387"] = 484,["388"] = 486,["389"] = 486,["390"] = 486,["391"] = 488,["392"] = 488,["393"] = 488,["394"] = 488,["395"] = 488,["396"] = 488,["397"] = 488,["398"] = 488,["399"] = 488,["400"] = 490,["401"] = 491,["402"] = 491,["403"] = 491,["404"] = 491,["405"] = 491,["406"] = 492,["407"] = 492,["408"] = 492,["409"] = 492,["410"] = 492,["411"] = 492,["412"] = 492,["413"] = 492,["414"] = 492,["415"] = 493,["416"] = 493,["417"] = 493,["418"] = 493,["419"] = 493,["420"] = 493,["421"] = 493,["423"] = 472,["424"] = 497,["425"] = 498,["426"] = 499,["427"] = 500,["429"] = 502,["430"] = 503,["432"] = 497});
+__TS__SourceMapTraceBack(debug.getinfo(1).short_src, {["5"] = 4,["6"] = 4,["7"] = 5,["8"] = 5,["9"] = 6,["10"] = 6,["11"] = 7,["12"] = 7,["13"] = 7,["14"] = 9,["15"] = 9,["16"] = 10,["17"] = 10,["18"] = 11,["19"] = 11,["20"] = 12,["21"] = 12,["22"] = 13,["23"] = 13,["24"] = 14,["25"] = 14,["26"] = 15,["27"] = 15,["28"] = 17,["29"] = 17,["30"] = 18,["31"] = 18,["32"] = 19,["33"] = 19,["34"] = 21,["35"] = 22,["36"] = 23,["37"] = 24,["38"] = 26,["39"] = 27,["40"] = 44,["41"] = 44,["42"] = 44,["43"] = 52,["44"] = 44,["45"] = 54,["46"] = 56,["47"] = 56,["48"] = 56,["49"] = 56,["50"] = 57,["51"] = 58,["52"] = 59,["53"] = 60,["54"] = 62,["55"] = 63,["56"] = 64,["57"] = 66,["58"] = 68,["59"] = 68,["60"] = 68,["61"] = 68,["62"] = 68,["63"] = 68,["64"] = 68,["65"] = 68,["66"] = 69,["67"] = 70,["68"] = 71,["70"] = 73,["71"] = 75,["73"] = 68,["74"] = 68,["75"] = 78,["76"] = 78,["77"] = 78,["78"] = 78,["79"] = 78,["80"] = 78,["81"] = 78,["82"] = 78,["83"] = 79,["84"] = 78,["85"] = 78,["86"] = 52,["87"] = 83,["88"] = 84,["89"] = 83,["90"] = 87,["91"] = 88,["92"] = 87,["93"] = 96,["94"] = 96,["95"] = 96,["96"] = 96,["97"] = 111,["98"] = 96,["99"] = 107,["100"] = 113,["101"] = 114,["102"] = 115,["103"] = 115,["104"] = 115,["105"] = 117,["106"] = 118,["107"] = 120,["108"] = 121,["109"] = 123,["110"] = 125,["111"] = 132,["112"] = 134,["113"] = 141,["114"] = 143,["115"] = 144,["116"] = 145,["117"] = 152,["118"] = 154,["120"] = 157,["121"] = 159,["122"] = 160,["123"] = 161,["124"] = 163,["125"] = 165,["126"] = 167,["127"] = 111,["128"] = 170,["129"] = 171,["130"] = 170,["131"] = 174,["132"] = 175,["133"] = 174,["134"] = 178,["135"] = 179,["136"] = 178,["137"] = 182,["138"] = 183,["139"] = 182,["140"] = 186,["141"] = 187,["142"] = 186,["143"] = 190,["144"] = 191,["145"] = 190,["146"] = 194,["147"] = 195,["148"] = 195,["149"] = 196,["150"] = 195,["151"] = 198,["152"] = 198,["153"] = 198,["154"] = 199,["155"] = 194,["156"] = 202,["157"] = 203,["158"] = 204,["159"] = 205,["160"] = 207,["161"] = 202,["162"] = 214,["163"] = 215,["164"] = 215,["165"] = 215,["166"] = 216,["168"] = 219,["169"] = 220,["170"] = 221,["171"] = 222,["173"] = 225,["174"] = 214,["175"] = 229,["176"] = 235,["177"] = 236,["178"] = 237,["179"] = 238,["181"] = 240,["182"] = 241,["184"] = 243,["185"] = 229,["186"] = 246,["187"] = 247,["188"] = 247,["189"] = 247,["190"] = 247,["191"] = 247,["192"] = 247,["193"] = 248,["194"] = 249,["195"] = 250,["197"] = 253,["198"] = 254,["199"] = 255,["201"] = 257,["202"] = 258,["203"] = 259,["204"] = 260,["207"] = 264,["208"] = 265,["209"] = 266,["210"] = 267,["212"] = 269,["215"] = 273,["216"] = 274,["217"] = 275,["218"] = 276,["221"] = 246,["222"] = 281,["223"] = 282,["224"] = 281,["225"] = 288,["226"] = 288,["227"] = 291,["228"] = 292,["229"] = 293,["230"] = 293,["231"] = 293,["232"] = 296,["233"] = 297,["234"] = 297,["235"] = 297,["236"] = 298,["237"] = 298,["238"] = 298,["239"] = 298,["240"] = 298,["241"] = 298,["242"] = 291,["243"] = 301,["244"] = 302,["245"] = 303,["246"] = 304,["247"] = 304,["248"] = 304,["249"] = 305,["250"] = 305,["251"] = 305,["252"] = 305,["253"] = 305,["254"] = 305,["255"] = 301,["256"] = 308,["257"] = 309,["258"] = 310,["259"] = 308,["260"] = 313,["261"] = 314,["262"] = 315,["263"] = 316,["264"] = 317,["265"] = 318,["266"] = 319,["267"] = 329,["268"] = 313,["269"] = 332,["270"] = 333,["271"] = 335,["272"] = 336,["273"] = 337,["274"] = 338,["276"] = 332,["277"] = 342,["278"] = 343,["279"] = 344,["280"] = 346,["281"] = 347,["282"] = 348,["283"] = 349,["284"] = 350,["285"] = 356,["286"] = 357,["290"] = 361,["291"] = 362,["292"] = 363,["293"] = 364,["294"] = 365,["296"] = 367,["299"] = 370,["301"] = 373,["302"] = 373,["303"] = 373,["304"] = 374,["306"] = 377,["307"] = 378,["308"] = 378,["309"] = 378,["310"] = 342,["311"] = 381,["312"] = 382,["313"] = 382,["314"] = 382,["315"] = 382,["316"] = 382,["317"] = 382,["318"] = 381,["319"] = 385,["320"] = 386,["321"] = 387,["322"] = 389,["323"] = 390,["324"] = 392,["325"] = 394,["326"] = 396,["327"] = 398,["328"] = 399,["329"] = 400,["330"] = 401,["331"] = 403,["332"] = 405,["333"] = 406,["334"] = 408,["335"] = 385,["336"] = 411,["337"] = 412,["338"] = 413,["339"] = 414,["340"] = 415,["341"] = 416,["342"] = 417,["343"] = 418,["344"] = 419,["345"] = 420,["347"] = 423,["348"] = 425,["349"] = 425,["350"] = 425,["351"] = 427,["352"] = 427,["353"] = 427,["354"] = 427,["355"] = 427,["356"] = 427,["357"] = 427,["358"] = 427,["359"] = 427,["360"] = 429,["361"] = 430,["362"] = 430,["363"] = 430,["364"] = 430,["365"] = 430,["366"] = 431,["367"] = 431,["368"] = 431,["369"] = 431,["370"] = 431,["371"] = 431,["372"] = 431,["373"] = 431,["374"] = 431,["375"] = 432,["376"] = 432,["377"] = 432,["378"] = 432,["379"] = 432,["380"] = 432,["381"] = 432,["383"] = 411,["384"] = 436,["385"] = 437,["386"] = 438,["387"] = 439,["389"] = 441,["390"] = 442,["392"] = 436,["393"] = 450,["394"] = 450,["395"] = 450,["396"] = 450,["397"] = 451,["398"] = 452,["399"] = 454,["400"] = 455,["401"] = 456,["403"] = 458,["404"] = 459,["406"] = 462,["407"] = 464,["408"] = 450,["409"] = 451});
 local ____exports = {}
 local ____controls = require("controls")
 local Controls = ____controls.Controls
@@ -90,22 +90,13 @@ end
 function SaveReplayGameState.prototype.getName(self)
     return "SaveReplayGameState"
 end
-____exports.Playing = __TS__Class()
-local Playing = ____exports.Playing
-Playing.name = "Playing"
-__TS__ClassExtends(Playing, GameState)
-function Playing.prototype.____constructor(self, level, gameController)
+____exports.AbstractPlaying = __TS__Class()
+local AbstractPlaying = ____exports.AbstractPlaying
+AbstractPlaying.name = "AbstractPlaying"
+__TS__ClassExtends(AbstractPlaying, GameState)
+function AbstractPlaying.prototype.____constructor(self, level)
     GameState.prototype.____constructor(self)
     self.refueling = false
-    if gameController then
-        self.usingCustomController = true
-    else
-        self.usingCustomController = false
-    end
-    if gameController then
-        print("using custom controller")
-    end
-    self.gameController = gameController or self
     self.level = level
     self.world = love.physics.newWorld(0, 100)
     self.world:setCallbacks(
@@ -132,39 +123,27 @@ function Playing.prototype.____constructor(self, level, gameController)
     self.stars = __TS__New(Stars)
     self.frames = {}
     self:recordReplayFrame()
-    self.gameController:init(self.level)
-    self.gameUpdateChannel = love.thread.newChannel()
-    self.gameInputChannel = love.thread.newChannel()
     self.clock = __TS__New(Clock)
 end
-Playing.prototype["end"] = function(self)
+function AbstractPlaying.prototype.setPedal(self, pedal)
+    self.rocket:setPedal(pedal)
 end
-function Playing.prototype.init(self, level)
+function AbstractPlaying.prototype.setRotation(self, rotation)
+    self.rocket:setRotation(rotation)
 end
-function Playing.prototype.getGameUpdateChannel(self)
-    return self.gameUpdateChannel
+function AbstractPlaying.prototype.getPedal(self)
+    return self.rocket:getPedal()
 end
-function Playing.prototype.getGameInputChannel(self)
-    return self.gameInputChannel
+function AbstractPlaying.prototype.getRotation(self)
+    return self.rocket:getRotation()
 end
-function Playing.prototype.getInput(self)
-    local pedal = (love.keyboard.isDown(Controls.game.applyThrust) and 1) or 0
-    local rotation = 0
-    if love.keyboard.isDown(Controls.game.rotateLeft) then
-        rotation = -1
-    end
-    if love.keyboard.isDown(Controls.game.rotateRight) then
-        rotation = rotation + 1
-    end
-    return {pedal = pedal, rotation = rotation}
-end
-function Playing.prototype.getName(self)
+function AbstractPlaying.prototype.getName(self)
     return "Playing"
 end
-function Playing.prototype.serialize(self)
+function AbstractPlaying.prototype.serialize(self)
     return {name = "Playing", level = self.level.name}
 end
-function Playing.prototype.pause(self)
+function AbstractPlaying.prototype.pause(self)
     local onUnpaused
     onUnpaused = function()
         self.clock:resume()
@@ -174,13 +153,13 @@ function Playing.prototype.pause(self)
     )
     self.clock:pause()
 end
-function Playing.prototype.newStaticRectangle(self, world, x, y, w, h)
+function AbstractPlaying.prototype.newStaticRectangle(self, world, x, y, w, h)
     local body = love.physics.newBody(world, x, y, "static")
     local shape = love.physics.newRectangleShape(w, h)
     local fixture = love.physics.newFixture(body, shape)
     return {body = body, shape = shape, fixture = fixture}
 end
-function Playing.prototype.isSafeLanding(self, rocket)
+function AbstractPlaying.prototype.isSafeLanding(self, rocket)
     if math.abs(
         rocket:getTilt()
     ) >= (math.pi / 16) then
@@ -193,7 +172,7 @@ function Playing.prototype.isSafeLanding(self, rocket)
     end
     return true
 end
-function Playing.prototype.matchFixtures(self, fixtureA, fixtureB, userDataA, userDataB)
+function AbstractPlaying.prototype.matchFixtures(self, fixtureA, fixtureB, userDataA, userDataB)
     local a = fixtureA:getUserData()
     local b = fixtureB:getUserData()
     if (a == userDataA) and (b == userDataB) then
@@ -204,7 +183,7 @@ function Playing.prototype.matchFixtures(self, fixtureA, fixtureB, userDataA, us
     end
     return nil, nil
 end
-function Playing.prototype.beginContact(self, a, b, contact)
+function AbstractPlaying.prototype.beginContact(self, a, b, contact)
     local rocket
     local border
     local terrain
@@ -240,16 +219,12 @@ function Playing.prototype.beginContact(self, a, b, contact)
         end
     end
 end
-function Playing.prototype.constructReplay(self)
+function AbstractPlaying.prototype.constructReplay(self)
     return {frame = self.frames, level = self.level}
 end
-function Playing.prototype.endGame(self)
-    (function()
-        local ____self = self.gameController
-        return ____self["end"](____self)
-    end)()
+function AbstractPlaying.prototype.endGame(self)
 end
-function Playing.prototype.win(self)
+function AbstractPlaying.prototype.win(self)
     self:endGame()
     local metrics = {
         timeTaken = self.clock:getElapsed()
@@ -265,7 +240,7 @@ function Playing.prototype.win(self)
         )
     )
 end
-function Playing.prototype.lose(self)
+function AbstractPlaying.prototype.lose(self)
     self:endGame()
     Application.popState()
     Application.pushState(
@@ -278,11 +253,11 @@ function Playing.prototype.lose(self)
         )
     )
 end
-function Playing.prototype.notMoving(self, dx, dy)
+function AbstractPlaying.prototype.notMoving(self, dx, dy)
     local EPSILON = 0.0001
     return (math.abs(dx) < EPSILON) and (math.abs(dy) < EPSILON)
 end
-function Playing.prototype.recordReplayFrame(self)
+function AbstractPlaying.prototype.recordReplayFrame(self)
     local rocketBody = self.rocket:getBody()
     local x, y = rocketBody:getPosition()
     local tilt = self.rocket:getTilt()
@@ -291,30 +266,15 @@ function Playing.prototype.recordReplayFrame(self)
     local frame = {rocket = {x = x, y = y, pedal = pedal, thrust = thrust, tilt = tilt}}
     __TS__ArrayPush(self.frames, frame)
 end
-function Playing.prototype.update(self, dt)
-    if self.usingCustomController then
-        self.gameController:update(dt)
-    end
+function AbstractPlaying.prototype.update(self, dt)
     self.elapsed = self.elapsed + dt
     while self.elapsed >= timePerTick do
-        if self.usingCustomController == false then
-            self.gameInputChannel:push(
-                self:getInput()
-            )
-        end
         self:physicsUpdate(timePerTick)
-        love.graphics.captureScreenshot(self.gameUpdateChannel)
         self:recordReplayFrame()
         self.elapsed = self.elapsed - timePerTick
     end
 end
-function Playing.prototype.physicsUpdate(self, dt)
-    local popped = self.gameController:getGameInputChannel():pop()
-    if popped then
-        local gameInput = popped
-        self.rocket:setPedal(gameInput.pedal)
-        self.rocket:setRotation(gameInput.rotation)
-    end
+function AbstractPlaying.prototype.physicsUpdate(self, dt)
     self.rocket:update(dt)
     self.world:update(dt)
     local contacts = self.world:getContacts()
@@ -348,7 +308,7 @@ function Playing.prototype.physicsUpdate(self, dt)
         self.camera:getViewport()
     )
 end
-function Playing.prototype.drawObject(self, o)
+function AbstractPlaying.prototype.drawObject(self, o)
     love.graphics.polygon(
         "fill",
         o.body:getWorldPoints(
@@ -356,7 +316,7 @@ function Playing.prototype.drawObject(self, o)
         )
     )
 end
-function Playing.prototype.drawFuelIndicator(self, fuel)
+function AbstractPlaying.prototype.drawFuelIndicator(self, fuel)
     local width = 30
     local height = 120
     local x = 15
@@ -373,7 +333,7 @@ function Playing.prototype.drawFuelIndicator(self, fuel)
     love.graphics.rectangle("fill", x, (y + height) - (fraction * height), width, fraction * height)
     love.graphics.setColor(r, g, b, a)
 end
-function Playing.prototype.draw(self)
+function AbstractPlaying.prototype.draw(self)
     self.camera:apply()
     self.stars:draw()
     love.graphics.setColor(1, 1, 1, 1)
@@ -421,7 +381,7 @@ function Playing.prototype.draw(self)
         )
     end
 end
-function Playing.prototype.keypressed(self, key)
+function AbstractPlaying.prototype.keypressed(self, key)
     if key == "escape" then
         self:endGame()
         Application.popState()
@@ -429,5 +389,22 @@ function Playing.prototype.keypressed(self, key)
     if key == "p" then
         self:pause()
     end
+end
+____exports.Playing = __TS__Class()
+local Playing = ____exports.Playing
+Playing.name = "Playing"
+__TS__ClassExtends(Playing, ____exports.AbstractPlaying)
+function Playing.prototype.update(self, dt)
+    local pedal = (love.keyboard.isDown(Controls.game.applyThrust) and 1) or 0
+    local rotation = 0
+    if love.keyboard.isDown(Controls.game.rotateLeft) then
+        rotation = -1
+    end
+    if love.keyboard.isDown(Controls.game.rotateRight) then
+        rotation = rotation + 1
+    end
+    self:setPedal(pedal)
+    self:setRotation(rotation)
+    Playing.____super.prototype.update(self, dt)
 end
 return ____exports

@@ -3,7 +3,7 @@ import { KeyConstant } from "love.keyboard";
 import { Levels } from "./fs/levels";
 import { GameState } from "./gamestate";
 import { Button } from "./gui";
-import { LearningSession } from "./learningSessionController";
+import { RecordingSession } from "./recordingsession";
 import { LevelEditor } from "./leveleditor";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
@@ -164,7 +164,7 @@ export class LevelPicker extends GameState implements Serializable {
                 page.push(
                     new Button(50, y, 400, height, levels[i].name, () => {
                         if (love.keyboard.isDown("lctrl")) {
-                            Application.pushState(new Playing(level, new LearningSession()));
+                            Application.pushState(new RecordingSession(level));
                         } else {
                             Application.pushState(new Playing(level));
                         }

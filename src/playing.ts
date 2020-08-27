@@ -41,19 +41,6 @@ export interface Replay {
     level: Level;
 }
 
-export interface GameInput {
-    rotation: number;
-    pedal: number;
-}
-
-export interface GameController {
-    init(level: Level): void;
-    getGameUpdateChannel(): Channel;
-    getGameInputChannel(): Channel;
-    update(dt: number): void;
-    end(): void;
-}
-
 class SaveReplayGameState extends GameState {
     private replay: Replay;
 
@@ -102,9 +89,11 @@ class SaveReplayGameState extends GameState {
     }
 }
 
-export class Playing extends GameState implements Serializable, GameController {
-    private gameController: GameController;
-
+/**
+ * AbstractPlaying is a class that contains all the logic and physics for the game
+ * but doesn't implement any of the game inputs
+ */
+export class AbstractPlaying extends GameState implements Serializable {
     private level: Level;
     private world: World;
     private clock: Clock;
@@ -118,21 +107,9 @@ export class Playing extends GameState implements Serializable, GameController {
     private refueling: boolean = false;
     private elapsed: number;
     private frames: Frame[];
-    private gameUpdateChannel: Channel;
-    private gameInputChannel: Channel;
-    private usingCustomController: boolean;
 
-    constructor(level: Level, gameController?: GameController) {
+    constructor(level: Level) {
         super();
-        if (gameController) {
-            this.usingCustomController = true;
-        } else {
-            this.usingCustomController = false;
-        }
-        if (gameController) {
-            print("using custom controller");
-        }
-        this.gameController = gameController ?? this;
         this.level = level;
         this.world = love.physics.newWorld(0, 100);
         this.world.setCallbacks((a, b, c) => this.beginContact(a, b, c));
@@ -186,45 +163,24 @@ export class Playing extends GameState implements Serializable, GameController {
         this.frames = [];
 
         this.recordReplayFrame();
-        this.gameController.init(this.level);
-        this.gameUpdateChannel = love.thread.newChannel();
-        this.gameInputChannel = love.thread.newChannel();
-
 
         this.clock = new Clock();
     }
 
-    end(): void {
-        // noop
+    protected setPedal(pedal: number) {
+        this.rocket.setPedal(pedal);
     }
 
-    init(level: Level) {
-        // noop
+    protected setRotation(rotation: number) {
+        this.rocket.setRotation(rotation);
     }
 
-    getGameUpdateChannel(): Channel {
-        return this.gameUpdateChannel;
+    protected getPedal()  {
+        return this.rocket.getPedal();
     }
 
-    getGameInputChannel(): Channel {
-        return this.gameInputChannel;
-    }
-
-    getInput(): GameInput {
-        const pedal = love.keyboard.isDown(Controls.game.applyThrust) ? 1 : 0;
-
-        let rotation = 0;
-        if (love.keyboard.isDown(Controls.game.rotateLeft)) {
-            rotation = -1;
-        }
-        if (love.keyboard.isDown(Controls.game.rotateRight)) {
-            rotation += 1;
-        }
-
-        return {
-            pedal,
-            rotation,
-        };
+    protected getRotation() {
+        return this.rocket.getRotation();
     }
 
     getName() {
@@ -329,8 +285,7 @@ export class Playing extends GameState implements Serializable, GameController {
         };
     }
 
-    private endGame() {
-        this.gameController.end();
+    protected endGame() {
     }
 
     private win() {
@@ -375,32 +330,16 @@ export class Playing extends GameState implements Serializable, GameController {
     }
 
     update(dt: number) {
-        if (this.usingCustomController) {
-            this.gameController.update(dt);
-        }
-
         this.elapsed += dt;
 
         while (this.elapsed >= timePerTick) {
-            if (this.usingCustomController == false) {
-                this.gameInputChannel.push(this.getInput());
-            }
             this.physicsUpdate(timePerTick);
-            love.graphics.captureScreenshot(this.gameUpdateChannel);
             this.recordReplayFrame();
             this.elapsed -= timePerTick;
         }
     }
 
     physicsUpdate(dt: number) {
-        const popped = this.gameController.getGameInputChannel().pop();
-        if (popped) {
-            const gameInput = popped as GameInput;
-
-            this.rocket.setPedal(gameInput.pedal);
-            this.rocket.setRotation(gameInput.rotation);
-        }
-
         this.rocket.update(dt);
         this.world.update(dt);
 
@@ -502,5 +441,28 @@ export class Playing extends GameState implements Serializable, GameController {
         if (key == "p") {
             this.pause();
         }
+    }
+}
+
+/**
+ * Playing implements the game input
+ */
+export class Playing extends AbstractPlaying {
+    update(dt: number) {
+        const pedal = love.keyboard.isDown(Controls.game.applyThrust) ? 1 : 0;
+        
+        let rotation = 0;
+        if (love.keyboard.isDown(Controls.game.rotateLeft)) {
+            rotation = -1;
+        }
+        if (love.keyboard.isDown(Controls.game.rotateRight)) {
+            rotation += 1;
+        }
+
+        this.setPedal(pedal);
+
+        this.setRotation(rotation);
+
+        super.update(dt);
     }
 }

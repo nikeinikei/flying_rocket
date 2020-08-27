@@ -103,6 +103,10 @@ export class Rocket {
         this.rotation = rotation;
     }
 
+    getRotation() {
+        return this.rotation;
+    }
+
     getFuel() {
         return this.fuel;
     }
