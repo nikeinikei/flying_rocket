@@ -13,7 +13,10 @@ export class Rocket {
     private static rocketImage = love.graphics.newImage("res/rocket.png");
     private static fuelThrustConversionFactor: number = 100 / 20;
     private static refuelRate = 10;
+    private static maxFuel = 100;
 
+    private initialX: number;
+    private initialY: number;
     private body: Body;
     private shape: PolygonShape;
     private fixture: Fixture;
@@ -33,7 +36,7 @@ export class Rocket {
         this.rotation = 0;
         this.pedal = 0;
         this.thrust = 0;
-        this.fuel = 100;
+        this.fuel = Rocket.maxFuel;
 
         this.rocketDrawable = new WrappedDrawable(
             ImageUtils.scaleImageToDimensions(Rocket.rocketImage, Rocket.width, Rocket.height)
@@ -80,6 +83,20 @@ export class Rocket {
             drawable.ox = -Rocket.width / 2 + (i * Rocket.width) / 2;
 
             this.particleSystems.push([particleSystem, drawable]);
+        }
+
+        this.initialX = x;
+        this.initialY = y;
+    }
+
+    reset() {
+        this.body.setPosition(this.initialX, this.initialY);
+        this.body.setAngle(0);
+        this.body.setLinearVelocity(0, 0);
+        this.body.setAngularVelocity(0);
+        this.fuel = Rocket.maxFuel;
+        for (const [particleSystem, _] of this.particleSystems) {
+            particleSystem.reset();
         }
     }
 

@@ -89,11 +89,19 @@ class SaveReplayGameState extends GameState {
     }
 }
 
+export enum GameEndReason {
+    Won,
+    Lost,
+    Quit
+}
+
 /**
  * AbstractPlaying is a class that contains all the logic and physics for the game
  * but doesn't implement any of the game inputs
  */
 export class AbstractPlaying extends GameState implements Serializable {
+    private static countDownTime = 3;
+
     private level: Level;
     private world: World;
     private clock: Clock;
@@ -107,6 +115,8 @@ export class AbstractPlaying extends GameState implements Serializable {
     private refueling: boolean = false;
     private elapsed: number;
     private frames: Frame[];
+    private resetNextFrame: boolean = false;
+    private countdownTime: number | undefined;
 
     constructor(level: Level) {
         super();
@@ -164,7 +174,13 @@ export class AbstractPlaying extends GameState implements Serializable {
 
         this.recordReplayFrame();
 
+        this.countdownTime = AbstractPlaying.countDownTime;
+
         this.clock = new Clock();
+    }
+
+    protected reset() {
+        this.resetNextFrame = true;
     }
 
     protected setPedal(pedal: number) {
@@ -285,24 +301,28 @@ export class AbstractPlaying extends GameState implements Serializable {
         };
     }
 
-    protected endGame() {
+    protected endGame(_gameEndReason: GameEndReason, ...nextStates: GameState[]) {
+        Application.popState();
+        for (const nextState of nextStates) {
+            Application.pushState(nextState);
+        }
     }
 
-    private win() {
-        this.endGame();
+    protected win() {
         const metrics: GameEndMetrics = {
             timeTaken: this.clock.getElapsed(),
         };
-        Application.popState();
-        Application.pushState(new Won(metrics));
-        Application.pushState(new SaveReplayGameState(this.constructReplay()));
+        this.endGame(
+            GameEndReason.Won,
+            new Won(metrics), 
+            new SaveReplayGameState(this.constructReplay()));
     }
 
-    private lose() {
-        this.endGame();
-        Application.popState();
-        Application.pushState(new Lost());
-        Application.pushState(new SaveReplayGameState(this.constructReplay()));
+    protected lose() {
+        this.endGame(
+            GameEndReason.Lost,
+            new Lost(),
+            new SaveReplayGameState(this.constructReplay()));
     }
 
     private notMoving(dx: number, dy: number): boolean {
@@ -330,13 +350,34 @@ export class AbstractPlaying extends GameState implements Serializable {
     }
 
     update(dt: number) {
-        this.elapsed += dt;
+        if (this.resetNextFrame) {
+            this.clock.restart();
+            this.frames.length = 0;
+            this.rocket.reset();
+            this.elapsed = 0;
+            this.countdownTime = AbstractPlaying.countDownTime;
 
-        while (this.elapsed >= timePerTick) {
-            this.physicsUpdate(timePerTick);
-            this.recordReplayFrame();
-            this.elapsed -= timePerTick;
+            this.resetNextFrame = false;
         }
+
+        if (this.countdownTime != undefined) {
+            this.countdownTime -= dt;
+
+            if (this.countdownTime <= 0) {
+                this.countdownTime = undefined;
+            }
+        } else {
+            this.elapsed += dt;
+            
+            while (this.elapsed >= timePerTick) {
+                this.physicsUpdate(timePerTick);
+                this.recordReplayFrame();
+                this.elapsed -= timePerTick;
+            }
+        }
+
+        this.camera.update(dt);
+        this.stars.setViewport(...this.camera.getViewport());
     }
 
     physicsUpdate(dt: number) {
@@ -373,9 +414,6 @@ export class AbstractPlaying extends GameState implements Serializable {
         if (math.abs(this.rocket.getTilt()) >= math.pi / 2) {
             this.lose();
         }
-
-        this.camera.update(dt);
-        this.stars.setViewport(...this.camera.getViewport());
     }
 
     private drawObject(o: PhysicsObject<PolygonShape>) {
@@ -423,6 +461,16 @@ export class AbstractPlaying extends GameState implements Serializable {
         love.graphics.origin();
 
         this.drawFuelIndicator(this.rocket.getFuel());
+        if (this.countdownTime) {
+            love.graphics.setColor(1, 0, 0, 1);
+            love.graphics.printf(
+                tostring(this.countdownTime), 
+                love.graphics.getWidth() / 2, 
+                love.graphics.getHeight() * 0.4, 
+                300,
+                "center");
+            love.graphics.setColor(1, 1, 1, 1);
+        }
 
         love.graphics.print("elapsed time " + tostring(this.clock.getElapsed()), love.graphics.getWidth() - 200, 0);
 
@@ -435,7 +483,7 @@ export class AbstractPlaying extends GameState implements Serializable {
 
     keypressed(key: KeyConstant) {
         if (key == "escape") {
-            this.endGame();
+            this.endGame(GameEndReason.Quit);
             Application.popState();
         }
         if (key == "p") {
@@ -448,6 +496,7 @@ export class AbstractPlaying extends GameState implements Serializable {
  * Playing implements the game input
  */
 export class Playing extends AbstractPlaying {
+
     update(dt: number) {
         const pedal = love.keyboard.isDown(Controls.game.applyThrust) ? 1 : 0;
         

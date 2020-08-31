@@ -1,6 +1,9 @@
 import { json } from "./json";
 import { Level } from "./level";
-import { Playing } from "./playing";
+import { Playing, GameEndReason } from "./playing";
+import { GameState } from "./gamestate";
+import { KeyConstant } from "love.keyboard";
+import { ScaledScreenshotter } from "./graphics/ScaledScreenshotter";
 
 const threadCode = `
 require("love.image")
@@ -18,18 +21,21 @@ local tcp = socket.tcp()
 tcp:connect(ip, port)
 
 while true do
+::loopStart::
     local gameInput = gameinputChannel:demand()
-    if gameInput == false then
-        tcp:send(tostring(0))
+    if gameInput == "won" or gameInput == "lost"then
+        tcp:send("\\"" .. gameInput .. "\\"\\n")
+        goto loopStart
+    elseif gameInput == "quit" then
+        tcp:send("\\"" .. gameInput .. "\\"\\n")
         break
     end
-    tcp:send(gameInput)
+    tcp:send(gameInput .. "\\n")
 
     local screenShot = screenshotChannel:demand()
     local fileData = screenShot:encode("png")
-    tcp:send(tostring(fileData:getSize()))
+    tcp:send(tostring(fileData:getSize()) .. "\\n")
     tcp:send(fileData:getString())
-    love.timer.sleep(0.001) --probably something I'm doing wrong with networking here, but I'm not quite sure what exactly. Just having this sleep is good enough :)
 end
 
 tcp:close()
@@ -42,6 +48,7 @@ export class RecordingSession extends Playing {
     private thread: Thread;
     private gameinputChannel: Channel;
     private screenshotChannel: Channel;
+    private screenShotter: ScaledScreenshotter;
 
     constructor(level: Level) {
         super(level);
@@ -49,13 +56,26 @@ export class RecordingSession extends Playing {
         this.screenshotChannel = love.thread.getChannel("screenshotChannel");
         this.thread = love.thread.newThread(threadCode);
         this.thread.start("127.0.0.1", 5005);
+        this.screenShotter = new ScaledScreenshotter(80, 80, () => {
+            this.draw();
+        })
     }
 
-    endGame() {
-        super.endGame();
-
-        this.gameinputChannel.push(false);
-        this.thread.wait();
+    endGame(gameEndReason: GameEndReason, ..._states: GameState[]) {
+        if (gameEndReason == GameEndReason.Won) {
+            this.gameinputChannel.push("won");
+        } else if (gameEndReason == GameEndReason.Lost) {
+            this.gameinputChannel.push("lost");
+        } else if (gameEndReason == GameEndReason.Quit) {
+            this.gameinputChannel.push("quit");
+        }
+        
+        this.reset();
+        
+        if (gameEndReason == GameEndReason.Quit) {
+            this.thread.wait();
+            Application.popState();
+        }
     }
 
     physicsUpdate(dt: number) {
@@ -68,7 +88,14 @@ export class RecordingSession extends Playing {
             rotation
         };
         this.gameinputChannel.push(json.encode(input));
+        this.screenshotChannel.push(this.screenShotter.captureScreenshot());
+    }
 
-        love.graphics.captureScreenshot(this.screenshotChannel);
+    keypressed(key: KeyConstant) {
+        if (key == "l") {
+            this.lose();
+        } else {
+            super.keypressed(key);
+        }
     }
 }
