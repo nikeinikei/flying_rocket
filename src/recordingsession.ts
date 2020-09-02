@@ -12,13 +12,19 @@ require("love.timer")
 
 local ip, port = ...
 
+local connectionUpdateChannel = love.thread.getChannel("connectionUpdateChannel")
 local gameinputChannel = love.thread.getChannel("gameinputChannel")
 local screenshotChannel = love.thread.getChannel("screenshotChannel")
 
 local socket = require "socket"
 
 local tcp = socket.tcp()
-tcp:connect(ip, port)
+local result = tcp:connect(ip, port)
+if result then
+    connectionUpdateChannel:push(true)
+else
+    connectionUpdateChannel:push(false)
+end
 
 while true do
 ::loopStart::
@@ -46,19 +52,36 @@ tcp:close()
  */
 export class RecordingSession extends Playing {
     private thread: Thread;
+    private connectionUpdateChannel: Channel
     private gameinputChannel: Channel;
     private screenshotChannel: Channel;
     private screenShotter: ScaledScreenshotter;
+    private connectionSuccessful: boolean;
 
     constructor(level: Level) {
         super(level);
+        this.connectionUpdateChannel = love.thread.getChannel("connectionUpdateChannel");
         this.gameinputChannel = love.thread.getChannel("gameinputChannel");
         this.screenshotChannel = love.thread.getChannel("screenshotChannel");
         this.thread = love.thread.newThread(threadCode);
         this.thread.start("127.0.0.1", 5005);
+        this.connectionSuccessful = this.connectionUpdateChannel.demand() as boolean;
+        if (this.connectionSuccessful) {
+            print("connection successful");
+        } else {
+            love.window.showMessageBox("Connection issues", "connection to recording server not successful", "error");
+        }
         this.screenShotter = new ScaledScreenshotter(80, 80, () => {
             this.draw();
         })
+    }
+
+    update(dt: number) {
+        if (this.connectionSuccessful == false) {
+            Application.popState();
+        }
+
+        super.update(dt);
     }
 
     endGame(gameEndReason: GameEndReason, ..._states: GameState[]) {
