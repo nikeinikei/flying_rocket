@@ -12,9 +12,9 @@ require("love.timer")
 
 local ip, port = ...
 
-local connectionUpdateChannel = love.thread.getChannel("connectionUpdateChannel")
-local gameinputChannel = love.thread.getChannel("gameinputChannel")
-local screenshotChannel = love.thread.getChannel("screenshotChannel")
+local connectionUpdateChannel = love.thread.getChannel("RC_connectionUpdateChannel")
+local gameinputChannel = love.thread.getChannel("RC_gameinputChannel")
+local screenshotChannel = love.thread.getChannel("RC_screenshotChannel")
 
 local socket = require "socket"
 
@@ -60,9 +60,9 @@ export class RecordingSession extends Playing {
 
     constructor(level: Level) {
         super(level);
-        this.connectionUpdateChannel = love.thread.getChannel("connectionUpdateChannel");
-        this.gameinputChannel = love.thread.getChannel("gameinputChannel");
-        this.screenshotChannel = love.thread.getChannel("screenshotChannel");
+        this.connectionUpdateChannel = love.thread.getChannel("RC_connectionUpdateChannel");
+        this.gameinputChannel = love.thread.getChannel("RC_gameinputChannel");
+        this.screenshotChannel = love.thread.getChannel("RC_screenshotChannel");
         this.thread = love.thread.newThread(threadCode);
         this.thread.start("127.0.0.1", 5005);
         this.connectionSuccessful = this.connectionUpdateChannel.demand() as boolean;

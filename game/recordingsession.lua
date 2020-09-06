@@ -9,16 +9,16 @@ local Playing = ____playing.Playing
 local GameEndReason = ____playing.GameEndReason
 local ____ScaledScreenshotter = require("graphics.ScaledScreenshotter")
 local ScaledScreenshotter = ____ScaledScreenshotter.ScaledScreenshotter
-local threadCode = "\nrequire(\"love.image\")\nrequire(\"love.data\")\nrequire(\"love.timer\")\n\nlocal ip, port = ...\n\nlocal connectionUpdateChannel = love.thread.getChannel(\"connectionUpdateChannel\")\nlocal gameinputChannel = love.thread.getChannel(\"gameinputChannel\")\nlocal screenshotChannel = love.thread.getChannel(\"screenshotChannel\")\n\nlocal socket = require \"socket\"\n\nlocal tcp = socket.tcp()\nlocal result = tcp:connect(ip, port)\nif result then\n    connectionUpdateChannel:push(true)\nelse\n    connectionUpdateChannel:push(false)\nend\n\nwhile true do\n::loopStart::\n    local gameInput = gameinputChannel:demand()\n    if gameInput == \"won\" or gameInput == \"lost\"then\n        tcp:send(\"\\\"\" .. gameInput .. \"\\\"\\n\")\n        goto loopStart\n    elseif gameInput == \"quit\" then\n        tcp:send(\"\\\"\" .. gameInput .. \"\\\"\\n\")\n        break\n    end\n    tcp:send(gameInput .. \"\\n\")\n\n    local screenShot = screenshotChannel:demand()\n    local fileData = screenShot:encode(\"png\")\n    tcp:send(tostring(fileData:getSize()) .. \"\\n\")\n    tcp:send(fileData:getString())\nend\n\ntcp:close()\n"
+local threadCode = "\nrequire(\"love.image\")\nrequire(\"love.data\")\nrequire(\"love.timer\")\n\nlocal ip, port = ...\n\nlocal connectionUpdateChannel = love.thread.getChannel(\"RC_connectionUpdateChannel\")\nlocal gameinputChannel = love.thread.getChannel(\"RC_gameinputChannel\")\nlocal screenshotChannel = love.thread.getChannel(\"RC_screenshotChannel\")\n\nlocal socket = require \"socket\"\n\nlocal tcp = socket.tcp()\nlocal result = tcp:connect(ip, port)\nif result then\n    connectionUpdateChannel:push(true)\nelse\n    connectionUpdateChannel:push(false)\nend\n\nwhile true do\n::loopStart::\n    local gameInput = gameinputChannel:demand()\n    if gameInput == \"won\" or gameInput == \"lost\"then\n        tcp:send(\"\\\"\" .. gameInput .. \"\\\"\\n\")\n        goto loopStart\n    elseif gameInput == \"quit\" then\n        tcp:send(\"\\\"\" .. gameInput .. \"\\\"\\n\")\n        break\n    end\n    tcp:send(gameInput .. \"\\n\")\n\n    local screenShot = screenshotChannel:demand()\n    local fileData = screenShot:encode(\"png\")\n    tcp:send(tostring(fileData:getSize()) .. \"\\n\")\n    tcp:send(fileData:getString())\nend\n\ntcp:close()\n"
 ____exports.RecordingSession = __TS__Class()
 local RecordingSession = ____exports.RecordingSession
 RecordingSession.name = "RecordingSession"
 __TS__ClassExtends(RecordingSession, Playing)
 function RecordingSession.prototype.____constructor(self, level)
     Playing.prototype.____constructor(self, level)
-    self.connectionUpdateChannel = love.thread.getChannel("connectionUpdateChannel")
-    self.gameinputChannel = love.thread.getChannel("gameinputChannel")
-    self.screenshotChannel = love.thread.getChannel("screenshotChannel")
+    self.connectionUpdateChannel = love.thread.getChannel("RC_connectionUpdateChannel")
+    self.gameinputChannel = love.thread.getChannel("RC_gameinputChannel")
+    self.screenshotChannel = love.thread.getChannel("RC_screenshotChannel")
     self.thread = love.thread.newThread(threadCode)
     self.thread:start("127.0.0.1", 5005)
     self.connectionSuccessful = self.connectionUpdateChannel:demand()

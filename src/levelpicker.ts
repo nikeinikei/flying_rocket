@@ -8,6 +8,7 @@ import { LevelEditor } from "./leveleditor";
 import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";
+import { AIPlayingSession } from "./aiplayingsession";
 
 export class LevelPicker extends GameState implements Serializable {
     private static pageButtonCount = 6;
@@ -165,6 +166,8 @@ export class LevelPicker extends GameState implements Serializable {
                     new Button(50, y, 400, height, levels[i].name, () => {
                         if (love.keyboard.isDown("lctrl")) {
                             Application.pushState(new RecordingSession(level));
+                        } else if (love.keyboard.isDown("lalt")) {
+                            Application.pushState(new AIPlayingSession(level));
                         } else {
                             Application.pushState(new Playing(level));
                         }

@@ -484,7 +484,6 @@ export class AbstractPlaying extends GameState implements Serializable {
     keypressed(key: KeyConstant) {
         if (key == "escape") {
             this.endGame(GameEndReason.Quit);
-            Application.popState();
         }
         if (key == "p") {
             this.pause();
