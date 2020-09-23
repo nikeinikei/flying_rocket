@@ -64,6 +64,7 @@ function save() {
 export namespace CampaignLevels {
     export function init() {
         internal_init();
+        save();
         isInit = true;
     }
 

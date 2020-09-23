@@ -3,7 +3,6 @@ import { Level } from "./level";
 import { GameState } from "./gamestate";
 import { json } from "./json";
 import { ScaledScreenshotter } from "./graphics/ScaledScreenshotter";
-import { KeyConstant } from "love.keyboard";
 
 const threadCode = `
 require("love.image")

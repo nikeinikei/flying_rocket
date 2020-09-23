@@ -12,8 +12,14 @@ export interface CampaignLevelInfo {
     index: number;
 }
 
+enum TerrainType {
+    Terrain,
+    GroundTerrain
+}
+
 enum Mode {
     TerrainBuilding,
+    GroundTerrainBuilding,
     RocketStartingLocation,
     RocketLandingLocation,
     AddRefuelStation,
@@ -46,6 +52,10 @@ const buttonSchemes = [
         name: "Add Terrain",
         mode: Mode.TerrainBuilding,
     },
+    {
+        name: "Ground Terrain",
+        mode: Mode.GroundTerrainBuilding
+    }
 ];
 
 const rocketLocationWidth = 200;
@@ -61,6 +71,7 @@ export class LevelEditor extends GameState implements Serializable {
     private newMode: boolean;
     private camera: LevelEditorCamera;
     private gridRenderer: GridRenderer;
+    private terrainType: TerrainType | null = null;
     private currentTerrain: number[] | null = null;
     private currentRefuelStation: Rectangle | undefined = undefined;
     private stars: Stars;
@@ -75,8 +86,8 @@ export class LevelEditor extends GameState implements Serializable {
         {
             const startX = 10;
             const buttonHeight = 30;
-            const buttonWidth = 200;
-            const buttonPadding = 20;
+            const buttonWidth = 190;
+            const buttonPadding = 10;
             const distance = buttonWidth + buttonPadding;
             for (let i = 0; i < buttonSchemes.length; i++) {
                 let scheme = buttonSchemes[i];
@@ -125,7 +136,7 @@ export class LevelEditor extends GameState implements Serializable {
     private setNewMode(newMode: Mode) {
         love.mouse.setGrabbed(newMode != Mode.Inspection);
         if (this.mode != newMode) {
-            if (this.mode == Mode.TerrainBuilding) {
+            if (this.mode == Mode.TerrainBuilding || this.mode == Mode.GroundTerrainBuilding) {
                 this.postTerrainBuilding();
             }
             if (this.mode == Mode.AddRefuelStation) {
@@ -137,6 +148,11 @@ export class LevelEditor extends GameState implements Serializable {
 
             if (this.mode == Mode.TerrainBuilding) {
                 this.currentTerrain = [];
+                this.terrainType = TerrainType.Terrain;
+            }
+            if (this.mode == Mode.GroundTerrainBuilding) {
+                this.currentTerrain = [];
+                this.terrainType = TerrainType.GroundTerrain;
             }
             if (this.mode == Mode.AddRefuelStation) {
                 this.currentRefuelStation = {
@@ -161,11 +177,28 @@ export class LevelEditor extends GameState implements Serializable {
 
     private postTerrainBuilding() {
         if (this.currentTerrain) {
+            if (this.terrainType == null) {
+                error("this shouldn't happen");
+            }
+
             if (this.currentTerrain.length >= 4) {
-                this.level.terrainPoints.push(this.currentTerrain);
+                if (this.terrainType == TerrainType.Terrain) {
+                    this.level.terrainPoints.push(this.currentTerrain);
+                } else {
+                    // TODO color is hardcoded
+                    this.level.groundTerrain.push({
+                        color: {
+                            r: 0.9059,
+                            g: 0.4902,
+                            b: 0.0667
+                        },
+                        points: this.currentTerrain
+                    });
+                }
             }
         }
         this.currentTerrain = null;
+        this.terrainType = null;
     }
 
     mousepressed(mouseX: number, mouseY: number, button: number, istouch: boolean, presses: number) {
@@ -178,7 +211,7 @@ export class LevelEditor extends GameState implements Serializable {
         const [worldX, worldY] = love.graphics.inverseTransformPoint(mouseX, mouseY);
         love.graphics.pop();
         if (this.newMode == false) {
-            if (this.mode == Mode.TerrainBuilding) {
+            if (this.mode == Mode.TerrainBuilding || this.mode == Mode.GroundTerrainBuilding) {
                 if (button == 1) {
                     if (!this.currentTerrain) {
                         error("this shouldn't happen");
@@ -292,6 +325,10 @@ export class LevelEditor extends GameState implements Serializable {
         }
         for (let i = 0; i < this.level.terrainPoints.length; i++) {
             love.graphics.line(this.level.terrainPoints[i] as any);
+        }
+        for (const groundTerrain of this.level.groundTerrain) {
+            love.graphics.setColor(groundTerrain.color.r, groundTerrain.color.g, groundTerrain.color.b);
+            love.graphics.polygon("fill", groundTerrain.points);
         }
 
         love.graphics.setColor(1, 1, 1, 1);

@@ -1,5 +1,6 @@
 import { KeyConstant } from "love.keyboard";
 import { World } from "love.physics";
+import { Color } from "./Color4";
 
 import { Controls } from "./controls";
 import { Replays } from "./fs/replays";
@@ -22,6 +23,7 @@ const borderUserData = "border";
 const rocketStartingLocationUserData = "rocketStartingLocationUserData";
 const rocketLandingLocationUserdata = "rocketLandingLocationUserdata";
 const refuelStationUserData = "refuelStationUserData";
+const groundTerrainUserdata = "groundTerrainUserData";
 
 const physicsTicks = 60;
 const timePerTick = 1 / physicsTicks;
@@ -107,6 +109,7 @@ export class AbstractPlaying extends GameState implements Serializable {
     private clock: Clock;
     private rocket: Rocket;
     private terrain: Terrain;
+    private groundTerrains: [number[], Body, Shape, Fixture, Color][];
     private rocketStartingLocationObject: PhysicsObject<PolygonShape>;
     private rocketLandingLocationObject: PhysicsObject<PolygonShape>;
     private refuelStations: PhysicsObject<PolygonShape>[];
@@ -167,6 +170,17 @@ export class AbstractPlaying extends GameState implements Serializable {
         this.elapsed = 0;
 
         this.terrain = new Terrain(this.world, level.terrainPoints);
+        this.groundTerrains = [];
+        for (const groundTerrain of this.level.groundTerrain) {
+            const points = groundTerrain.points;
+            const body = love.physics.newBody(this.world, 0, 0, "static");
+            const shape = love.physics.newChainShape(true, groundTerrain.points);
+            const fixture = love.physics.newFixture(body, shape);
+            fixture.setUserData(groundTerrainUserdata);
+
+            const color = new Color(groundTerrain.color.r, groundTerrain.color.g, groundTerrain.color.b);
+            this.groundTerrains.push([points, body, shape, fixture, color]);
+        }
         this.camera = new PlayingCamera(this.rocket);
         this.stars = new Stars();
 
@@ -260,7 +274,7 @@ export class AbstractPlaying extends GameState implements Serializable {
     }
 
     private beginContact(a: Fixture, b: Fixture, contact: Contact) {
-        let rocket, border, terrain, rocketStartingLocation, rocketLandingLocation, refuelStation;
+        let rocket, border, terrain, rocketStartingLocation, rocketLandingLocation, refuelStation, groundTerrain;
         [rocket, border] = this.matchFixtures(a, b, Rocket.userData, borderUserData);
         if (rocket) {
             this.lose();
@@ -291,6 +305,11 @@ export class AbstractPlaying extends GameState implements Serializable {
             if (!this.isSafeLanding(this.rocket)) {
                 this.lose();
             }
+        }
+
+        [rocket, groundTerrain] = this.matchFixtures(a, b, Rocket.userData, groundTerrainUserdata);
+        if (rocket) {
+            this.lose();
         }
     }
 
@@ -446,12 +465,21 @@ export class AbstractPlaying extends GameState implements Serializable {
         love.graphics.setColor(r, g, b, a);
     }
 
+    private drawGroundTerrain() {
+        for (const [points, _body, _shape, _fixture, color] of this.groundTerrains) {
+            love.graphics.setColor(...color.unpacked());
+            love.graphics.polygon("fill", points);
+        }
+    }
+
     draw() {
         this.camera.apply();
         this.stars.draw();
         love.graphics.setColor(1, 1, 1, 1);
         this.rocket.draw();
         this.terrain.draw();
+        this.drawGroundTerrain();
+        love.graphics.setColor(1, 1, 1, 1);
         this.drawObject(this.rocketStartingLocationObject);
         this.drawObject(this.rocketLandingLocationObject);
         for (const station of this.refuelStations) {

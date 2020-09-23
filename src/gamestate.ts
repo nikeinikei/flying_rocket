@@ -21,7 +21,7 @@ export abstract class GameState {
      * called when state becomes active again after the state
      * above gets popped
      */
-    onActive<T>(data?: T) {}
+    onActive(data?: any) {}
 
     /**
      * called when getting destroyed because it gets popped

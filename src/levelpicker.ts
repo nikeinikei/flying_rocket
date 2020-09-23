@@ -9,6 +9,7 @@ import { Playing } from "./playing";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";
 import { AIPlayingSession } from "./aiplayingsession";
+import { copyLevel, Level } from "./level";
 
 export class LevelPicker extends GameState implements Serializable {
     private static pageButtonCount = 6;
@@ -21,6 +22,7 @@ export class LevelPicker extends GameState implements Serializable {
 
     private forwardButton: Button;
     private backwardButton: Button;
+    private editedLevelIndex: number | undefined = undefined;
 
     constructor(pageIndex?: number) {
         super();
@@ -134,8 +136,14 @@ export class LevelPicker extends GameState implements Serializable {
         }
     }
 
-    onActive() {
-        super.onActive();
+    onActive(data?: any) {
+        super.onActive(data);
+        if (this.editedLevelIndex && data) {
+            const levels: Level[] = Levels.getLevels();
+            const editedLevel: Level = data;
+            levels[this.editedLevelIndex] = editedLevel;
+            this.editedLevelIndex = undefined;
+        }
         Levels.save();
         this.createButtons();
     }
@@ -158,6 +166,7 @@ export class LevelPicker extends GameState implements Serializable {
                         page = [];
                     }
                 }
+                const index = i;
                 const level = levels[i];
                 const j = i % LevelPicker.pageButtonCount;
                 const y = 120 + j * 100;
@@ -191,7 +200,9 @@ export class LevelPicker extends GameState implements Serializable {
                         love.window.showMessageBox("Export successful", "successfully exported to " + fullPath, "info");
                     }),
                     new Button(1200, y, 200, height, "Edit", () => {
-                        Application.pushState(new LevelEditor(level));
+                        const copy = copyLevel(level);
+                        this.editedLevelIndex = index;
+                        Application.pushState(new LevelEditor(copy));
                     })
                 );
             }

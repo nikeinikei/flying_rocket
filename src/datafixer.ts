@@ -19,8 +19,14 @@ fixers.set("0.0.2->0.0.3", data => {
 
     return true;
 });
+fixers.set("0.0.3->0.0.4", data => {
+    data.dataVersion = "0.0.4";
+    data.groundTerrain = [];
 
-const versionHistory = ["0.0.1", "0.0.2", "0.0.3"];
+    return true;
+});
+
+const versionHistory = ["0.0.1", "0.0.2", "0.0.3", "0.0.4"];
 
 export namespace DataFixer {
     export function fixData(this: void, data: any): boolean | undefined {
