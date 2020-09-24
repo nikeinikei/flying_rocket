@@ -1,7 +1,7 @@
 import { KeyConstant } from "love.keyboard";
 import { World } from "love.physics";
-import { Color } from "./Color4";
 
+import { Color } from "./Color4";
 import { Controls } from "./controls";
 import { Replays } from "./fs/replays";
 import { GameState } from "./gamestate";
@@ -94,7 +94,7 @@ class SaveReplayGameState extends GameState {
 export enum GameEndReason {
     Won,
     Lost,
-    Quit
+    Quit,
 }
 
 /**
@@ -205,7 +205,7 @@ export class AbstractPlaying extends GameState implements Serializable {
         this.rocket.setRotation(rotation);
     }
 
-    protected getPedal()  {
+    protected getPedal() {
         return this.rocket.getPedal();
     }
 
@@ -331,17 +331,11 @@ export class AbstractPlaying extends GameState implements Serializable {
         const metrics: GameEndMetrics = {
             timeTaken: this.clock.getElapsed(),
         };
-        this.endGame(
-            GameEndReason.Won,
-            new Won(metrics), 
-            new SaveReplayGameState(this.constructReplay()));
+        this.endGame(GameEndReason.Won, new Won(metrics), new SaveReplayGameState(this.constructReplay()));
     }
 
     protected lose() {
-        this.endGame(
-            GameEndReason.Lost,
-            new Lost(),
-            new SaveReplayGameState(this.constructReplay()));
+        this.endGame(GameEndReason.Lost, new Lost(), new SaveReplayGameState(this.constructReplay()));
     }
 
     private notMoving(dx: number, dy: number): boolean {
@@ -387,7 +381,7 @@ export class AbstractPlaying extends GameState implements Serializable {
             }
         } else {
             this.elapsed += dt;
-            
+
             while (this.elapsed >= timePerTick) {
                 this.physicsUpdate(timePerTick);
                 this.recordReplayFrame();
@@ -492,11 +486,12 @@ export class AbstractPlaying extends GameState implements Serializable {
         if (this.countdownTime) {
             love.graphics.setColor(1, 0, 0, 1);
             love.graphics.printf(
-                tostring(this.countdownTime), 
-                love.graphics.getWidth() / 2, 
-                love.graphics.getHeight() * 0.4, 
+                tostring(this.countdownTime),
+                love.graphics.getWidth() / 2,
+                love.graphics.getHeight() * 0.4,
                 300,
-                "center");
+                "center"
+            );
             love.graphics.setColor(1, 1, 1, 1);
         }
 
@@ -523,10 +518,9 @@ export class AbstractPlaying extends GameState implements Serializable {
  * Playing implements the game input
  */
 export class Playing extends AbstractPlaying {
-
     update(dt: number) {
         const pedal = love.keyboard.isDown(Controls.game.applyThrust) ? 1 : 0;
-        
+
         let rotation = 0;
         if (love.keyboard.isDown(Controls.game.rotateLeft)) {
             rotation = -1;

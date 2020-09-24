@@ -10,7 +10,7 @@ function copyGroundTerrainColor(color: GroundTerrainColor): GroundTerrainColor {
     return {
         r: color.r,
         g: color.g,
-        b: color.b
+        b: color.b,
     };
 }
 
@@ -22,7 +22,7 @@ export interface GroundTerrain {
 function copyGroundTerrain(groundTerrain: GroundTerrain): GroundTerrain {
     return {
         color: copyGroundTerrainColor(groundTerrain.color),
-        points: [...groundTerrain.points]
+        points: [...groundTerrain.points],
     };
 }
 
@@ -49,7 +49,7 @@ function copyRectangle(rect: Rectangle): Rectangle {
         x: rect.x,
         y: rect.y,
         w: rect.w,
-        h: rect.h
+        h: rect.h,
     };
 }
 
@@ -77,8 +77,8 @@ export function copyLevel(level: Level): Level {
         rocketLandingLocation: level.rocketLandingLocation ? copyRectangle(level.rocketLandingLocation) : undefined,
         rocketStartingLocation: level.rocketStartingLocation ? copyRectangle(level.rocketStartingLocation) : undefined,
         groundTerrain: copyGroundTerrains(level.groundTerrain),
-        refuelStations: copyRefuelStations(level.refuelStations)
-    }
+        refuelStations: copyRefuelStations(level.refuelStations),
+    };
 }
 
 export function newLevel(name: string): Level {

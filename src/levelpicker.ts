@@ -1,15 +1,15 @@
 import { KeyConstant } from "love.keyboard";
 
+import { AIPlayingSession } from "./aiplayingsession";
 import { Levels } from "./fs/levels";
 import { GameState } from "./gamestate";
 import { Button } from "./gui";
-import { RecordingSession } from "./recordingsession";
+import { Level, copyLevel } from "./level";
 import { LevelEditor } from "./leveleditor";
 import { Playing } from "./playing";
+import { RecordingSession } from "./recordingsession";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";
-import { AIPlayingSession } from "./aiplayingsession";
-import { copyLevel, Level } from "./level";
 
 export class LevelPicker extends GameState implements Serializable {
     private static pageButtonCount = 6;

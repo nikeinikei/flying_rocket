@@ -1,11 +1,11 @@
 export class ScaledScreenshotter {
     private mainCanvas: Canvas;
     private scaledCanvas: Canvas;
-    private drawFunction: (this:void) => void;
+    private drawFunction: (this: void) => void;
     private sx: number;
     private sy: number;
 
-    constructor(width: number, height: number, drawFunction: (this:void) => void) {
+    constructor(width: number, height: number, drawFunction: (this: void) => void) {
         this.mainCanvas = love.graphics.newCanvas();
         this.scaledCanvas = love.graphics.newCanvas(width, height);
         this.drawFunction = drawFunction;

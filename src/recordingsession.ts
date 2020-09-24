@@ -1,9 +1,10 @@
+import { KeyConstant } from "love.keyboard";
+
+import { GameState } from "./gamestate";
+import { ScaledScreenshotter } from "./graphics/ScaledScreenshotter";
 import { json } from "./json";
 import { Level } from "./level";
-import { Playing, GameEndReason } from "./playing";
-import { GameState } from "./gamestate";
-import { KeyConstant } from "love.keyboard";
-import { ScaledScreenshotter } from "./graphics/ScaledScreenshotter";
+import { GameEndReason, Playing } from "./playing";
 
 const threadCode = `
 require("love.image")
@@ -52,7 +53,7 @@ tcp:close()
  */
 export class RecordingSession extends Playing {
     private thread: Thread;
-    private connectionUpdateChannel: Channel
+    private connectionUpdateChannel: Channel;
     private gameinputChannel: Channel;
     private screenshotChannel: Channel;
     private screenShotter: ScaledScreenshotter;
@@ -73,7 +74,7 @@ export class RecordingSession extends Playing {
         }
         this.screenShotter = new ScaledScreenshotter(80, 80, () => {
             this.draw();
-        })
+        });
     }
 
     update(dt: number) {
@@ -92,9 +93,9 @@ export class RecordingSession extends Playing {
         } else if (gameEndReason == GameEndReason.Quit) {
             this.gameinputChannel.push("quit");
         }
-        
+
         this.reset();
-        
+
         if (gameEndReason == GameEndReason.Quit) {
             this.thread.wait();
             Application.popState();
@@ -108,7 +109,7 @@ export class RecordingSession extends Playing {
         const rotation = this.getRotation();
         const input = {
             pedal,
-            rotation
+            rotation,
         };
         this.gameinputChannel.push(json.encode(input));
         this.screenshotChannel.push(this.screenShotter.captureScreenshot());

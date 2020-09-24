@@ -1,8 +1,8 @@
-import { GameEndReason, AbstractPlaying } from "./playing";
-import { Level } from "./level";
 import { GameState } from "./gamestate";
-import { json } from "./json";
 import { ScaledScreenshotter } from "./graphics/ScaledScreenshotter";
+import { json } from "./json";
+import { Level } from "./level";
+import { AbstractPlaying, GameEndReason } from "./playing";
 
 const threadCode = `
 require("love.image")
@@ -74,7 +74,7 @@ export class AIPlayingSession extends AbstractPlaying {
         });
         this.currentGameInput = {
             pedal: 0,
-            rotation: 0
+            rotation: 0,
         };
     }
 
@@ -102,7 +102,7 @@ export class AIPlayingSession extends AbstractPlaying {
     }
 
     endGame(gameEndReason: GameEndReason, ...states: GameState[]) {
-        this.endConnectionChannel.push("end")
+        this.endConnectionChannel.push("end");
         this.thread.wait();
 
         super.endGame(gameEndReason, ...states);

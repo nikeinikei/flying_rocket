@@ -14,7 +14,7 @@ export interface CampaignLevelInfo {
 
 enum TerrainType {
     Terrain,
-    GroundTerrain
+    GroundTerrain,
 }
 
 enum Mode {
@@ -54,8 +54,8 @@ const buttonSchemes = [
     },
     {
         name: "Ground Terrain",
-        mode: Mode.GroundTerrainBuilding
-    }
+        mode: Mode.GroundTerrainBuilding,
+    },
 ];
 
 const rocketLocationWidth = 200;
@@ -190,9 +190,9 @@ export class LevelEditor extends GameState implements Serializable {
                         color: {
                             r: 0.9059,
                             g: 0.4902,
-                            b: 0.0667
+                            b: 0.0667,
                         },
-                        points: this.currentTerrain
+                        points: this.currentTerrain,
                     });
                 }
             }
