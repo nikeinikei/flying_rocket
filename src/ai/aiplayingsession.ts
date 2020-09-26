@@ -1,8 +1,9 @@
-import { GameState } from "./gamestate";
-import { ScaledScreenshotter } from "./graphics/ScaledScreenshotter";
-import { json } from "./json";
-import { Level } from "./level";
-import { AbstractPlaying, GameEndReason } from "./playing";
+import { GameState } from "../gamestate";
+import { ScaledScreenshotter } from "../graphics/ScaledScreenshotter";
+import { json } from "../json";
+import { Level } from "../level";
+import { AbstractPlaying, GameEndReason } from "../playing";
+import { config } from "./config";
 
 const threadCode = `
 require("love.image")
@@ -56,6 +57,7 @@ export class AIPlayingSession extends AbstractPlaying {
         pedal: number;
         rotation: number;
     };
+    private physicsUpdateFramesCounter: number;
 
     constructor(level: Level) {
         super(level);
@@ -76,6 +78,7 @@ export class AIPlayingSession extends AbstractPlaying {
             pedal: 0,
             rotation: 0,
         };
+        this.physicsUpdateFramesCounter = 0;
     }
 
     update(dt: number) {
@@ -98,7 +101,11 @@ export class AIPlayingSession extends AbstractPlaying {
 
         super.physicsUpdate(dt);
 
-        this.screenshotChannel.push(this.screenShotter.captureScreenshot());
+        this.physicsUpdateFramesCounter++;
+        if (this.physicsUpdateFramesCounter == config.frameQuotient) {
+            this.screenshotChannel.push(this.screenShotter.captureScreenshot());
+            this.physicsUpdateFramesCounter = 0;
+        }
     }
 
     endGame(gameEndReason: GameEndReason, ...states: GameState[]) {

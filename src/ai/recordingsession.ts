@@ -1,10 +1,11 @@
 import { KeyConstant } from "love.keyboard";
 
-import { GameState } from "./gamestate";
-import { ScaledScreenshotter } from "./graphics/ScaledScreenshotter";
-import { json } from "./json";
-import { Level } from "./level";
-import { GameEndReason, Playing } from "./playing";
+import { GameState } from "../gamestate";
+import { ScaledScreenshotter } from "../graphics/ScaledScreenshotter";
+import { json } from "../json";
+import { Level } from "../level";
+import { GameEndReason, Playing } from "../playing";
+import { config } from "./config";
 
 const threadCode = `
 require("love.image")
@@ -58,6 +59,7 @@ export class RecordingSession extends Playing {
     private screenshotChannel: Channel;
     private screenShotter: ScaledScreenshotter;
     private connectionSuccessful: boolean;
+    private physicsUpdatrFramesCounter: number;
 
     constructor(level: Level) {
         super(level);
@@ -75,6 +77,7 @@ export class RecordingSession extends Playing {
         this.screenShotter = new ScaledScreenshotter(80, 80, () => {
             this.draw();
         });
+        this.physicsUpdatrFramesCounter = 0;
     }
 
     update(dt: number) {
@@ -105,14 +108,19 @@ export class RecordingSession extends Playing {
     physicsUpdate(dt: number) {
         super.physicsUpdate(dt);
 
-        const pedal = this.getPedal();
-        const rotation = this.getRotation();
-        const input = {
-            pedal,
-            rotation,
-        };
-        this.gameinputChannel.push(json.encode(input));
-        this.screenshotChannel.push(this.screenShotter.captureScreenshot());
+        this.physicsUpdatrFramesCounter++;
+        if (this.physicsUpdatrFramesCounter == config.frameQuotient) {
+            this.physicsUpdatrFramesCounter = 0;
+
+            const pedal = this.getPedal();
+            const rotation = this.getRotation();
+            const input = {
+                pedal,
+                rotation,
+            };
+            this.gameinputChannel.push(json.encode(input));
+            this.screenshotChannel.push(this.screenShotter.captureScreenshot());
+        }
     }
 
     keypressed(key: KeyConstant) {

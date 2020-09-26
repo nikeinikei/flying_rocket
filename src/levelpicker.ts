@@ -1,13 +1,13 @@
 import { KeyConstant } from "love.keyboard";
 
-import { AIPlayingSession } from "./aiplayingsession";
+import { AIPlayingSession } from "./ai/aiplayingsession";
 import { Levels } from "./fs/levels";
 import { GameState } from "./gamestate";
 import { Button } from "./gui";
 import { Level, copyLevel } from "./level";
 import { LevelEditor } from "./leveleditor";
 import { Playing } from "./playing";
-import { RecordingSession } from "./recordingsession";
+import { RecordingSession } from "./ai/recordingsession";
 import { Serializable, Serialized } from "./types/Serializable";
 import { WrappedDrawable } from "./wrappeddrawable";
 

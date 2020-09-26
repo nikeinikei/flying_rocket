@@ -8,7 +8,6 @@ import { Button, TextInput, Toggle } from "./gui";
 import { Level, newLevel } from "./level";
 import { LevelEditor } from "./leveleditor";
 import { LevelPicker } from "./levelpicker";
-import { RecordingSession } from "./recordingsession";
 import { Settings } from "./settings";
 import { Serializable, Serialized } from "./types/Serializable";
 
