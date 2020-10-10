@@ -83,6 +83,8 @@ export class Button extends Element {
         }
         love.graphics.rectangle("fill", this.x, this.y, this.w, this.h);
         love.graphics.setColor(1, 1, 1, 1);
+        this.textX = this.x + (this.w - this.text.getWidth()) / 2;
+        this.textY = this.y + (this.h - this.text.getHeight()) / 2;
         love.graphics.draw(this.text, this.textX, this.textY);
         super.draw();
     }

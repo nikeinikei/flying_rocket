@@ -170,16 +170,20 @@ if (!Settings.isWeb()) {
 }
 
 export class Menu extends GameState implements Serializable {
+    private static buttonWidth = 400;
+    private static buttonHeight = 70;
+    private static buttonStartY = 150;
+
     private buttons: Button[];
 
     constructor() {
         super();
         this.buttons = [];
 
-        const buttonHeight = 70;
-        const buttonWidth = 400;
+        const buttonHeight = Menu.buttonHeight;
+        const buttonWidth = Menu.buttonWidth;
 
-        const startY = 150;
+        const startY = Menu.buttonStartY;
         const buttonPadding = (love.graphics.getHeight() * 0.7) / buttonSchemes.length;
 
         const x = love.graphics.getWidth() / 2 - buttonWidth / 2;
@@ -195,6 +199,21 @@ export class Menu extends GameState implements Serializable {
                 )
             );
         }
+    }
+
+    private setButtonPositions() {
+        const x = love.graphics.getWidth() / 2 - Menu.buttonWidth / 2;
+        const buttonPadding = (love.graphics.getHeight() * 0.7) / buttonSchemes.length;
+
+        for (let i = 0; i < this.buttons.length; i++) {
+            const button = this.buttons[i];
+            button.x = x;
+            button.y = Menu.buttonStartY + i * buttonPadding;
+        }
+    }
+
+    resize(width: number, height: number) {
+        this.setButtonPositions();
     }
 
     getName() {
