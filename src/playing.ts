@@ -106,7 +106,6 @@ export class AbstractPlaying extends GameState implements Serializable {
 
     private level: Level;
     private world: World;
-    private clock: Clock;
     private rocket: Rocket;
     private terrain: Terrain;
     private groundTerrains: [number[], Body, Shape, Fixture, Color][];
@@ -120,6 +119,8 @@ export class AbstractPlaying extends GameState implements Serializable {
     private frames: Frame[];
     private resetNextFrame: boolean = false;
     private countdownTime: number | undefined;
+    
+    protected clock: Clock;
 
     constructor(level: Level) {
         super();
