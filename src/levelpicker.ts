@@ -19,6 +19,7 @@ export class LevelPicker extends GameState implements Serializable {
     private pageIndex: number;
     private buttons: Button[][] | undefined;
     private levelsNotAvailableTextWrapped: WrappedDrawable;
+    private aiDescriptiveTextWrapped: WrappedDrawable;
 
     private forwardButton: Button;
     private backwardButton: Button;
@@ -53,6 +54,11 @@ export class LevelPicker extends GameState implements Serializable {
                 this.pageIndex++;
             });
         }
+
+        const aiDescriptiveText = love.graphics.newText(love.graphics.newFont(10), "lshift to start a recording session, lalt to let the ai play");
+        this.aiDescriptiveTextWrapped = new WrappedDrawable(aiDescriptiveText);
+        this.aiDescriptiveTextWrapped.x = love.graphics.getWidth() - 5 - aiDescriptiveText.getWidth();
+        this.aiDescriptiveTextWrapped.y = love.graphics.getHeight() - 5 - aiDescriptiveText.getHeight();
     }
 
     getName() {
@@ -78,6 +84,7 @@ export class LevelPicker extends GameState implements Serializable {
             this.backwardButton,
             this.forwardButton,
             this.openSaveDirectoryButton,
+            this.aiDescriptiveTextWrapped
         ];
     }
 
