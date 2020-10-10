@@ -39,7 +39,7 @@ function internal_init() {
         }
     }
 
-    if (changed && Settings.isDevelopment()) {
+    if (changed) {
         save();
     }
 }
@@ -64,7 +64,6 @@ function save() {
 export namespace CampaignLevels {
     export function init() {
         internal_init();
-        save();
         isInit = true;
     }
 
