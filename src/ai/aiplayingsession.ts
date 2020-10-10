@@ -79,6 +79,18 @@ export class AIPlayingSession extends AbstractPlaying {
             rotation: 0,
         };
         this.physicsUpdateFramesCounter = 0;
+        this.screenshotChannel.push(this.screenShotter.captureScreenshot());
+    }
+
+    private pollGameInput(): boolean {
+        const popped = this.gameInputChannel.pop();
+        if (popped) {
+            const gameInputString = popped as string;
+            this.currentGameInput = json.decode(gameInputString);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     update(dt: number) {
@@ -86,22 +98,22 @@ export class AIPlayingSession extends AbstractPlaying {
             Application.popState();
         }
 
-        const popped = this.gameInputChannel.pop();
-        if (popped) {
-            const gameInputString = popped as string;
-            this.currentGameInput = json.decode(gameInputString);
-        }
-
         super.update(dt);
     }
 
     physicsUpdate(dt: number) {
+        this.physicsUpdateFramesCounter++;
+        if (this.physicsUpdateFramesCounter == config.frameQuotient) {
+            this.clock.pause();
+            while (!this.pollGameInput());
+            this.clock.resume();
+        }
+
         this.setPedal(this.currentGameInput.pedal);
         this.setRotation(this.currentGameInput.rotation);
 
         super.physicsUpdate(dt);
 
-        this.physicsUpdateFramesCounter++;
         if (this.physicsUpdateFramesCounter == config.frameQuotient) {
             this.screenshotChannel.push(this.screenShotter.captureScreenshot());
             this.physicsUpdateFramesCounter = 0;
@@ -110,6 +122,7 @@ export class AIPlayingSession extends AbstractPlaying {
 
     endGame(gameEndReason: GameEndReason, ...states: GameState[]) {
         this.endConnectionChannel.push("end");
+        this.screenshotChannel.push(this.screenShotter.captureScreenshot());
         this.thread.wait();
 
         super.endGame(gameEndReason, ...states);
